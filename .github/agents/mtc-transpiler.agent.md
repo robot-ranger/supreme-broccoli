@@ -124,7 +124,133 @@ The transpiler generates separate modules for different MTConnect categories:
 2. **sample_types.py** - All SAMPLE category DataItem types from `SampleEnum` in model
 3. **condition_types.py** - All CONDITION category DataItem types from `ConditionEnum` in model
 4. **subtype.py** - All DataItem subType values from `DataItemSubTypeEnum` in model
-5. **mtconnect_primitives.py** - Primitive datatypes with validation (ID, UUID, Int32, etc.)
+5. **interface_types.py** - Interface Interaction Model types (Part 5.0) - concrete Interface types, event enumerations, and state machine values
+6. **mtconnect_primitives.py** - Primitive datatypes with validation (ID, UUID, Int32, etc.)
+
+## Interface Interaction Model (Part 5.0)
+
+The MTConnect Interface model defines device-to-device coordination and is located in a **separate package** from standard DataItem categories.
+
+### Location in XML Model
+
+**Package:** "Interface Interaction Model" (Package ID: `EAPK_3DD65740_A905_4d89_9C80_C12E8199625A`)
+- **Starting Line:** ~42336 in model_2.6.xml
+- **Note:** NOT organized with SAMPLE/EVENT/CONDITION - requires separate extraction
+
+### Interface Components
+
+**Sub-packages:**
+1. **Interface Types** (line ~42394) - Concrete Interface class implementations
+2. **DataItem Types for Interface** (line ~45801) - Interface-specific data items  
+3. **Data for Interface** (line ~46397) - Interface data structures
+
+**Abstract Base:** `Interface` class (lines 43425-43450)
+- `isAbstract='true'`
+- Description: "abstract Component that coordinates actions and activities between pieces of equipment"
+- Every Interface **MUST** have an `InterfaceState` data item
+
+**Concrete Interface Types (4 types):**
+
+1. **BarFeederInterface** (line ~42440)
+   - Coordinates bar feeder operations with equipment
+   - Pushes bar stock into lathes/turning centers
+
+2. **MaterialHandlerInterface** (line ~42446)
+   - Handles loading/unloading material or tooling
+   - Part inspection, testing, cleaning
+   - Example: industrial robots
+
+3. **DoorInterface** (line ~42452)
+   - Coordinates door operations between equipment
+   - **MUST** provide `DoorState` data item
+
+4. **ChuckInterface** (line ~42458)
+   - Coordinates chuck operations
+   - **MUST** provide `ChuckState` data item
+
+### Interface Enumerations
+
+**InterfaceEventEnum** (lines 6406-6470) - 11 event types:
+- `INTERFACE_STATE` - Operational state (ENABLED/DISABLED)
+- `MATERIAL_FEED` - Advance material from continuous/bulk source
+- `MATERIAL_CHANGE` - Change type of material being loaded
+- `MATERIAL_RETRACT` - Remove or retract material
+- `MATERIAL_LOAD` - Load a piece of material
+- `MATERIAL_UNLOAD` - Unload a piece of material
+- `PART_CHANGE` - Change to different part/product
+- `OPEN_CHUCK` - Open a chuck
+- `CLOSE_CHUCK` - Close a chuck
+- `OPEN_DOOR` - Open a door
+- `CLOSE_DOOR` - Close a door
+
+**InterfaceStateEnum** (lines 5329-5345) - 2 values:
+- `ENABLED` - Interface operational and performing as expected
+- `DISABLED` - Interface not operational
+  - **Critical Rule:** When `InterfaceState` is `DISABLED`, all interaction data items **MUST** be `NOT_READY`
+
+### Request/Response Pattern
+
+Unlike standard DataItems, Interface events use a **request/response** pattern for device-to-device coordination:
+
+**Subtypes:**
+- `REQUEST` - Used by requesting equipment to initiate action
+- `RESPONSE` - Used by responding equipment to acknowledge/complete
+
+**State Machine Flow:**
+```
+NOT_READY → READY → ACTIVE → COMPLETE
+                            ↓
+                           FAIL (with recovery substates)
+```
+
+**State Values:**
+- `NOT_READY` - Not prepared to perform service
+- `READY` - Ready to request/perform service  
+- `ACTIVE` - Currently performing action
+- `COMPLETE` - Action finished successfully
+- `FAIL` - Failure occurred (includes recovery substates)
+
+**Architectural Pattern:**
+1. Equipment A publishes REQUEST state change
+2. Equipment B subscribes, processes, updates RESPONSE state
+3. Equipment A monitors RESPONSE for completion
+4. "Read-read" publish-subscribe model (no direct write commands)
+
+### Extraction Pattern for Interfaces
+
+```python
+# Extract InterfaceEventEnum
+for elem in root.iter():
+    if elem.get('{' + namespaces['xmi'] + '}type') == 'uml:Enumeration':
+        if elem.get('name') == 'InterfaceEventEnum':
+            # Found Interface events at line ~6406
+            for literal in elem.findall('uml:ownedLiteral', namespaces):
+                event_name = literal.get('name')
+                # Extract documentation...
+
+# Extract concrete Interface types
+for elem in root.iter():
+    if elem.get('{' + namespaces['xmi'] + '}type') == 'uml:Class':
+        name = elem.get('name')
+        if name in ['BarFeederInterface', 'MaterialHandlerInterface', 
+                    'DoorInterface', 'ChuckInterface']:
+            # Extract interface type documentation...
+```
+
+### Module Structure: interface_types.py
+
+Generate a dedicated module containing:
+
+1. **InterfaceType** enum - 4 concrete interface types
+2. **InterfaceEvent** enum - 11 interface event types from `InterfaceEventEnum`
+3. **InterfaceState** enum - ENABLED/DISABLED from `InterfaceStateEnum`
+4. **InterfaceRequestResponseState** enum - State machine values
+
+**Key Distinctions:**
+- Interfaces are EVENT category but warrant separate module
+- Represent device-to-device coordination, not single-device state
+- Use request/response pattern rather than simple value reporting
+- Part of MTConnect Part 5.0 (Interface Interaction Model)
 
 ## Extraction Patterns
 
@@ -211,6 +337,7 @@ def generate_enum_class(enum_name: str, enum_doc: str, literals: list) -> str:
     # Enum members (no blank lines between them!)
     for literal in literals:
         name = literal['name']
+        sanitized_name = sanitize_identifier(name)  # Sanitize for Python
         doc = literal.get('doc')
         
         if doc:
@@ -218,9 +345,9 @@ def generate_enum_class(enum_name: str, enum_doc: str, literals: list) -> str:
             comment = clean_doc(doc).split('\n')[0]  # First line only
             if len(comment) > 80:
                 comment = comment[:77] + '...'
-            lines.append(f"    {name} = auto()  # {comment}")
+            lines.append(f"    {sanitized_name} = auto()  # {comment}")
         else:
-            lines.append(f"    {name} = auto()")
+            lines.append(f"    {sanitized_name} = auto()")
     
     return '\n'.join(lines)
 ```
@@ -322,6 +449,82 @@ When a new MTConnect model version is released:
 5. Update README.md with new version reference
 6. Document any breaking changes in type names or structure
 
+### Task 5: Extracting Interface Interaction Model
+
+**Example**: Generate the complete `interface_types.py` module
+
+Steps:
+1. Parse model_2.6.xml with proper namespaces
+2. Locate "Interface Interaction Model" package (line ~42336)
+3. Extract `InterfaceEventEnum` from lines 6406-6470 (11 event types)
+4. Extract `InterfaceStateEnum` from lines 5329-5345 (ENABLED/DISABLED)
+5. Extract concrete Interface classes: BarFeederInterface, MaterialHandlerInterface, DoorInterface, ChuckInterface
+6. Document request/response pattern and state machine
+7. Generate module with all Interface-related enums
+
+Expected output:
+
+```python
+"""
+MTConnect Interface Interaction Model Types
+
+Interface types for device-to-device coordination (MTConnect Part 5.0).
+Interfaces use a request/response pattern for coordinating actions between equipment.
+
+Reference: MTConnect Standard v2.6 Normative Model - Interface Interaction Model
+Package: Interface Interaction Model (line ~42336)
+"""
+
+from enum import Enum, auto
+
+
+class InterfaceType(Enum):
+    """Concrete Interface types for device-to-device coordination"""
+    BAR_FEEDER = auto()  # Coordinates bar feeder operations pushing stock into equipment
+    CHUCK = auto()  # Coordinates chuck operations for workpiece holding
+    DOOR = auto()  # Coordinates door operations between equipment
+    MATERIAL_HANDLER = auto()  # Coordinates material/tooling loading, unloading, inspection
+
+
+class InterfaceEvent(Enum):
+    """Interface event types from InterfaceEventEnum"""
+    CLOSE_CHUCK = auto()  # Operating state of service to close a chuck
+    CLOSE_DOOR = auto()  # Operating state of service to close a door
+    INTERFACE_STATE = auto()  # Operational state of Interface (ENABLED/DISABLED)
+    MATERIAL_CHANGE = auto()  # Change type of material or product being loaded
+    MATERIAL_FEED = auto()  # Advance material from continuous or bulk source
+    MATERIAL_LOAD = auto()  # Load a piece of material or product
+    MATERIAL_RETRACT = auto()  # Remove or retract material or product
+    MATERIAL_UNLOAD = auto()  # Unload a piece of material or product
+    OPEN_CHUCK = auto()  # Operating state of service to open a chuck
+    OPEN_DOOR = auto()  # Operating state of service to open a door
+    PART_CHANGE = auto()  # Change part to different part or product
+
+
+class InterfaceState(Enum):
+    """Interface operational state values"""
+    DISABLED = auto()  # Interface not operational (all interaction items MUST be NOT_READY)
+    ENABLED = auto()  # Interface operational and performing as expected
+
+
+class InterfaceRequestResponseState(Enum):
+    """
+    State machine values for Interface request/response pattern.
+    Flow: NOT_READY → READY → ACTIVE → COMPLETE (or FAIL)
+    """
+    NOT_READY = auto()  # Not prepared to perform service
+    READY = auto()  # Ready to request or perform service
+    ACTIVE = auto()  # Currently performing action
+    COMPLETE = auto()  # Action finished successfully
+    FAIL = auto()  # Failure occurred during action
+```
+
+**Notes:**
+- Interfaces are EVENT category but organized separately from `event_types.py`
+- Request/response pattern distinguishes Interfaces from standard DataItems
+- All Interface event types (except INTERFACE_STATE) use REQUEST/RESPONSE subtypes
+- State machine pattern is critical for equipment coordination
+
 ## Validation and Testing
 
 Generated code should be validated:
@@ -331,6 +534,8 @@ Generated code should be validated:
 3. **Enum Completeness**: Compare generated enums against model to ensure all values extracted
 4. **Documentation Quality**: Check that docstrings are readable and properly formatted
 5. **Naming Consistency**: Verify enum member names match MTConnect standard exactly
+6. **Identifier Validity**: Verify all enum member names are valid Python identifiers (no special characters, don't start with digits)
+7. **Interface Completeness**: Verify Interface model extraction includes all 4 concrete types and 11 event types
 
 Example validation script:
 
@@ -340,6 +545,7 @@ from event_types import EventType
 from sample_types import SampleType
 from condition_types import ConditionType
 from subtype import DataItemSubType
+from interface_types import InterfaceType, InterfaceEvent, InterfaceState
 
 # Verify enum members exist
 assert hasattr(EventType, 'EXECUTION')
@@ -347,9 +553,24 @@ assert hasattr(SampleType, 'POSITION')
 assert hasattr(ConditionType, 'SYSTEM')
 assert hasattr(DataItemSubType, 'ACTUAL')
 
+# Verify Interface types
+assert hasattr(InterfaceType, 'BAR_FEEDER')
+assert hasattr(InterfaceType, 'MATERIAL_HANDLER')
+assert hasattr(InterfaceEvent, 'OPEN_DOOR')
+assert hasattr(InterfaceEvent, 'CLOSE_DOOR')
+assert hasattr(InterfaceState, 'ENABLED')
+assert hasattr(InterfaceState, 'DISABLED')
+
+# Verify 4 concrete Interface types
+assert len(InterfaceType) == 4
+
+# Verify 11 Interface event types
+assert len(InterfaceEvent) == 11
+
 # Verify auto() was used (values are integers)
 assert isinstance(EventType.EXECUTION.value, int)
 assert isinstance(SampleType.POSITION.value, int)
+assert isinstance(InterfaceEvent.OPEN_DOOR.value, int)
 ```
 
 ## Language-Specific Notes
@@ -361,6 +582,51 @@ assert isinstance(SampleType.POSITION.value, int)
 - Follow PEP 8 for naming (UPPER_CASE for enum members)
 - Use type hints where appropriate
 - Include `__str__`, `__repr__` methods for custom types
+
+#### Identifier Sanitization
+
+**CRITICAL**: MTConnect enumeration names from the XML model often contain special characters (`/`, `^`, etc.) or start with digits, which are invalid in Python identifiers. All enum member names MUST be sanitized before code generation.
+
+**Sanitization Rules (KISS approach):**
+
+1. **Prepend underscore if starts with digit**: `3DS` → `_3DS`
+2. **Replace all special characters with underscore**: Use regex `[^A-Za-z0-9_]` → `_`
+   - `DEGREE/SECOND` → `DEGREE_SECOND`
+   - `DEGREE/SECOND^2` → `DEGREE_SECOND_2`
+   - `POUND/INCH^2` → `POUND_INCH_2`
+   - `N/A` → `N_A`
+
+**Implementation:**
+
+```python
+import re
+
+def sanitize_identifier(name: str) -> str:
+    """Transform MTConnect names into valid Python identifiers."""
+    if not name:
+        return name
+    
+    # Prepend underscore if starts with digit
+    if name[0].isdigit():
+        name = '_' + name
+    
+    # Replace all special characters with underscore
+    name = re.sub(r'[^A-Za-z0-9_]', '_', name)
+    
+    return name
+```
+Usage in code generation:
+```python
+for literal in elem.findall('uml:ownedLiteral', namespaces):
+    literal_name = literal.get('name')
+    sanitized_name = sanitize_identifier(literal_name)
+    
+    # Use sanitized_name in output, but keep original in comment
+    output_lines.append(f"    {sanitized_name} = auto()  # {doc}")
+    ```
+
+
+
 
 ### TypeScript (Future)
 
@@ -385,6 +651,8 @@ assert isinstance(SampleType.POSITION.value, int)
 ❌ **Don't** skip documentation strings  
 ❌ **Don't** modify MTConnect type names (preserve exact spelling/casing)  
 ❌ **Don't** ignore version information  
+❌ **Don't** use MTConnect names directly without sanitizing for Python syntax  
+❌ **Don't** generate identifiers with special characters (`/`, `^`) or starting with numbers  
 
 ✅ **Do** use `auto()` for enum values  
 ✅ **Do** add inline comments after enum members  
@@ -393,6 +661,8 @@ assert isinstance(SampleType.POSITION.value, int)
 ✅ **Do** include model version references  
 ✅ **Do** follow target language conventions  
 ✅ **Do** validate generated code  
+✅ **Do** sanitize all enum member names to valid Python identifiers  
+✅ **Do** apply sanitization consistently across all enums  
 
 ## Example Task Completions
 
@@ -475,15 +745,17 @@ class DataItemID:
 As the MTConnect Transpiler Agent, you:
 
 1. Parse the MTConnect normative model XML
-2. Extract types, enums, and primitives
+2. Extract types, enums, and primitives from all sections (including Interface Interaction Model)
 3. Generate clean, documented code for the target language
 4. Always use `auto()` for Python enums
 5. Keep comments inline, never add blank lines between enum members
-6. Organize code by MTConnect categories (SAMPLE, EVENT, CONDITION, etc.)
-7. Preserve documentation from the model
-8. Reference MTConnect version in all generated files
-9. Follow language conventions and best practices
-10. Validate generated code for completeness
+6. Organize code by MTConnect categories (SAMPLE, EVENT, CONDITION, Interface, etc.)
+7. Handle Interface model separately - located at line ~42336, not with standard categories
+8. Preserve documentation from the model
+9. Reference MTConnect version in all generated files
+10. Follow language conventions and best practices
+11. Sanitize identifiers for target language (Python: no special chars, no leading digits)
+12. Validate generated code for completeness (including 4 Interface types and 11 Interface events)
 
 Your generated code should be production-ready, fully documented, and precisely aligned with the MTConnect standard.
 

@@ -1,108 +1,163 @@
 """
-MTConnect EVENT Category Types
+MTConnect Enumeration Types
 
-All EVENT type DataItems from MTConnect v2.6 normative model (EventEnum).
-Events report discrete, non-numeric functional states or information with two or more values.
+Additional enumeration types extracted from the MTConnect normative model
+version 2.6. These enums represent standardized values for units, states,
+representations, and other categorical values used in MTConnect.
 
-Reference: MTConnect Standard v2.6 Normative Model - EventEnum
+Reference: MTConnect Standard v2.6 Normative Model
+Auto-generated from: model_2.6.xml
 """
 
 from enum import Enum, auto
 
 
+
+################################################################################
+# Observation Value Enumerations
+################################################################################
+
 class EventType(Enum):
-    """All EVENT types from MTConnect v2.6 normative model"""
-    ACTIVE_AXES = auto()  # Set of axes currently associated with a Path or Controller
-    ADAPTER_SOFTWARE_VERSION = auto()  # Adapter software version
-    ADAPTER_URI = auto()  # URI of the adapter
-    ACTUATOR_STATE = auto()  # Operational state of an apparatus for moving or controlling a mechanism or system
-    ALARM_LIMITS = auto()  # Set of limits used to trigger warning or alarm indicators
-    APPLICATION = auto()  # Application on a Component
-    ASSET_CHANGED = auto()  # AssetId of the Asset that has been changed
-    ASSET_REMOVED = auto()  # AssetId of the Asset that has been removed
-    AVAILABILITY = auto()  # Agent's ability to communicate with the data source
-    AXIS_COUPLING = auto()  # Describes the way axes will be associated to each other
-    AXIS_FEEDRATE_OVERRIDE = auto()  # Value of a signal to adjust the feedrate of an individual linear type axis
-    AXIS_INTERLOCK = auto()  # State of the axis lockout function when power has been removed
-    AXIS_STATE = auto()  # State of a Linear or Rotary component representing an axis
-    BLOCK = auto()  # Line of code or command being executed by a Controller entity
-    BLOCK_COUNT = auto()  # Total count of blocks of program code executed since execution started
-    CHUCK_INTERLOCK = auto()  # State of an interlock function for the associated Chuck component
-    CHUCK_STATE = auto()  # Operating state of a mechanism that holds a part or stock material
-    CONNECTION_STATUS = auto()  # Status of the connection between an adapter and an agent
-    COMPOSITION_STATE = auto()  # Composition operating state
-    CONTROL_LIMITS = auto()  # Set of limits used to indicate whether a process variable is stable
-    CONTROLLER_MODE = auto()  # Current mode of the Controller component
-    CONTROLLER_MODE_OVERRIDE = auto()  # Setting or operator selection that changes equipment behavior
-    COUPLED_AXES = auto()  # Set of associated axes
-    DATE_CODE = auto()  # Time and date code associated with a material or physical item
-    DEVICE_ADDED = auto()  # UUID of new device added to an MTConnect Agent
-    DEVICE_REMOVED = auto()  # UUID of a device removed from an MTConnect Agent
-    DEVICE_CHANGED = auto()  # UUID of the device whose metadata has changed
-    DEVICE_UUID = auto()  # Identifier of another piece of equipment temporarily associated
-    DIRECTION = auto()  # Direction of motion
-    DOOR_STATE = auto()  # Operational state of a Door component or composition element
-    EMERGENCY_STOP = auto()  # State of the emergency stop signal
-    END_OF_BAR = auto()  # Indication that end of bar stock has been reached
-    EQUIPMENT_MODE = auto()  # Equipment performing specific types of activities
-    EXECUTION = auto()  # Operating state of a Component
-    FIRMWARE = auto()  # Embedded software of a Component
-    FUNCTIONAL_MODE = auto()  # Current intended production status of the Component
-    HARDWARE = auto()  # Hardware of a Component
-    HARDNESS = auto()  # Hardness of a material
-    LIBRARY = auto()  # Software library on a Component
-    LINE_LABEL = auto()  # Identifier for a Block of code in a Program
-    LINE_NUMBER = auto()  # Position of a block of program code within a control program
-    LOAD_COUNT = auto()  # Accumulation of load operation attempts
-    MATERIAL = auto()  # Identifier of a material used or consumed in manufacturing
-    MATERIAL_LAYER = auto()  # Layers of material applied in additive manufacturing
-    MTCONNECT_VERSION = auto()  # Reference version of the MTConnect Standard supported by the adapter
-    MESSAGE = auto()  # Information to be transferred from equipment to client software
-    NETWORK = auto()  # Network details of a Component
-    OPERATOR_ID = auto()  # Identifier of the person currently responsible for operating the equipment
-    OPERATING_SYSTEM = auto()  # Operating System of a Component
-    PALLET_ID = auto()  # Identifier for a pallet
-    PART_COUNT = auto()  # Aggregate count of parts
-    PART_DETECT = auto()  # Indication whether a part or work piece has been detected or is present
-    PART_GROUP_ID = auto()  # Identifier given to a collection of individual parts
-    PART_ID = auto()  # Identifier of a part in a manufacturing operation
-    PART_KIND_ID = auto()  # Identifier given to link individual occurrence to a class of parts
-    PART_STATUS = auto()  # State or condition of a part
-    PART_UNIQUE_ID = auto()  # Identifier given to a distinguishable, individual part
-    PATH_FEEDRATE_OVERRIDE = auto()  # Value of a signal to adjust feedrate for axes associated with a Path
-    PATH_MODE = auto()  # Operational relationship between Path entities
-    POWER_STATE = auto()  # Status of the source of energy or state of enabling signal
-    PROCESS_AGGREGATE_ID = auto()  # Identifier given to link individual occurrence to a group of related occurrences
-    PROCESS_KIND_ID = auto()  # Identifier given to link individual occurrence to a class of processes
-    PROCESS_OCCURRENCE_ID = auto()  # Identifier of a process being executed by the device
-    PROCESS_TIME = auto()  # Time and date associated with an activity or event
-    PROGRAM = auto()  # Name of the logic or motion program being executed by Controller
-    PROGRAM_COMMENT = auto()  # Comment or non-executable statement in the control program
-    PROGRAM_EDIT = auto()  # Status of the Controller program editing mode
-    PROGRAM_EDIT_NAME = auto()  # Name of the program being edited
-    PROGRAM_HEADER = auto()  # Non-executable header section of the control program
-    PROGRAM_LOCATION = auto()  # URI for the source file associated with Program
-    PROGRAM_LOCATION_TYPE = auto()  # Defines whether program is executed from local memory or outside source
-    PROGRAM_NEST_LEVEL = auto()  # Nesting level within control program currently being executed
-    ROTATION = auto()  # Three space angular displacement relative to a cartesian coordinate system
-    ROTARY_MODE = auto()  # Current operating mode for a Rotary type axis
-    ROTARY_VELOCITY_OVERRIDE = auto()  # Percentage change to velocity of programmed velocity for Rotary axis
-    SENSOR_ATTACHMENT = auto()  # Attachment between a sensor and an entity
-    SERIAL_NUMBER = auto()  # Serial number associated with a Component, Asset, or Device
-    SPECIFICATION_LIMITS = auto()  # Set of limits defining acceptable performance range for a variable
-    SPINDLE_INTERLOCK = auto()  # Status of the spindle when power removed and free to rotate
-    TOOL_ASSET_ID = auto()  # Identifier of an individual tool asset
-    TOOL_GROUP = auto()  # Identifier for the tool group associated with a specific tool
-    TOOL_NUMBER = auto()  # Identifier assigned by Controller to a cutting tool when in use
-    TOOL_OFFSET = auto()  # Reference to the tool offset variables applied to active cutting tool
-    TRANSLATION = auto()  # Three space linear displacement relative to a cartesian coordinate system
-    UNLOAD_COUNT = auto()  # Accumulation of unload operation attempts
-    USER = auto()  # Identifier of the person currently responsible for operating equipment
-    VARIABLE = auto()  # Data whose meaning may change over time
-    WAIT_STATE = auto()  # Indication of the reason that Execution is reporting WAIT
-    WIRE = auto()  # Identifier for the type of wire used as cutting mechanism
-    WORKHOLDING_ID = auto()  # Identifier for current workholding or part clamp in use
-    WORK_OFFSET = auto()  # Reference to offset variables for a work piece or part
+    """EventType values from MTConnect EventEnum"""
 
+    ACTIVE_AXES = auto()  # set of axes currently associated with a Path or Controller.
+    ACTUATOR_STATE = auto()  # operational state of an apparatus for moving or controlling a mechanism or sy...
+    ALARM = auto()  # **DEPRECATED:** Replaced with `CONDITION` category data items in Version 1.1.0.
+    ASSET_CHANGED = auto()  # Asset::assetId of the Asset that has been changed.
+    ASSET_REMOVED = auto()  # Asset::assetId of the Asset that has been removed.
+    AVAILABILITY = auto()  # agent's ability to communicate with the data source.
+    AXIS_COUPLING = auto()  # describes the way the axes will be associated to each other. This is used in ...
+    AXIS_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate of an individu...
+    AXIS_INTERLOCK = auto()  # state of the axis lockout function when power has been removed and the axis i...
+    AXIS_STATE = auto()  # state of a Linear or Rotary component representing an axis.
+    BLOCK = auto()  # line of code or command being executed by a Controller entity.
+    BLOCK_COUNT = auto()  # total count of the number of blocks of program code that have been executed s...
+    CHUCK_INTERLOCK = auto()  # state of an interlock function or control logic state intended to prevent the...
+    CHUCK_STATE = auto()  # operating state of a mechanism that holds a part or stock material during a m...
+    CODE = auto()  # programmatic code being executed. **DEPRECATED** in *Version 1.1*.
+    COMPOSITION_STATE = auto()  # operating state of a mechanism represented by a Composition entity.
+    CONTROLLER_MODE = auto()  # current mode of the Controller component.
+    CONTROLLER_MODE_OVERRIDE = auto()  # setting or operator selection that changes the behavior of a piece of equipment.
+    COUPLED_AXES = auto()  # set of associated axes.
+    DATE_CODE = auto()  # time and date code associated with a material or other physical item.
+    DEVICE_UUID = auto()  # identifier of another piece of equipment that is temporarily associated with ...
+    DIRECTION = auto()  # direction of motion.
+    DOOR_STATE = auto()  # operational state of a Door component or composition element.
+    EMERGENCY_STOP = auto()  # state of the emergency stop signal for a piece of equipment, controller path,...
+    END_OF_BAR = auto()  # indication of whether the end of a piece of bar stock being feed by a bar fee...
+    EQUIPMENT_MODE = auto()  # indication that a piece of equipment, or a sub-part of a piece of equipment, ...
+    EXECUTION = auto()  # operating state of a Component.
+    FUNCTIONAL_MODE = auto()  # current intended production status of the Component.
+    HARDNESS = auto()  # hardness of a material.
+    LINE = auto()  # current line of code being executed. **DEPRECATED** in *Version 1.4.0*.
+    LINE_LABEL = auto()  # identifier for a Block of code in a Program.
+    LINE_NUMBER = auto()  # position of a block of program code within a control program.
+    MATERIAL = auto()  # identifier of a material used or consumed in the manufacturing process.
+    MATERIAL_LAYER = auto()  # identifies the layers of material applied to a part or product as part of an ...
+    MESSAGE = auto()  # information to be transferred from a piece of equipment to a client software ...
+    OPERATOR_ID = auto()  # identifier of the person currently responsible for operating the piece of equ...
+    PALLET_ID = auto()  # identifier for a pallet.
+    PART_COUNT = auto()  # aggregate count of parts.
+    PART_DETECT = auto()  # indication designating whether a part or work piece has been detected or is p...
+    PART_ID = auto()  # identifier of a part in a manufacturing operation.
+    PART_NUMBER = auto()  # identifier of a part or product moving through the manufacturing process. **D...
+    PATH_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate for the axes a...
+    PATH_MODE = auto()  # describes the operational relationship between a Path entity and another Path...
+    POWER_STATE = auto()  # indication of the status of the source of energy for an entity to allow it to...
+    POWER_STATUS = auto()  # status of the Component. **DEPRECATED** in *Version 1.1.0*.
+    PROCESS_TIME = auto()  # time and date associated with an activity or event.
+    PROGRAM = auto()  # name of the logic or motion program being executed by the Controller component.
+    PROGRAM_COMMENT = auto()  # comment or non-executable statement in the control program.
+    PROGRAM_EDIT = auto()  # indication of the status of the Controller components program editing mode. A...
+    PROGRAM_EDIT_NAME = auto()  # name of the program being edited. This is used in conjunction with ProgramEdi...
+    PROGRAM_HEADER = auto()  # non-executable header section of the control program.
+    PROGRAM_LOCATION = auto()  # URI for the source file associated with Program.
+    PROGRAM_LOCATION_TYPE = auto()  # defines whether the logic or motion program defined by Program is being execu...
+    PROGRAM_NEST_LEVEL = auto()  # indication of the nesting level within a control program that is associated w...
+    ROTARY_MODE = auto()  # current operating mode for a Rotary type axis.
+    ROTARY_VELOCITY_OVERRIDE = auto()  # percentage change to the velocity of the programmed velocity for a Rotary axis.
+    SERIAL_NUMBER = auto()  # serial number associated with a Component, Asset, or Device.
+    SPINDLE_INTERLOCK = auto()  # indication of the status of the spindle for a piece of equipment when power h...
+    TOOL_ASSET_ID = auto()  # identifier of an individual tool asset.
+    TOOL_GROUP = auto()  # identifier for the tool group associated with a specific tool. Commonly used ...
+    TOOL_ID = auto()  # identifier of the tool currently in use for a given `Path`. **DEPRECATED** in...
+    TOOL_NUMBER = auto()  # identifier assigned by the Controller component to a cutting tool when in use...
+    TOOL_OFFSET = auto()  # reference to the tool offset variables applied to the active cutting tool.
+    USER = auto()  # identifier of the person currently responsible for operating the piece of equ...
+    VARIABLE = auto()  # data whose meaning may change over time due to changes in the operation of a ...
+    WAIT_STATE = auto()  # indication of the reason that Execution is reporting a value of `WAIT`.
+    WIRE = auto()  # identifier for the type of wire used as the cutting mechanism in Electrical D...
+    WORKHOLDING_ID = auto()  # identifier for the current workholding or part clamp in use by a piece of equ...
+    WORK_OFFSET = auto()  # reference to offset variables for a work piece or part.
+    OPERATING_SYSTEM = auto()  # Operating System (OS) of a Component.
+    FIRMWARE = auto()  # embedded software of a Component .
+    APPLICATION = auto()  # application on a Component.
+    LIBRARY = auto()  # software library on a Component
+    HARDWARE = auto()  # hardware of a Component.
+    NETWORK = auto()  # network details of a Component.
+    ROTATION = auto()  # three space angular displacement of an object or coordinate system relative t...
+    TRANSLATION = auto()  # three space linear displacement of an object or coordinate system relative to...
+    DEVICE_ADDED = auto()  # UUID of new device added to an MTConnect Agent.
+    DEVICE_REMOVED = auto()  # UUID of a device removed from an MTConnect Agent.
+    DEVICE_CHANGED = auto()  # UUID of the device whose metadata has changed.
+    CONNECTION_STATUS = auto()  # status of the connection between an adapter and an agent.
+    ADAPTER_SOFTWARE_VERSION = auto()  # originator’s software version of the adapter.
+    ADAPTER_URI = auto()  # URI of the adapter.
+    MTCONNECT_VERSION = auto()  # reference version of the MTConnect Standard supported by the adapter.
+    SENSOR_ATTACHMENT = auto()  # attachment between a sensor and an entity.
+    PART_STATUS = auto()  # state or condition of a part.
+    PROCESS_OCCURRENCE_ID = auto()  # identifier of a process being executed by the device.
+    PROCESS_AGGREGATE_ID = auto()  # identifier given to link the individual occurrence to a group of related occu...
+    PROCESS_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of processes or...
+    PART_GROUP_ID = auto()  # identifier given to a collection of individual parts.
+    PART_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of parts, typic...
+    PART_UNIQUE_ID = auto()  # identifier given to a distinguishable, individual part.
+    CONTROL_LIMIT = auto()  # set of limits used to indicate whether a process variable is stable and in co...
+    SPECIFICATION_LIMIT = auto()  # set of limits defining a range of values designating acceptable performance f...
+    ALARM_LIMIT = auto()  # set of limits used to trigger warning or alarm indicators. **DEPRECATED** in ...
+    LOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
+    UNLOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
+    TRANSFER_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
+    ACTIVATION_COUNT = auto()  # accumulation of the number of times a function has attempted to, or is planne...
+    DEACTIVATION_COUNT = auto()  # accumulation of the number of times a function has attempted to, or is planne...
+    CYCLE_COUNT = auto()  # accumulation of the number of times a cyclic function has attempted to, or is...
+    VALVE_STATE = auto()  # state of a valve is one of open, closed, or transitioning between the states.
+    LOCK_STATE = auto()  # state or operating mode of a Lock.
+    PROCESS_STATE = auto()  # particular condition of the process occurrence at a specific time.
+    PART_PROCESSING_STATE = auto()  # particular condition of the part occurrence at a specific time.
+    OPERATING_MODE = auto()  # state of Component or Composition that describes the automatic or manual oper...
+    ASSET_COUNT = auto()  # data set of the number of Asset of a given type for a Device.
+    MAINTENANCE_LIST = auto()  # actions or activities to be performed in support of a piece of equipment.
+    FIXTURE_ID = auto()  # identifier for the current workholding or part clamp in use by a piece of equ...
+    PART_COUNT_TYPE = auto()  # interpretation of `PART_COUNT`.
+    CLOCK_TIME = auto()  # time provided by a timing device at a specific point in time.
+    HOST_NAME = auto()  # name of the host computer supplying data.
+    NETWORK_PORT = auto()  # number of the TCP/IP or UDP/IP port for the connection endpoint.
+    LEAK_DETECT = auto()  # indication designating whether a leak has been detected.
+    BATTERY_STATE = auto()  # present status of the battery.
+    FEATURE_PERSISTENT_ID = auto()  # UUID of a feature. {{cite(ISO 10303 AP 242/239.
+    SENSOR_STATE = auto()  # detection result of a sensor.
+    COMPONENT_DATA = auto()  # Event that represents a Component where the EntryDefinition identifies the Co...
+    WORK_OFFSETS = auto()  # properties of each addressable work offset.
+    TOOL_OFFSETS = auto()  # properties of each addressable tool offset.
+    FEATURE_MEASUREMENT = auto()  # assessing elements of a feature.
+    CHARACTERISTIC_PERSISTENT_ID = auto()  # UUID of the characteristic.
+    MEASUREMENT_TYPE = auto()  # class of measurement being performed. {{cite(QIF 3:2018 Section 6.3
+    MEASUREMENT_VALUE = auto()  # measurement based on the measurement type.
+    MEASUREMENT_UNITS = auto()  # engineering units of the measurement.
+    CHARACTERISTIC_STATUS = auto()  # pass/fail result of the measurement.
+    UNCERTAINTY_TYPE = auto()  # method used to compute standard uncertainty.
+    UNCERTAINTY = auto()  # uncertainty specified by UncertaintyType.
+    SPECIFICATION_LIMITS = auto()  # set of limits defining a range of values designating acceptable performance f...
+    CONTROL_LIMITS = auto()  # set of limits used to indicate whether a process variable is stable and in co...
+    ALARM_LIMITS = auto()  # set of limits used to trigger warning or alarm indicators.
+    TOOL_CUTTING_ITEM = auto()  # references the CuttingToolLifeCycle CuttingItem index related to the CuttingI...
+    LOCATION_ADDRESS = auto()  # structured information that allows the unambiguous determination of an object...
+    ACTIVE_POWER_SOURCE = auto()  # active energy source for the Component.
+    LOCATION_NARRATIVE = auto()  # textual description of the location of an object or activity.
+    THICKNESS = auto()  # dimension between two surfaces of an object, usually the dimension of smalles...
+    LOCATION_SPATIAL_GEOGRAPHIC = auto()  # absolute geographic location defined by two coordinates, longitude and latitu...
+    PART_INDEX = auto()  # sequence of a part in a group of parts.
+    ASSOCIATED_ASSET_ID = auto()  # Asset::assetId of the Assets associated with a Component.
+    ASSET_ADDED = auto()  # Asset::assetId of the Asset that has been added.
 
-__all__ = ['EventType']

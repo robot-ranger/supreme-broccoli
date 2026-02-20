@@ -9,6 +9,43 @@ from collections import defaultdict
 import argparse
 from pathlib import Path
 import sys
+import re
+
+
+def sanitize_identifier(name: str) -> str:
+    """
+    Transform MTConnect names into valid Python identifiers.
+    
+    Rules (KISS approach):
+    1. Prepend underscore if starts with digit
+    2. Replace all special characters with underscore
+    3. Prepend underscore if Python keyword
+    """
+    if not name:
+        return name
+    
+    # Python keywords that need to be escaped
+    PYTHON_KEYWORDS = {
+        'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+        'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except',
+        'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+        'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try',
+        'while', 'with', 'yield'
+    }
+    
+    # Prepend underscore if starts with digit
+    if name[0].isdigit():
+        name = '_' + name
+    
+    # Replace all special characters with underscore
+    name = re.sub(r'[^A-Za-z0-9_]', '_', name)
+    
+    # Prepend underscore if Python keyword (case-insensitive check)
+    if name.lower() in PYTHON_KEYWORDS:
+        name = '_' + name
+    
+    return name
+
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Extract MTConnect enumerations from model XML')
@@ -24,6 +61,14 @@ parser.add_argument('--output-file', type=str,
                     help='Optional: single output file name (default: enums.py)')
 
 args = parser.parse_args()
+
+# Map enum names to friendly class names
+ENUM_NAME_MAP = {
+    'SampleEnum': 'SampleType',
+    'EventEnum': 'EventType', 
+    'ConditionEnum': 'ConditionType',
+    'DataItemSubTypeEnum': 'DataItemSubType',
+}
 
 # Resolve paths relative to repository root
 repo_root = Path(__file__).parent.parent
@@ -153,8 +198,11 @@ for group_name in group_order:
     output_lines.append('')
     
     for enum_data in sorted(groups[group_name], key=lambda x: x['name']):
+        # Get friendly class name if available
+        class_name = ENUM_NAME_MAP.get(enum_data['name'], enum_data['name'])
+        
         # Class definition
-        output_lines.append(f"class {enum_data['name']}(Enum):")
+        output_lines.append(f"class {class_name}(Enum):")
         
         # Class docstring
         if enum_data['doc']:
@@ -168,27 +216,54 @@ for group_name in group_order:
             output_lines.append(f'    {doc}')
             output_lines.append('    """')
         else:
-            output_lines.append(f'    """{enum_data["name"]} values from MTConnect model."""')
+            # Note original enum name in docstring if mapped
+            if class_name != enum_data['name']:
+                output_lines.append(f'    """{class_name} values from MTConnect {enum_data["name"]}"""')
+            else:
+                output_lines.append(f'    """{class_name} values from MTConnect model"""')
         
         output_lines.append('')
         
         # Enum values with inline comments (no blank lines between members)
+        # Track used names to handle duplicates after sanitization
+        used_names = {}
         for i, literal in enumerate(enum_data['literals']):
             literal_name = literal['name']
+            sanitized_name = sanitize_identifier(literal_name)
+            
+            # Handle duplicate sanitized names by appending number
+            if sanitized_name in used_names:
+                counter = 2
+                original_sanitized = sanitized_name
+                while sanitized_name in used_names:
+                    sanitized_name = f"{original_sanitized}_{counter}"
+                    counter += 1
+            used_names[sanitized_name] = literal_name
             
             # Add literal documentation as inline comment
             if literal['doc']:
-                doc = literal['doc'].split('\n')[0]  # Just first line
+                # Clean up all line breaks and whitespace
+                doc = literal['doc'].replace('\r\n', ' ').replace('\r', ' ').replace('\n', ' ')
                 doc = doc.replace('{{term(', '').replace('{{termplural(', '')
                 doc = doc.replace('{{property(', '').replace('{{block(', '')
                 doc = doc.replace('{{package(', '').replace('{{url(', '')
                 doc = doc.replace(')}}', '').replace('}}', '')
-                doc = doc.replace('&#10;', ' ')
+                doc = doc.replace('&#10;', ' ').replace('&#13;', ' ')
+                # Strip and collapse multiple spaces
+                doc = ' '.join(doc.split())
                 if len(doc) > 80:
                     doc = doc[:77] + '...'
-                output_lines.append(f"    {literal_name} = auto()  # {doc}")
+                # Show original name if it was sanitized
+                if sanitized_name != literal_name:
+                    output_lines.append(f"    {sanitized_name} = auto()  # {literal_name}: {doc}")
+                else:
+                    output_lines.append(f"    {sanitized_name} = auto()  # {doc}")
             else:
-                output_lines.append(f"    {literal_name} = auto()")
+                # Show original name if it was sanitized
+                if sanitized_name != literal_name:
+                    output_lines.append(f"    {sanitized_name} = auto()  # {literal_name}")
+                else:
+                    output_lines.append(f"    {sanitized_name} = auto()")
         
         output_lines.append('')
         output_lines.append('')

@@ -18,19 +18,19 @@ from enum import Enum, auto
 ################################################################################
 
 class CategoryEnum(Enum):
-    """CategoryEnum values from MTConnect model."""
+    """CategoryEnum values from MTConnect model"""
 
-    SAMPLE = auto()  # continuously variable or analog data value. 
+    SAMPLE = auto()  # continuously variable or analog data value. A continuous value can be measure...
     EVENT = auto()  # discrete piece of information from the piece of equipment.
     CONDITION = auto()  # information about the health of a piece of equipment and its ability to funct...
 
 
 class RepresentationEnum(Enum):
-    """RepresentationEnum values from MTConnect model."""
+    """RepresentationEnum values from MTConnect model"""
 
-    TIME_SERIES = auto()  # series of sampled data.
-    VALUE = auto()  # measured value of the sample data.
-    DATA_SET = auto()  # reported value(s) are represented as a set of key-value pair.
+    TIME_SERIES = auto()  # series of sampled data. The data is reported for a specified number of sample...
+    VALUE = auto()  # measured value of the sample data. If no DataItem::representation is specifie...
+    DATA_SET = auto()  # reported value(s) are represented as a set of key-value pair. Each reported v...
     DISCRETE = auto()  # **DEPRECATED** as DataItem::representation type in *MTConnect Version 1.5*. R...
     TABLE = auto()  # two dimensional set of key-value pair where the Entry represents a row, and t...
 
@@ -40,8 +40,8 @@ class RepresentationEnum(Enum):
 # Observation Value Enumerations
 ################################################################################
 
-class ConditionEnum(Enum):
-    """ConditionEnum values from MTConnect model."""
+class ConditionType(Enum):
+    """ConditionType values from MTConnect ConditionEnum"""
 
     COMMUNICATIONS = auto()  # indication that the piece of equipment has experienced a communications failure.
     DATA_RANGE = auto()  # indication that the value of the data associated with a measured value or a c...
@@ -51,8 +51,8 @@ class ConditionEnum(Enum):
     ACTUATOR = auto()  # indication of a fault associated with an actuator.
 
 
-class EventEnum(Enum):
-    """EventEnum values from MTConnect model."""
+class EventType(Enum):
+    """EventType values from MTConnect EventEnum"""
 
     ACTIVE_AXES = auto()  # set of axes currently associated with a Path or Controller.
     ACTUATOR_STATE = auto()  # operational state of an apparatus for moving or controlling a mechanism or sy...
@@ -60,7 +60,7 @@ class EventEnum(Enum):
     ASSET_CHANGED = auto()  # Asset::assetId of the Asset that has been changed.
     ASSET_REMOVED = auto()  # Asset::assetId of the Asset that has been removed.
     AVAILABILITY = auto()  # agent's ability to communicate with the data source.
-    AXIS_COUPLING = auto()  # describes the way the axes will be associated to each other. 
+    AXIS_COUPLING = auto()  # describes the way the axes will be associated to each other. This is used in ...
     AXIS_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate of an individu...
     AXIS_INTERLOCK = auto()  # state of the axis lockout function when power has been removed and the axis i...
     AXIS_STATE = auto()  # state of a Linear or Rotary component representing an axis.
@@ -68,7 +68,7 @@ class EventEnum(Enum):
     BLOCK_COUNT = auto()  # total count of the number of blocks of program code that have been executed s...
     CHUCK_INTERLOCK = auto()  # state of an interlock function or control logic state intended to prevent the...
     CHUCK_STATE = auto()  # operating state of a mechanism that holds a part or stock material during a m...
-    CODE = auto()  # programmatic code being executed.
+    CODE = auto()  # programmatic code being executed. **DEPRECATED** in *Version 1.1*.
     COMPOSITION_STATE = auto()  # operating state of a mechanism represented by a Composition entity.
     CONTROLLER_MODE = auto()  # current mode of the Controller component.
     CONTROLLER_MODE_OVERRIDE = auto()  # setting or operator selection that changes the behavior of a piece of equipment.
@@ -83,7 +83,7 @@ class EventEnum(Enum):
     EXECUTION = auto()  # operating state of a Component.
     FUNCTIONAL_MODE = auto()  # current intended production status of the Component.
     HARDNESS = auto()  # hardness of a material.
-    LINE = auto()  # current line of code being executed.
+    LINE = auto()  # current line of code being executed. **DEPRECATED** in *Version 1.4.0*.
     LINE_LABEL = auto()  # identifier for a Block of code in a Program.
     LINE_NUMBER = auto()  # position of a block of program code within a control program.
     MATERIAL = auto()  # identifier of a material used or consumed in the manufacturing process.
@@ -94,16 +94,16 @@ class EventEnum(Enum):
     PART_COUNT = auto()  # aggregate count of parts.
     PART_DETECT = auto()  # indication designating whether a part or work piece has been detected or is p...
     PART_ID = auto()  # identifier of a part in a manufacturing operation.
-    PART_NUMBER = auto()  # identifier of a part or product moving through the manufacturing process.
+    PART_NUMBER = auto()  # identifier of a part or product moving through the manufacturing process. **D...
     PATH_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate for the axes a...
     PATH_MODE = auto()  # describes the operational relationship between a Path entity and another Path...
     POWER_STATE = auto()  # indication of the status of the source of energy for an entity to allow it to...
-    POWER_STATUS = auto()  # status of the Component.
+    POWER_STATUS = auto()  # status of the Component. **DEPRECATED** in *Version 1.1.0*.
     PROCESS_TIME = auto()  # time and date associated with an activity or event.
     PROGRAM = auto()  # name of the logic or motion program being executed by the Controller component.
     PROGRAM_COMMENT = auto()  # comment or non-executable statement in the control program.
-    PROGRAM_EDIT = auto()  # indication of the status of the Controller components program editing mode.
-    PROGRAM_EDIT_NAME = auto()  # name of the program being edited. 
+    PROGRAM_EDIT = auto()  # indication of the status of the Controller components program editing mode. A...
+    PROGRAM_EDIT_NAME = auto()  # name of the program being edited. This is used in conjunction with ProgramEdi...
     PROGRAM_HEADER = auto()  # non-executable header section of the control program.
     PROGRAM_LOCATION = auto()  # URI for the source file associated with Program.
     PROGRAM_LOCATION_TYPE = auto()  # defines whether the logic or motion program defined by Program is being execu...
@@ -114,7 +114,7 @@ class EventEnum(Enum):
     SPINDLE_INTERLOCK = auto()  # indication of the status of the spindle for a piece of equipment when power h...
     TOOL_ASSET_ID = auto()  # identifier of an individual tool asset.
     TOOL_GROUP = auto()  # identifier for the tool group associated with a specific tool. Commonly used ...
-    TOOL_ID = auto()  # identifier of the tool currently in use for a given `Path`.
+    TOOL_ID = auto()  # identifier of the tool currently in use for a given `Path`. **DEPRECATED** in...
     TOOL_NUMBER = auto()  # identifier assigned by the Controller component to a cutting tool when in use...
     TOOL_OFFSET = auto()  # reference to the tool offset variables applied to the active cutting tool.
     USER = auto()  # identifier of the person currently responsible for operating the piece of equ...
@@ -124,7 +124,7 @@ class EventEnum(Enum):
     WORKHOLDING_ID = auto()  # identifier for the current workholding or part clamp in use by a piece of equ...
     WORK_OFFSET = auto()  # reference to offset variables for a work piece or part.
     OPERATING_SYSTEM = auto()  # Operating System (OS) of a Component.
-    FIRMWARE = auto()  # embedded software of a Component
+    FIRMWARE = auto()  # embedded software of a Component .
     APPLICATION = auto()  # application on a Component.
     LIBRARY = auto()  # software library on a Component
     HARDWARE = auto()  # hardware of a Component.
@@ -143,12 +143,12 @@ class EventEnum(Enum):
     PROCESS_OCCURRENCE_ID = auto()  # identifier of a process being executed by the device.
     PROCESS_AGGREGATE_ID = auto()  # identifier given to link the individual occurrence to a group of related occu...
     PROCESS_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of processes or...
-    PART_GROUP_ID = auto()  # identifier given to a collection of individual parts. 
+    PART_GROUP_ID = auto()  # identifier given to a collection of individual parts.
     PART_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of parts, typic...
-    PART_UNIQUE_ID = auto()  # identifier given to a distinguishable, individual part. 
+    PART_UNIQUE_ID = auto()  # identifier given to a distinguishable, individual part.
     CONTROL_LIMIT = auto()  # set of limits used to indicate whether a process variable is stable and in co...
     SPECIFICATION_LIMIT = auto()  # set of limits defining a range of values designating acceptable performance f...
-    ALARM_LIMIT = auto()  # set of limits used to trigger warning or alarm indicators.
+    ALARM_LIMIT = auto()  # set of limits used to trigger warning or alarm indicators. **DEPRECATED** in ...
     LOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
     UNLOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
     TRANSFER_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
@@ -197,7 +197,7 @@ class EventEnum(Enum):
 
 
 class InterfaceEventEnum(Enum):
-    """InterfaceEventEnum values from MTConnect model."""
+    """InterfaceEventEnum values from MTConnect model"""
 
     INTERFACE_STATE = auto()  # operational state of an Interface.
     MATERIAL_FEED = auto()  # operating state of the service to advance material or feed product to a piece...
@@ -212,12 +212,12 @@ class InterfaceEventEnum(Enum):
     CLOSE_DOOR = auto()  # operating state of the service to close a door.
 
 
-class SampleEnum(Enum):
-    """SampleEnum values from MTConnect model."""
+class SampleType(Enum):
+    """SampleType values from MTConnect SampleEnum"""
 
     ACCELERATION = auto()  # positive rate of change of velocity.
     ACCUMULATED_TIME = auto()  # accumulated time for an activity or event.
-    AMPERAGE = auto()  # strength of electrical current.
+    AMPERAGE = auto()  # strength of electrical current. **DEPRECATED** in *Version 1.6*. Replaced by ...
     ANGLE = auto()  # angular position.
     ANGULAR_ACCELERATION = auto()  # positive rate of change of angular velocity.
     ANGULAR_VELOCITY = auto()  # rate of change of angular position.
@@ -239,9 +239,9 @@ class SampleEnum(Enum):
     FILL_LEVEL = auto()  # amount of a substance remaining compared to the planned maximum amount of tha...
     FLOW = auto()  # rate of flow of a fluid.
     FREQUENCY = auto()  # number of occurrences of a repeating event per unit time.
-    GLOBAL_POSITION = auto()  # position in three-dimensional space.
+    GLOBAL_POSITION = auto()  # position in three-dimensional space. **DEPRECATED** in Version 1.1.
     LENGTH = auto()  # length of an object.
-    LEVEL = auto()  # level of a resource.
+    LEVEL = auto()  # level of a resource. **DEPRECATED** in *Version 1.2*. See `FILL_LEVEL`.
     LINEAR_FORCE = auto()  # force applied to a mass in one direction only.
     LOAD = auto()  # actual versus the standard rating of a piece of equipment.
     MASS = auto()  # mass of an object(s) or an amount of material.
@@ -251,12 +251,12 @@ class SampleEnum(Enum):
     PH = auto()  # acidity or alkalinity of a solution.
     POSITION = auto()  # point along an axis in a cartesian coordinate system.
     POWER_FACTOR = auto()  # ratio of real power flowing to a load to the apparent power in that AC circuit.
-    PRESSURE = auto()  # force per unit area measured relative to atmospheric pressure. 
+    PRESSURE = auto()  # force per unit area measured relative to atmospheric pressure. Commonly refer...
     PROCESS_TIMER = auto()  # amount of time a piece of equipment has performed different types of activiti...
     RESISTANCE = auto()  # degree to which a substance opposes the passage of an electric current.
     ROTARY_VELOCITY = auto()  # rotational speed of a rotary axis.
     SOUND_LEVEL = auto()  # sound level or sound pressure level relative to atmospheric pressure.
-    SPINDLE_SPEED = auto()  # rotational speed of the rotary axis.
+    SPINDLE_SPEED = auto()  # rotational speed of the rotary axis. **DEPRECATED** in *Version 1.2*. Replace...
     STRAIN = auto()  # amount of deformation per unit length of an object when a load is applied.
     TEMPERATURE = auto()  # degree of hotness or coldness measured on a definite scale.
     TENSION = auto()  # force that stretches or elongates an object.
@@ -264,7 +264,7 @@ class SampleEnum(Enum):
     TORQUE = auto()  # turning force exerted on an object or by an object.
     VELOCITY = auto()  # rate of change of position of a Component.
     VISCOSITY = auto()  # fluid's resistance to flow.
-    VOLTAGE = auto()  # electrical potential between two points.
+    VOLTAGE = auto()  # electrical potential between two points. **DEPRECATED** in *Version 1.6*. Rep...
     VOLT_AMPERE = auto()  # apparent power in an electrical circuit, equal to the product of root-mean-sq...
     VOLT_AMPERE_REACTIVE = auto()  # reactive power in an AC electrical circuit (commonly referred to as VAR).
     VOLUME_FLUID = auto()  # fluid volume of an object or container.
@@ -283,7 +283,7 @@ class SampleEnum(Enum):
     HUMIDITY_ABSOLUTE = auto()  # amount of water vapor expressed in grams per cubic meter.
     HUMIDITY_SPECIFIC = auto()  # ratio of the water vapor present over the total weight of the water vapor and...
     OBSERVATION_UPDATE_RATE = auto()  # average rate of change of values for data items in the MTConnect streams. The...
-    ASSET_UPDATE_RATE = auto()  # average rate of change of values for assets in the MTConnect streams. 
+    ASSET_UPDATE_RATE = auto()  # average rate of change of values for assets in the MTConnect streams. The ave...
     PRESSURIZATION_RATE = auto()  # change of pressure per unit time.
     DECELERATION = auto()  # negative rate of change of velocity.
     ANGULAR_DECELERATION = auto()  # negative rate of change of angular velocity.
@@ -317,14 +317,14 @@ class SampleEnum(Enum):
 ################################################################################
 
 class ActuatorStateEnum(Enum):
-    """ActuatorStateEnum values from MTConnect model."""
+    """ActuatorStateEnum values from MTConnect model"""
 
     ACTIVE = auto()  # Actuator is operating.
     INACTIVE = auto()  # Actuator is not operating.
 
 
 class AlarmStateEnum(Enum):
-    """AlarmStateEnum values from MTConnect model."""
+    """AlarmStateEnum values from MTConnect model"""
 
     INSTANT = auto()
     ACTIVE = auto()
@@ -332,7 +332,7 @@ class AlarmStateEnum(Enum):
 
 
 class AxisStateEnum(Enum):
-    """AxisStateEnum values from MTConnect model."""
+    """AxisStateEnum values from MTConnect model"""
 
     HOME = auto()  # axis is in its home position.
     TRAVEL = auto()  # axis is in motion.
@@ -341,7 +341,7 @@ class AxisStateEnum(Enum):
 
 
 class BatteryStateEnum(Enum):
-    """BatteryStateEnum values from MTConnect model."""
+    """BatteryStateEnum values from MTConnect model"""
 
     CHARGED = auto()  # Component is at it's maximum rated charge level.
     CHARGING = auto()  # Component's charge is increasing.
@@ -350,7 +350,7 @@ class BatteryStateEnum(Enum):
 
 
 class ChuckStateEnum(Enum):
-    """ChuckStateEnum values from MTConnect model."""
+    """ChuckStateEnum values from MTConnect model"""
 
     OPEN = auto()  # Chuck is open to the point of a positive confirmation.
     CLOSED = auto()  # Chuck is closed to the point of a positive confirmation.
@@ -358,14 +358,14 @@ class ChuckStateEnum(Enum):
 
 
 class CompositionStateActionEnum(Enum):
-    """CompositionStateActionEnum values from MTConnect model."""
+    """CompositionStateActionEnum values from MTConnect model"""
 
     ACTIVE = auto()  # Composition is operating.
     INACTIVE = auto()  # Composition is not operating.
 
 
 class CompositionStateLateralEnum(Enum):
-    """CompositionStateLateralEnum values from MTConnect model."""
+    """CompositionStateLateralEnum values from MTConnect model"""
 
     RIGHT = auto()  # position of the Composition is oriented to the right to the point of a positi...
     LEFT = auto()  # position of the Composition is oriented to the left to the point of a positiv...
@@ -373,22 +373,22 @@ class CompositionStateLateralEnum(Enum):
 
 
 class CompositionStateMotionEnum(Enum):
-    """CompositionStateMotionEnum values from MTConnect model."""
+    """CompositionStateMotionEnum values from MTConnect model"""
 
     OPEN = auto()  # position of the Composition is open to the point of a positive confirmation.
-    UNLATCHED = auto()  # position of the Composition is not open to the
+    UNLATCHED = auto()  # position of the Composition is not open to the point of a positive confirmati...
     CLOSED = auto()  # position of the Composition is closed to the point of a positive confirmation.
 
 
 class CompositionStateSwitchedEnum(Enum):
-    """CompositionStateSwitchedEnum values from MTConnect model."""
+    """CompositionStateSwitchedEnum values from MTConnect model"""
 
     ON = auto()  # activation state of the Composition is in an `ON` condition, it is operating,...
     OFF = auto()  # activation state of the Composition is in an `OFF` condition, it is not opera...
 
 
 class CompositionStateVerticalEnum(Enum):
-    """CompositionStateVerticalEnum values from MTConnect model."""
+    """CompositionStateVerticalEnum values from MTConnect model"""
 
     UP = auto()  # position of the Composition element is oriented in an upward direction to the...
     DOWN = auto()  # position of the Composition element is oriented in a downward direction to th...
@@ -396,7 +396,7 @@ class CompositionStateVerticalEnum(Enum):
 
 
 class ConditionStateEnum(Enum):
-    """ConditionStateEnum values from MTConnect model."""
+    """ConditionStateEnum values from MTConnect model"""
 
     Normal = auto()  # condition state that indicates operation within specified limits.
     Warning = auto()  # condition state that requires concern and supervision and may become hazardou...
@@ -404,7 +404,7 @@ class ConditionStateEnum(Enum):
 
 
 class DoorStateEnum(Enum):
-    """DoorStateEnum values from MTConnect model."""
+    """DoorStateEnum values from MTConnect model"""
 
     OPEN = auto()  # Door is open to the point of a positive confirmation.
     CLOSED = auto()  # Door is closed to the point of a positive confirmation.
@@ -412,7 +412,7 @@ class DoorStateEnum(Enum):
 
 
 class FileStateEnum(Enum):
-    """FileStateEnum values from MTConnect model."""
+    """FileStateEnum values from MTConnect model"""
 
     EXPERIMENTAL = auto()  # used for processes other than production or otherwise defined.
     PRODUCTION = auto()  # used for production processes.
@@ -420,27 +420,27 @@ class FileStateEnum(Enum):
 
 
 class InterfaceStateEnum(Enum):
-    """InterfaceStateEnum values from MTConnect model."""
+    """InterfaceStateEnum values from MTConnect model"""
 
     ENABLED = auto()  # Interface is currently operational and performing as expected.
     DISABLED = auto()  # Interface is currently not operational.
 
 
 class LockStateEnum(Enum):
-    """LockStateEnum values from MTConnect model."""
+    """LockStateEnum values from MTConnect model"""
 
     LOCKED = auto()  # mechanism is engaged and preventing the associated Component from being opene...
     UNLOCKED = auto()  # mechanism is disengaged and the associated Component is able to be opened or ...
 
 
 class PartProcessingStateEnum(Enum):
-    """PartProcessingStateEnum values from MTConnect model."""
+    """PartProcessingStateEnum values from MTConnect model"""
 
     NEEDS_PROCESSING = auto()  # part occurrence is not actively being processed, but the processing has not e...
     IN_PROCESS = auto()  # part occurrence is actively being processed.
-    PROCESSING_ENDED = auto()  # part occurrence is no longer being processed. 
+    PROCESSING_ENDED = auto()  # part occurrence is no longer being processed. A general state when the reason...
     PROCESSING_ENDED_COMPLETE = auto()  # part occurrence has completed processing successfully.
-    PROCESSING_ENDED_STOPPED = auto()  # process has been stopped during the processing. 
+    PROCESSING_ENDED_STOPPED = auto()  # process has been stopped during the processing. The part occurrence will requ...
     PROCESSING_ENDED_ABORTED = auto()  # processing of the part occurrence has come to a premature end.
     PROCESSING_ENDED_LOST = auto()  # terminal state when the part occurrence has been removed from the equipment b...
     PROCESSING_ENDED_SKIPPED = auto()  # part occurrence has been skipped for processing on the piece of equipment.
@@ -451,14 +451,14 @@ class PartProcessingStateEnum(Enum):
 
 
 class PowerStateEnum(Enum):
-    """PowerStateEnum values from MTConnect model."""
+    """PowerStateEnum values from MTConnect model"""
 
     ON = auto()  # source of energy for an entity or the enabling signal providing permission fo...
     OFF = auto()  # source of energy for an entity or the enabling signal providing permission fo...
 
 
 class ProcessStateEnum(Enum):
-    """ProcessStateEnum values from MTConnect model."""
+    """ProcessStateEnum values from MTConnect model"""
 
     INITIALIZING = auto()  # device is preparing to execute the process occurrence.
     READY = auto()  # process occurrence is ready to be executed.
@@ -469,7 +469,7 @@ class ProcessStateEnum(Enum):
 
 
 class RequestStateEnum(Enum):
-    """RequestStateEnum values from MTConnect model."""
+    """RequestStateEnum values from MTConnect model"""
 
     NOT_READY = auto()  # requester is not ready to make a request.
     READY = auto()  # requester is prepared to make a request, but no request for service is required.
@@ -478,7 +478,7 @@ class RequestStateEnum(Enum):
 
 
 class ResponseStateEnum(Enum):
-    """ResponseStateEnum values from MTConnect model."""
+    """ResponseStateEnum values from MTConnect model"""
 
     NOT_READY = auto()  # responder is not ready to perform a service.
     READY = auto()  # responder is prepared to react to a request, but no request for service has b...
@@ -488,15 +488,15 @@ class ResponseStateEnum(Enum):
 
 
 class SensorStateDetectEnum(Enum):
-    """SensorStateDetectEnum values from MTConnect model."""
+    """SensorStateDetectEnum values from MTConnect model"""
 
     DETECTED = auto()  # sensor is active and the threshold has been met.
     NOT_DETECTED = auto()  # sensor is active and ready but the threshold has not been met.
-    UNKNOWN = auto()  # sensor is active, but the state cannot be determined.
+    UNKNOWN = auto()  # sensor is active, but the state cannot be determined. > Note: unknown covers ...
 
 
 class TaskStateEnum(Enum):
-    """TaskStateEnum values from MTConnect model."""
+    """TaskStateEnum values from MTConnect model"""
 
     INACTIVE = auto()
     PREPARING = auto()
@@ -507,16 +507,16 @@ class TaskStateEnum(Enum):
 
 
 class ValveStateEnum(Enum):
-    """ValveStateEnum values from MTConnect model."""
+    """ValveStateEnum values from MTConnect model"""
 
-    OPEN = auto()  # ValveState where flow is allowed and the aperture is static.
+    OPEN = auto()  # ValveState where flow is allowed and the aperture is static. > Note: For a bi...
     OPENING = auto()  # valve is transitioning from a `CLOSED` state to an `OPEN` state.
     CLOSED = auto()  # ValveState where flow is not possible, the aperture is static, and the valve ...
     CLOSING = auto()  # valve is transitioning from an `OPEN` state to a `CLOSED` state.
 
 
 class WaitStateEnum(Enum):
-    """WaitStateEnum values from MTConnect model."""
+    """WaitStateEnum values from MTConnect model"""
 
     POWERING_UP = auto()  # execution is waiting while the equipment is powering up and is not currently ...
     POWERING_DOWN = auto()  # execution is waiting while the equipment is powering down but has not fully r...
@@ -537,50 +537,50 @@ class WaitStateEnum(Enum):
 ################################################################################
 
 class ControllerModeEnum(Enum):
-    """ControllerModeEnum values from MTConnect model."""
+    """ControllerModeEnum values from MTConnect model"""
 
     AUTOMATIC = auto()  # Controller is configured to automatically execute a program.
-    MANUAL = auto()  # Controller is not executing an active program. 
-    MANUAL_DATA_INPUT = auto()  # operator can enter a series of operations for the Controller to perform.
+    MANUAL = auto()  # Controller is not executing an active program. It is capable of receiving ins...
+    MANUAL_DATA_INPUT = auto()  # operator can enter a series of operations for the Controller to perform. The ...
     SEMI_AUTOMATIC = auto()  # Controller is operating in a mode that restricts the active program from proc...
     EDIT = auto()  # Controller is currently functioning as a programming device and is not capabl...
     FEED_HOLD = auto()  # axes of the device are commanded to stop, but the spindle continues to function.
 
 
 class ControllerModeOverrideEnum(Enum):
-    """ControllerModeOverrideEnum values from MTConnect model."""
+    """ControllerModeOverrideEnum values from MTConnect model"""
 
     ON = auto()  # ControllerModeOverride is in the `ON` state and the mode override is active.
     OFF = auto()  # ControllerModeOverride is in the `OFF` state and the mode override is inactive.
 
 
 class EquipmentModeEnum(Enum):
-    """EquipmentModeEnum values from MTConnect model."""
+    """EquipmentModeEnum values from MTConnect model"""
 
     ON = auto()  # equipment is functioning in the mode designated by the `subType`.
     OFF = auto()  # equipment is not functioning in the mode designated by the `subType`.
 
 
 class FunctionalModeEnum(Enum):
-    """FunctionalModeEnum values from MTConnect model."""
+    """FunctionalModeEnum values from MTConnect model"""
 
     PRODUCTION = auto()  # Component is currently producing product, ready to produce product, or its cu...
-    SETUP = auto()  # Component is not currently producing product. 
-    TEARDOWN = auto()  # Component is not currently producing product.
-    MAINTENANCE = auto()  # Component is not currently producing product.
+    SETUP = auto()  # Component is not currently producing product. It is being prepared or modifie...
+    TEARDOWN = auto()  # Component is not currently producing product. Typically, it has completed the...
+    MAINTENANCE = auto()  # Component is not currently producing product. It is currently being repaired,...
     PROCESS_DEVELOPMENT = auto()  # Component is being used to prove-out a new process, testing of equipment or p...
 
 
 class OperatingModeEnum(Enum):
-    """OperatingModeEnum values from MTConnect model."""
+    """OperatingModeEnum values from MTConnect model"""
 
-    AUTOMATIC = auto()  # automatically execute instructions from a recipe or program.
-    MANUAL = auto()  # execute instructions from an external agent or person.
-    SEMI_AUTOMATIC = auto()  # executes a single instruction from a recipe or program.
+    AUTOMATIC = auto()  # automatically execute instructions from a recipe or program. > Note: Setpoint...
+    MANUAL = auto()  # execute instructions from an external agent or person. > Note 1 to entry: Val...
+    SEMI_AUTOMATIC = auto()  # executes a single instruction from a recipe or program. > Note 1 to entry: Se...
 
 
 class PathModeEnum(Enum):
-    """PathModeEnum values from MTConnect model."""
+    """PathModeEnum values from MTConnect model"""
 
     INDEPENDENT = auto()  # path is operating independently and without the influence of another path.
     MASTER = auto()  # path provides information or state values that influences the operation of ot...
@@ -589,7 +589,7 @@ class PathModeEnum(Enum):
 
 
 class RotaryModeEnum(Enum):
-    """RotaryModeEnum values from MTConnect model."""
+    """RotaryModeEnum values from MTConnect model"""
 
     SPINDLE = auto()  # axis is functioning as a spindle.
     INDEX = auto()  # axis is configured to index.
@@ -602,7 +602,7 @@ class RotaryModeEnum(Enum):
 ################################################################################
 
 class ApplicationTypeEnum(Enum):
-    """ApplicationTypeEnum values from MTConnect model."""
+    """ApplicationTypeEnum values from MTConnect model"""
 
     DESIGN = auto()  # computer aided design files or drawings.
     DATA = auto()  # generic data.
@@ -613,18 +613,18 @@ class ApplicationTypeEnum(Enum):
 
 
 class AssetTypeEnum(Enum):
-    """AssetTypeEnum values from MTConnect model."""
+    """AssetTypeEnum values from MTConnect model"""
 
     CuttingTool = auto()  # CuttingTool Asset type.
-    File = auto()  # File Asset type. 
-    QIFDocumentWrapper = auto()  # QIFDocumentWrapper Asset type. 
-    RawMaterial = auto()  # RawMaterial Asset type. 
+    File = auto()  # File Asset type.
+    QIFDocumentWrapper = auto()  # QIFDocumentWrapper Asset type.
+    RawMaterial = auto()  # RawMaterial Asset type.
     CuttingToolArchetype = auto()
     FileArchetype = auto()
 
 
 class CapabilityTypeEnum(Enum):
-    """CapabilityTypeEnum values from MTConnect model."""
+    """CapabilityTypeEnum values from MTConnect model"""
 
     REACH = auto()
     LOAD = auto()
@@ -635,7 +635,7 @@ class CapabilityTypeEnum(Enum):
 
 
 class CollaboratorTypeEnum(Enum):
-    """CollaboratorTypeEnum values from MTConnect model."""
+    """CollaboratorTypeEnum values from MTConnect model"""
 
     ROBOT = auto()
     CONVEYOR = auto()
@@ -644,7 +644,7 @@ class CollaboratorTypeEnum(Enum):
 
 
 class CompositionTypeEnum(Enum):
-    """CompositionTypeEnum values from MTConnect model."""
+    """CompositionTypeEnum values from MTConnect model"""
 
     ACTUATOR = auto()  # Composition composed of a mechanism that moves or controls a mechanical part ...
     AMPLIFIER = auto()  # Composition composed of an electronic component or circuit that amplifies pow...
@@ -700,10 +700,10 @@ class CompositionTypeEnum(Enum):
 
 
 class CoordinateSystemTypeEnum(Enum):
-    """CoordinateSystemTypeEnum values from MTConnect model."""
+    """CoordinateSystemTypeEnum values from MTConnect model"""
 
     WORLD = auto()  # stationary coordinate system referenced to earth, which is independent of the...
-    BASE = auto()  # coordinate system referenced to the base mounting surface. {{cite(ISO 9787:2013
+    BASE = auto()  # coordinate system referenced to the base mounting surface. {{cite(ISO 9787:20...
     OBJECT = auto()  # coordinate system referenced to the object. {{cite(ISO 9787:2013
     TASK = auto()  # coordinate system referenced to the site of the task. {{cite(ISO 9787:2013
     MECHANICAL_INTERFACE = auto()  # coordinate system referenced to the mechanical interface. {{cite(ISO 9787:2013
@@ -723,7 +723,7 @@ class CountDirectionTypeEnum(Enum):
 
 
 class CriticalityTypeEnum(Enum):
-    """CriticalityTypeEnum values from MTConnect model."""
+    """CriticalityTypeEnum values from MTConnect model"""
 
     CRITICAL = auto()  # services or functions provided by the associated element is required for the ...
     NONCRITICAL = auto()  # services or functions provided by the associated element is not required for ...
@@ -734,9 +734,9 @@ class CutterStatusTypeEnum(Enum):
     Enumeration for CutterStatus values.
     """
 
-    NEW = auto()  # new tool that has not been used or first use. 
-    AVAILABLE = auto()  # tool is available for use. 
-    UNAVAILABLE = auto()  # tool is unavailable for use in metal removal. 
+    NEW = auto()  # new tool that has not been used or first use. Marks the start of the tool his...
+    AVAILABLE = auto()  # tool is available for use. If this is not present, the tool is currently not ...
+    UNAVAILABLE = auto()  # tool is unavailable for use in metal removal.
     ALLOCATED = auto()  # tool is has been committed to a piece of equipment for use and is not availab...
     UNALLOCATED = auto()  # tool has not been committed to a process and can be allocated.
     MEASURED = auto()  # tool has been measured.
@@ -749,7 +749,7 @@ class CutterStatusTypeEnum(Enum):
 
 
 class DataItemRelationshipTypeEnum(Enum):
-    """DataItemRelationshipTypeEnum values from MTConnect model."""
+    """DataItemRelationshipTypeEnum values from MTConnect model"""
 
     ATTACHMENT = auto()  # reference to a DataItem that associates the values with an external entity.
     COORDINATE_SYSTEM = auto()  # referenced DataItem provides the `id` of the effective Coordinate System.
@@ -757,8 +757,8 @@ class DataItemRelationshipTypeEnum(Enum):
     OBSERVATION = auto()  # referenced DataItem provides the observed values.
 
 
-class DataItemSubTypeEnum(Enum):
-    """DataItemSubTypeEnum values from MTConnect model."""
+class DataItemSubType(Enum):
+    """DataItemSubType values from MTConnect DataItemSubTypeEnum"""
 
     ABSOLUTE = auto()  # relating to or derived in the simplest manner from the fundamental units or m...
     ACTION = auto()  # indication of the operating state of a mechanism.
@@ -775,14 +775,14 @@ class DataItemSubTypeEnum(Enum):
     CONTROL = auto()  # state of the enabling signal or control logic that enables or disables the fu...
     C_SCALE = auto()  # C-Scale weighting factor on the frequency scale.
     DELAY = auto()  # elapsed time of a temporary halt of action.
-    DIRECT = auto()  # DC current or voltage.
+    DIRECT = auto()  # DC current or voltage. **DEPRECATED** in *Version 1.6*.
     DRY_RUN = auto()  # setting or operator selection used to execute a test mode to confirm the exec...
     D_SCALE = auto()  # D-Scale weighting factor on the frequency scale.
     EXPIRATION = auto()  # relating to the expiration or end of useful life for a material or other phys...
     FIRST_USE = auto()  # relating to the first use of a material or other physical item.
     GOOD = auto()  # actions, items, or activities being counted that conform to specification or ...
     INCREMENTAL = auto()  # relating to or derived from the last observation.
-    JOG = auto()  # relating to momentary activation of a function or a movement.
+    JOG = auto()  # relating to momentary activation of a function or a movement. **DEPRECATION W...
     LATERAL = auto()  # indication of the position of a mechanism that may move in a lateral direction.
     LEEB = auto()  # scale to measure the elasticity of a surface.
     LENGTH = auto()  # reference to a length type tool offset variable.
@@ -805,7 +805,7 @@ class DataItemSubTypeEnum(Enum):
     OVERRIDE = auto()  # overridden value.
     POWERED = auto()  # piece of equipment is powered and functioning or Component that are required ...
     PRIMARY = auto()  # main or principle.
-    PROBE = auto()  # position provided by a measurement probe.
+    PROBE = auto()  # position provided by a measurement probe. **DEPRECATION WARNING**: May be dep...
     PROCESS = auto()  # relating to production of a part or product on a piece of equipment.
     PROGRAMMED = auto()  # directive value without offsets and adjustments.
     RADIAL = auto()  # reference to a radial type tool offset variable.
@@ -848,7 +848,7 @@ class DataItemSubTypeEnum(Enum):
     PART_NUMBER = auto()  # particular part design or model.
     PART_FAMILY = auto()  # group of parts having similarities in geometry, manufacturing process, and/or...
     PART_NAME = auto()  # word or set of words by which a part is known, addressed, or referred to.
-    PROCESS_STEP = auto()  # step in the process plan that this occurrence corresponds to. 
+    PROCESS_STEP = auto()  # step in the process plan that this occurrence corresponds to.
     PROCESS_PLAN = auto()  # process plan that a process occurrence belongs to.
     ORDER_NUMBER = auto()  # authorization of a process occurrence.
     PROCESS_NAME = auto()  # word or set of words by which a process being executed (process occurrence) b...
@@ -906,7 +906,7 @@ class LocationTypeEnum(Enum):
 
 
 class MediaTypeEnum(Enum):
-    """MediaTypeEnum values from MTConnect model."""
+    """MediaTypeEnum values from MTConnect model"""
 
     STEP = auto()  # ISO 10303 STEP AP203 or AP242 format.
     STL = auto()  # STereoLithography file format.
@@ -914,22 +914,22 @@ class MediaTypeEnum(Enum):
     OBJ = auto()  # Wavefront OBJ file format.
     COLLADA = auto()  # ISO 17506.
     IGES = auto()  # Initial Graphics Exchange Specification.
-    3DS = auto()  # Autodesk file format.
+    _3DS = auto()  # 3DS: Autodesk file format.
     ACIS = auto()  # Dassault file format.
     X_T = auto()  # Parasolid XT Siemens data interchange format.
     QIF_MBD = auto()  # provides the 3D geometric boundary representation used to associate with prod...
 
 
 class MotionActuationTypeEnum(Enum):
-    """MotionActuationTypeEnum values from MTConnect model."""
+    """MotionActuationTypeEnum values from MTConnect model"""
 
     DIRECT = auto()  # movement is initiated by the component.
     VIRTUAL = auto()  # motion is computed and is used for expressing an imaginary movement.
-    NONE = auto()  # no actuation of this axis.
+    NONE = auto()  # no actuation of this axis. > Note: Actuation of `NONE` can be either a derive...
 
 
 class MotionTypeEnum(Enum):
-    """MotionTypeEnum values from MTConnect model."""
+    """MotionTypeEnum values from MTConnect model"""
 
     PRISMATIC = auto()  # sliding linear motion along an axis with a fixed range of motion.
     CONTINUOUS = auto()  # revolves around an axis with a continuous range of motion.
@@ -938,14 +938,14 @@ class MotionTypeEnum(Enum):
 
 
 class PartCountTypeEnum(Enum):
-    """PartCountTypeEnum values from MTConnect model."""
+    """PartCountTypeEnum values from MTConnect model"""
 
     EACH = auto()  # count is of individual items.
     BATCH = auto()  # pre-specified group of items.
 
 
 class PowerSourceTypeEnum(Enum):
-    """PowerSourceTypeEnum values from MTConnect model."""
+    """PowerSourceTypeEnum values from MTConnect model"""
 
     PRIMARY = auto()  # main or principle.
     SECONDARY = auto()  # alternate or not primary.
@@ -953,14 +953,14 @@ class PowerSourceTypeEnum(Enum):
 
 
 class ProgramLocationTypeEnum(Enum):
-    """ProgramLocationTypeEnum values from MTConnect model."""
+    """ProgramLocationTypeEnum values from MTConnect model"""
 
     LOCAL = auto()  # managed by the controller.
     EXTERNAL = auto()  # not managed by the controller.
 
 
 class QIFDocumentTypeEnum(Enum):
-    """QIFDocumentTypeEnum values from MTConnect model."""
+    """QIFDocumentTypeEnum values from MTConnect model"""
 
     MEASUREMENT_RESOURCE = auto()
     PLAN = auto()
@@ -971,7 +971,7 @@ class QIFDocumentTypeEnum(Enum):
 
 
 class RelationshipTypeEnum(Enum):
-    """RelationshipTypeEnum values from MTConnect model."""
+    """RelationshipTypeEnum values from MTConnect model"""
 
     PARENT = auto()  # functions as a parent in the relationship with the associated element.
     CHILD = auto()  # functions as a child in the relationship with the associated element.
@@ -979,14 +979,14 @@ class RelationshipTypeEnum(Enum):
 
 
 class RoleTypeEnum(Enum):
-    """RoleTypeEnum values from MTConnect model."""
+    """RoleTypeEnum values from MTConnect model"""
 
     SYSTEM = auto()  # associated element performs the functions of a System for this element.
     AUXILIARY = auto()  # associated element performs the functions as an `Auxiliary` for this element.
 
 
 class ScopeTypeEnum(Enum):
-    """ScopeTypeEnum values from MTConnect model."""
+    """ScopeTypeEnum values from MTConnect model"""
 
     ENTITY = auto()  # scope or context is directly upon the source itself.
     VALUE_PROPERTY = auto()  # scope or context is upon a value property of the source.
@@ -994,13 +994,13 @@ class ScopeTypeEnum(Enum):
 
 
 class SpecificationRelationshipTypeEnum(Enum):
-    """SpecificationRelationshipTypeEnum values from MTConnect model."""
+    """SpecificationRelationshipTypeEnum values from MTConnect model"""
 
     LIMIT = auto()  # referenced Specification provides process limits.
 
 
 class TaskTypeEnum(Enum):
-    """TaskTypeEnum values from MTConnect model."""
+    """TaskTypeEnum values from MTConnect model"""
 
     MOVE_MATERIAL = auto()
     MATERIAL_UNLOAD = auto()
@@ -1008,7 +1008,7 @@ class TaskTypeEnum(Enum):
 
 
 class UncertaintyTypeEnum(Enum):
-    """UncertaintyTypeEnum values from MTConnect model."""
+    """UncertaintyTypeEnum values from MTConnect model"""
 
     COMBINED = auto()  # combined standard uncertainty.
     MEAN = auto()  # standard uncertainty using arithmetic mean or average the observations. {{cit...
@@ -1020,7 +1020,7 @@ class UncertaintyTypeEnum(Enum):
 ################################################################################
 
 class AlarmCodeEnum(Enum):
-    """AlarmCodeEnum values from MTConnect model."""
+    """AlarmCodeEnum values from MTConnect model"""
 
     CRASH = auto()  # spindle crashed.
     JAM = auto()  # component jammed.
@@ -1035,7 +1035,7 @@ class AlarmCodeEnum(Enum):
 
 
 class AlarmSeverityEnum(Enum):
-    """AlarmSeverityEnum values from MTConnect model."""
+    """AlarmSeverityEnum values from MTConnect model"""
 
     CRITICAL = auto()
     ERROR = auto()
@@ -1044,7 +1044,7 @@ class AlarmSeverityEnum(Enum):
 
 
 class ApplicationCategoryEnum(Enum):
-    """ApplicationCategoryEnum values from MTConnect model."""
+    """ApplicationCategoryEnum values from MTConnect model"""
 
     ASSEMBLY = auto()  # files regarding the fully assembled product.
     DEVICE = auto()  # device related files.
@@ -1057,14 +1057,14 @@ class ApplicationCategoryEnum(Enum):
 
 
 class AvailabilityEnum(Enum):
-    """AvailabilityEnum values from MTConnect model."""
+    """AvailabilityEnum values from MTConnect model"""
 
     AVAILABLE = auto()  # data source is active and capable of providing data.
     UNAVAILABLE = auto()  # data source is either inactive or not capable of providing data.
 
 
 class AxisCouplingEnum(Enum):
-    """AxisCouplingEnum values from MTConnect model."""
+    """AxisCouplingEnum values from MTConnect model"""
 
     TANDEM = auto()  # axes are physically connected to each other and operate as a single unit.
     SYNCHRONOUS = auto()  # axes are not physically connected to each other but are operating together in...
@@ -1073,16 +1073,16 @@ class AxisCouplingEnum(Enum):
 
 
 class AxisInterlockEnum(Enum):
-    """AxisInterlockEnum values from MTConnect model."""
+    """AxisInterlockEnum values from MTConnect model"""
 
     ACTIVE = auto()  # axis lockout function is activated, power has been removed from the axis, and...
     INACTIVE = auto()  # axis lockout function has not been activated, the axis may be powered, and th...
 
 
 class CharacteristicStatusEnum(Enum):
-    """CharacteristicStatusEnum values from MTConnect model."""
+    """CharacteristicStatusEnum values from MTConnect model"""
 
-    PASS = auto()  # measurement is within acceptable tolerances.
+    _PASS = auto()  # PASS: measurement is within acceptable tolerances.
     FAIL = auto()  # measurement is not within acceptable tolerances.
     REWORK = auto()  # failed, but acceptable constraints achievable by utilizing additional manufac...
     SYSTEM_ERROR = auto()  # measurement is indeterminate due to an equipment failure.
@@ -1093,14 +1093,14 @@ class CharacteristicStatusEnum(Enum):
 
 
 class ChuckInterlockEnum(Enum):
-    """ChuckInterlockEnum values from MTConnect model."""
+    """ChuckInterlockEnum values from MTConnect model"""
 
     ACTIVE = auto()  # chuck cannot be unclamped.
     INACTIVE = auto()  # chuck can be unclamped.
 
 
 class CodeEnum(Enum):
-    """CodeEnum values from MTConnect model."""
+    """CodeEnum values from MTConnect model"""
 
     BDX = auto()  # largest diameter of the body of a tool item.
     LBX = auto()  # distance measured along the X axis from that point of the item closest to the...
@@ -1113,7 +1113,7 @@ class CodeEnum(Enum):
     LS = auto()  # dimension of the length of the shank.
     LUX = auto()  # maximum length of a cutting tool that can be used in a particular cutting ope...
     LPR = auto()  # dimension from the yz-plane to the furthest point of the tool item or adaptiv...
-    WT = auto()  # total weight of the cutting tool in grams. 
+    WT = auto()  # total weight of the cutting tool in grams. The force exerted by the mass of t...
     LF = auto()  # distance from the gauge plane or from the end of the shank to the furthest po...
     CRP = auto()  # theoretical sharp point of the cutting tool from which the major functional d...
     L = auto()  # theoretical length of the cutting edge of a cutting item over sharp corners.
@@ -1123,11 +1123,11 @@ class CodeEnum(Enum):
     SIG = auto()  # angle between the major cutting edge and the same cutting edge rotated by 180...
     KAPR = auto()  # angle between the tool cutting edge plane and the tool feed plane measured in...
     PSIR = auto()  # angle between the tool cutting edge plane and a plane perpendicular to the to...
-    N/A = auto()  # angle of the tool with respect to the workpiece for a given process. 
+    N_A = auto()  # N/A: angle of the tool with respect to the workpiece for a given process. The valu...
     BS = auto()  # measure of the length of a wiper edge of a cutting item.
     SDLx = auto()  # length of a portion of a stepped tool that is related to a corresponding cutt...
     STAx = auto()  # angle between a major edge on a step of a stepped tool and the same cutting e...
-    DCx = auto()  # diameter of a circle on which the defined point Pk located on this cutting tool.
+    DCx = auto()  # diameter of a circle on which the defined point Pk located on this cutting to...
     HF = auto()  # distance from the basal plane of the tool item to the cutting point.
     RE = auto()  # nominal radius of a rounded corner measured in the X Y-plane.
     LFx = auto()  # distance from the gauge plane or from the end of the shank of the cutting too...
@@ -1137,22 +1137,22 @@ class CodeEnum(Enum):
 
 
 class ConnectionStatusEnum(Enum):
-    """ConnectionStatusEnum values from MTConnect model."""
+    """ConnectionStatusEnum values from MTConnect model"""
 
     CLOSED = auto()  # no connection at all.
     LISTEN = auto()  # agent is waiting for a connection request from an adapter.
-    ESTABLISHED = auto()  # open connection.
+    ESTABLISHED = auto()  # open connection. The normal state for the data transfer phase of the connection.
 
 
 class CoordinateSystemEnum(Enum):
-    """CoordinateSystemEnum values from MTConnect model."""
+    """CoordinateSystemEnum values from MTConnect model"""
 
     MACHINE = auto()  # unchangeable coordinate system that has machine zero as its origin.
     WORK = auto()  # coordinate system that represents the working area for a particular workpiece...
 
 
 class DirectionEnum(Enum):
-    """DirectionEnum values from MTConnect model."""
+    """DirectionEnum values from MTConnect model"""
 
     CLOCKWISE = auto()  # clockwise rotation using the right-hand rule.
     COUNTER_CLOCKWISE = auto()  # counter-clockwise rotation using the right-hand rule.
@@ -1161,7 +1161,7 @@ class DirectionEnum(Enum):
 
 
 class DirectionLinearEnum(Enum):
-    """DirectionLinearEnum values from MTConnect model."""
+    """DirectionLinearEnum values from MTConnect model"""
 
     POSITIVE = auto()  # linear position is increasing.
     NEGATIVE = auto()  # linear position is decreasing.
@@ -1169,7 +1169,7 @@ class DirectionLinearEnum(Enum):
 
 
 class DirectionRotaryEnum(Enum):
-    """DirectionRotaryEnum values from MTConnect model."""
+    """DirectionRotaryEnum values from MTConnect model"""
 
     CLOCKWISE = auto()  # clockwise rotation using the right-hand rule.
     COUNTER_CLOCKWISE = auto()  # counter-clockwise rotation using the right-hand rule.
@@ -1177,21 +1177,21 @@ class DirectionRotaryEnum(Enum):
 
 
 class EmergencyStopEnum(Enum):
-    """EmergencyStopEnum values from MTConnect model."""
+    """EmergencyStopEnum values from MTConnect model"""
 
     ARMED = auto()  # emergency stop circuit is complete and the piece of equipment, component, or ...
     TRIGGERED = auto()  # operation of the piece of equipment, component, or composition is inhibited.
 
 
 class EndOfBarEnum(Enum):
-    """EndOfBarEnum values from MTConnect model."""
+    """EndOfBarEnum values from MTConnect model"""
 
     YES = auto()  # EndOfBar has been reached.
     NO = auto()  # EndOfBar has not been reached.
 
 
 class ErrorCodeEnum(Enum):
-    """ErrorCodeEnum values from MTConnect model."""
+    """ErrorCodeEnum values from MTConnect model"""
 
     ASSET_NOT_FOUND = auto()  # request for information specifies an Asset that is not recognized by the agent.
     INTERNAL_ERROR = auto()  # agent experienced an error while attempting to published the requested inform...
@@ -1200,16 +1200,16 @@ class ErrorCodeEnum(Enum):
     INVALID_XPATH = auto()  # XPath identified in the request for information could not be parsed correctly...
     NO_DEVICE = auto()  # identity of the Device specified in the request for information is not associ...
     OUT_OF_RANGE = auto()  # request for information specifies streaming data that includes sequence numbe...
-    QUERY_ERROR = auto()  # agent was unable to interpret the query.
+    QUERY_ERROR = auto()  # agent was unable to interpret the query. The query parameters do not contain ...
     TOO_MANY = auto()  # `count` parameter provided in the request for information requires either of ...
     UNAUTHORIZED = auto()  # requester does not have sufficient permissions to access the requested inform...
     UNSUPPORTED = auto()  # valid request was provided, but the agent does not support the feature or typ...
 
 
 class ExceptionCodeEnum(Enum):
-    """ExceptionCodeEnum values from MTConnect model."""
+    """ExceptionCodeEnum values from MTConnect model"""
 
-    TYPE_MISMATCH = auto()  # scope value type is mismatched.
+    TYPE_MISMATCH = auto()  # scope value type is mismatched. > Note: For example, a `string` instead of an...
     NOT_FOUND = auto()  # scope is missing a property or a part.
     DEPRECATED = auto()  # scope has been deprecated.
     EXTENDED = auto()  # scope is considered an extension of the MTConnect Standard.
@@ -1219,29 +1219,29 @@ class ExceptionCodeEnum(Enum):
 
 
 class ExecutionEnum(Enum):
-    """ExecutionEnum values from MTConnect model."""
+    """ExecutionEnum values from MTConnect model"""
 
-    READY = auto()  # Component is ready to execute instructions.
+    READY = auto()  # Component is ready to execute instructions. It is currently idle.
     ACTIVE = auto()  # Component is actively executing an instruction.
-    INTERRUPTED = auto()  # Component suspends the execution of the program due to an external signal.
+    INTERRUPTED = auto()  # Component suspends the execution of the program due to an external signal. Ac...
     FEED_HOLD = auto()  # motion of the active axes are commanded to stop at their current position.
     STOPPED = auto()  # Component program is not `READY` to execute.
-    OPTIONAL_STOP = auto()  # command from the program has intentionally interrupted execution.
-    PROGRAM_STOPPED = auto()  # command from the program has intentionally interrupted execution.
+    OPTIONAL_STOP = auto()  # command from the program has intentionally interrupted execution. The Compone...
+    PROGRAM_STOPPED = auto()  # command from the program has intentionally interrupted execution. Action is r...
     PROGRAM_COMPLETED = auto()  # program completed execution.
-    WAIT = auto()  # Component suspends execution while a secondary operation executes.
-    PROGRAM_OPTIONAL_STOP = auto()  # program has been intentionally optionally stopped using an M01 or similar code.
+    WAIT = auto()  # Component suspends execution while a secondary operation executes. Execution ...
+    PROGRAM_OPTIONAL_STOP = auto()  # program has been intentionally optionally stopped using an M01 or similar cod...
 
 
 class FilterEnum(Enum):
-    """FilterEnum values from MTConnect model."""
+    """FilterEnum values from MTConnect model"""
 
     MINIMUM_DELTA = auto()  # new value **MUST NOT** be reported for a data item unless the measured value ...
     PERIOD = auto()  # data reported for a data item is provided on a periodic basis. The `PERIOD` f...
 
 
 class FormEnum(Enum):
-    """FormEnum values from MTConnect model."""
+    """FormEnum values from MTConnect model"""
 
     BAR = auto()
     SHEET = auto()
@@ -1255,120 +1255,120 @@ class FormEnum(Enum):
 
 
 class GuardResult(Enum):
-    """GuardResult values from MTConnect model."""
+    """GuardResult values from MTConnect model"""
 
-    CONTINUE = auto()
+    _CONTINUE = auto()  # CONTINUE
     SKIP = auto()
     RUN = auto()
 
 
 class LeakDetectEnum(Enum):
-    """LeakDetectEnum values from MTConnect model."""
+    """LeakDetectEnum values from MTConnect model"""
 
     DETECTED = auto()  # leak is currently being detected.
     NOT_DETECTED = auto()  # leak is currently not being detected.
 
 
 class MaintenanceListDirectionEnum(Enum):
-    """MaintenanceListDirectionEnum values from MTConnect model."""
+    """MaintenanceListDirectionEnum values from MTConnect model"""
 
     UP = auto()
     DOWN = auto()
 
 
 class MaintenanceListIntervalEnum(Enum):
-    """MaintenanceListIntervalEnum values from MTConnect model."""
+    """MaintenanceListIntervalEnum values from MTConnect model"""
 
     ABSOLUTE = auto()
     INCREMENTAL = auto()
 
 
 class NativeUnitEnum(Enum):
-    """NativeUnitEnum values from MTConnect model."""
+    """NativeUnitEnum values from MTConnect model"""
 
     CENTIPOISE = auto()  # viscosity in centipoise.
-    DEGREE/MINUTE = auto()  # rotational velocity in degree per minute.
+    DEGREE_MINUTE = auto()  # DEGREE/MINUTE: rotational velocity in degree per minute.
     FAHRENHEIT = auto()  # temperature in Fahrenheit.
     FOOT = auto()  # length in foot.
-    FOOT/MINUTE = auto()  # speed in foot per minute.
-    FOOT/SECOND = auto()  # speed in foot per second.
-    FOOT/SECOND^2 = auto()  # acceleration in foot per second squared.
+    FOOT_MINUTE = auto()  # FOOT/MINUTE: speed in foot per minute.
+    FOOT_SECOND = auto()  # FOOT/SECOND: speed in foot per second.
+    FOOT_SECOND_2 = auto()  # FOOT/SECOND^2: acceleration in foot per second squared.
     FOOT_3D = auto()  # point in space identified by X, Y, and Z positions and represented by a space...
-    GALLON/MINUTE = auto()  # volumetric flow in gallon per minute.
+    GALLON_MINUTE = auto()  # GALLON/MINUTE: volumetric flow in gallon per minute.
     HOUR = auto()  # time in hour.
     INCH = auto()  # length in inch.
-    INCH/MINUTE = auto()  # speed in inch per minute.
-    INCH/SECOND = auto()  # speed in inch per second.
-    INCH/SECOND^2 = auto()  # acceleration in inch per second squared.
+    INCH_MINUTE = auto()  # INCH/MINUTE: speed in inch per minute.
+    INCH_SECOND = auto()  # INCH/SECOND: speed in inch per second.
+    INCH_SECOND_2 = auto()  # INCH/SECOND^2: acceleration in inch per second squared.
     INCH_POUND = auto()  # torque in inch pound.
     INCH_3D = auto()  # point in space identified by X, Y, and Z positions and represented by a space...
     KELVIN = auto()  # temperature in Kelvin.
     KILOWATT = auto()  # power in kilowatt.
     KILOWATT_HOUR = auto()  # energy in kilowatt-hour.
-    LITER/MINUTE = auto()  # volumetric flow in liter per minute.
-    MILLIMETER/MINUTE = auto()  # speed in millimeter per minute.
+    LITER_MINUTE = auto()  # LITER/MINUTE: volumetric flow in liter per minute.
+    MILLIMETER_MINUTE = auto()  # MILLIMETER/MINUTE: speed in millimeter per minute.
     MINUTE = auto()  # time in minute.
     OTHER = auto()  # unsupported unit.
     POUND = auto()  # mass in pound.
-    POUND/INCH^2 = auto()  # pressure in pound per square inch (PSI).
+    POUND_INCH_2 = auto()  # POUND/INCH^2: pressure in pound per square inch (PSI).
     RADIAN = auto()  # angle in radian.
-    RADIAN/MINUTE = auto()  # angular velocity in radian per minute.
-    RADIAN/SECOND = auto()  # angular velocity in radian per second.
-    RADIAN/SECOND^2 = auto()  # angular acceleration in radian per second squared.
+    RADIAN_MINUTE = auto()  # RADIAN/MINUTE: angular velocity in radian per minute.
+    RADIAN_SECOND = auto()  # RADIAN/SECOND: angular velocity in radian per second.
+    RADIAN_SECOND_2 = auto()  # RADIAN/SECOND^2: angular acceleration in radian per second squared.
     BAR = auto()  # pressure in bar.
     TORR = auto()  # pressure in torr.
     MILLIMETER_MERCURY = auto()  # pressure in millimeter of mercury (mmHg).
-    PASCAL/MINUTE = auto()  # pressurization rate in pascal per minute.
-    GRAVITATIONAL_FORCE = auto()  # `MASS` times `GRAVITATIONAL_ACCELERATION`  (g).
-    GRAVITATIONAL_ACCELERATION = auto()  # acceleration relative to earth's gravity given in meter per second squared.
+    PASCAL_MINUTE = auto()  # PASCAL/MINUTE: pressurization rate in pascal per minute.
+    GRAVITATIONAL_FORCE = auto()  # `MASS` times `GRAVITATIONAL_ACCELERATION` (g).
+    GRAVITATIONAL_ACCELERATION = auto()  # acceleration relative to earth's gravity given in meter per second squared. >...
     AMPERE_HOUR = auto()  # electric charge in ampere hour.
-    CUBIC_FOOT/HOUR = auto()  # change of geometric volume in cubic foot per hour.
-    CUBIC_FOOT/MINUTE = auto()  # change of geometric volume in cubic foot per minute.
+    CUBIC_FOOT_HOUR = auto()  # CUBIC_FOOT/HOUR: change of geometric volume in cubic foot per hour.
+    CUBIC_FOOT_MINUTE = auto()  # CUBIC_FOOT/MINUTE: change of geometric volume in cubic foot per minute.
     SQUARE_INCH = auto()  # geometric area in inch squared.
     CUBIC_FOOT = auto()  # geometric volume in cubic foot.
-    INCH/REVOLUTION = auto()  # feedrate per revolution in inch per revolution.
+    INCH_REVOLUTION = auto()  # INCH/REVOLUTION: feedrate per revolution in inch per revolution.
     MICROMETER = auto()  # length in micrometer.
     RANKINE = auto()  # temperature in Rankine.
     MICROTORR = auto()  # pressure in microtorr.
 
 
 class NetworkWirelessEnum(Enum):
-    """NetworkWirelessEnum values from MTConnect model."""
+    """NetworkWirelessEnum values from MTConnect model"""
 
     YES = auto()
     NO = auto()
 
 
 class OriginatorEnum(Enum):
-    """OriginatorEnum values from MTConnect model."""
+    """OriginatorEnum values from MTConnect model"""
 
     MANUFACTURER = auto()  # manufacturer of a piece of equipment or Component.
     USER = auto()  # owner or implementer of a piece of equipment or Component.
 
 
 class PartDetectEnum(Enum):
-    """PartDetectEnum values from MTConnect model."""
+    """PartDetectEnum values from MTConnect model"""
 
     PRESENT = auto()  # part or work piece is detected or is present.
     NOT_PRESENT = auto()  # part or work piece is not detected or is not present.
 
 
 class PartStatusEnum(Enum):
-    """PartStatusEnum values from MTConnect model."""
+    """PartStatusEnum values from MTConnect model"""
 
-    PASS = auto()  # part conforms to given requirements.
+    _PASS = auto()  # PASS: part conforms to given requirements.
     FAIL = auto()  # part does not conform to some given requirements.
 
 
 class PowerStatusEnum(Enum):
-    """PowerStatusEnum values from MTConnect model."""
+    """PowerStatusEnum values from MTConnect model"""
 
     ON = auto()
     OFF = auto()
 
 
 class ProgramEditEnum(Enum):
-    """ProgramEditEnum values from MTConnect model."""
+    """ProgramEditEnum values from MTConnect model"""
 
     ACTIVE = auto()  # Controller is in the program edit mode.
     READY = auto()  # Controller is capable of entering the program edit mode and no function is in...
@@ -1376,14 +1376,14 @@ class ProgramEditEnum(Enum):
 
 
 class QualifierEnum(Enum):
-    """QualifierEnum values from MTConnect model."""
+    """QualifierEnum values from MTConnect model"""
 
     HIGH = auto()  # measured value is greater than the expected value for a process variable.
     LOW = auto()  # measured value is less than the expected value for a process variable.
 
 
 class QualityEnum(Enum):
-    """QualityEnum values from MTConnect model."""
+    """QualityEnum values from MTConnect model"""
 
     VALID = auto()  # observation is valid against the MTConnect Standard.
     UNVERIFIABLE = auto()  # observation cannot be validated.
@@ -1391,19 +1391,19 @@ class QualityEnum(Enum):
 
 
 class QueryParameterEnum(Enum):
-    """QueryParameterEnum values from MTConnect model."""
+    """QueryParameterEnum values from MTConnect model"""
 
     device = auto()  # See `device` parameter of Agent::Operation types.
     deviceType = auto()  # See `deviceType` parameter of Agent::Operation types.
     path = auto()  # See `path` parameter of Agent::Operation types.
-    from = auto()  # See `from` parameter of Agent::Operation types.
+    _from = auto()  # from: See `from` parameter of Agent::Operation types.
     count = auto()  # See `count` parameter of Agent::Operation types.
     interval = auto()  # See `interval` parameter of Agent::Operation types.
     heartbeat = auto()  # See `heartbeat` parameter of Agent::Operation types.
 
 
 class ResetTriggerEnum(Enum):
-    """ResetTriggerEnum values from MTConnect model."""
+    """ResetTriggerEnum values from MTConnect model"""
 
     ACTION_COMPLETE = auto()  # observation of the DataItem that is measuring an action or operation is to be...
     ANNUAL = auto()  # observation of the DataItem is to be reset at the end of a 12-month period.
@@ -1417,7 +1417,7 @@ class ResetTriggerEnum(Enum):
 
 
 class ResetTriggeredEnum(Enum):
-    """ResetTriggeredEnum values from MTConnect model."""
+    """ResetTriggeredEnum values from MTConnect model"""
 
     ACTION_COMPLETE = auto()  # Observation::result is measuring an action or operation was reset upon comple...
     ANNUAL = auto()  # Observation::result was reset at the end of a 12-month period.
@@ -1431,7 +1431,7 @@ class ResetTriggeredEnum(Enum):
 
 
 class SeverityEnum(Enum):
-    """SeverityEnum values from MTConnect model."""
+    """SeverityEnum values from MTConnect model"""
 
     FATAL = auto()  # exception violates compliance with the MTConnect Standard and validation can ...
     ERROR = auto()  # exception violates compliance with the MTConnect Standard.
@@ -1440,14 +1440,14 @@ class SeverityEnum(Enum):
 
 
 class SpindleInterlockEnum(Enum):
-    """SpindleInterlockEnum values from MTConnect model."""
+    """SpindleInterlockEnum values from MTConnect model"""
 
     ACTIVE = auto()  # power has been removed and the spindle cannot be operated.
     INACTIVE = auto()  # spindle has not been deactivated.
 
 
 class StatisticEnum(Enum):
-    """StatisticEnum values from MTConnect model."""
+    """StatisticEnum values from MTConnect model"""
 
     AVERAGE = auto()  # mathematical average value calculated for the data item during the calculatio...
     KURTOSIS = auto()  # **DEPRECATED** in *Version 1.6*. ~~A measure of the "peakedness" of a probabi...
@@ -1461,15 +1461,15 @@ class StatisticEnum(Enum):
 
 
 class ToolLifeEnum(Enum):
-    """ToolLifeEnum values from MTConnect model."""
+    """ToolLifeEnum values from MTConnect model"""
 
-    MINUTES = auto()  # tool life measured in minutes. 
-    PART_COUNT = auto()  # tool life measured in parts. 
-    WEAR = auto()  # tool life measured in tool wear. 
+    MINUTES = auto()  # tool life measured in minutes. All units for minimum, maximum, and nominal **...
+    PART_COUNT = auto()  # tool life measured in parts. All units for minimum, maximum, and nominal **MU...
+    WEAR = auto()  # tool life measured in tool wear. Wear **MUST** be provided in millimeters as ...
 
 
 class UnitEnum(Enum):
-    """UnitEnum values from MTConnect model."""
+    """UnitEnum values from MTConnect model"""
 
     AMPERE = auto()  # electric current in ampere.
     CELSIUS = auto()  # temperature in degree Celsius.
@@ -1477,19 +1477,19 @@ class UnitEnum(Enum):
     DECIBEL = auto()  # sound level in decibel.
     DEGREE = auto()  # angle in degree.
     DEGREE_3D = auto()  # space-delimited, floating-point representation of the angular rotation in deg...
-    DEGREE/SECOND = auto()  # angular velocity in degree per second.
-    DEGREE/SECOND^2 = auto()  # angular acceleration in degree per second squared.
+    DEGREE_SECOND = auto()  # DEGREE/SECOND: angular velocity in degree per second.
+    DEGREE_SECOND_2 = auto()  # DEGREE/SECOND^2: angular acceleration in degree per second squared.
     HERTZ = auto()  # frequency in cycles per second.
     JOULE = auto()  # energy in joule.
     KILOGRAM = auto()  # mass in kilogram.
     LITER = auto()  # volume in liter.
-    LITER/SECOND = auto()  # volumetric flow in liter per second.
+    LITER_SECOND = auto()  # LITER/SECOND: volumetric flow in liter per second.
     MICRO_RADIAN = auto()  # tilt in micro radian.
     MILLIMETER = auto()  # length in millimeter.
     MILLIMETER_3D = auto()  # point in space identified by X, Y, and Z positions and represented by a space...
-    MILLIMETER/REVOLUTION = auto()  # feedrate per revolution in millimeter per revolution.
-    MILLIMETER/SECOND = auto()  # speed in millimeter per second.
-    MILLIMETER/SECOND^2 = auto()  # acceleration in millimeter per second squared.
+    MILLIMETER_REVOLUTION = auto()  # MILLIMETER/REVOLUTION: feedrate per revolution in millimeter per revolution.
+    MILLIMETER_SECOND = auto()  # MILLIMETER/SECOND: speed in millimeter per second.
+    MILLIMETER_SECOND_2 = auto()  # MILLIMETER/SECOND^2: acceleration in millimeter per second squared.
     NEWTON = auto()  # force in newton.
     NEWTON_METER = auto()  # torque in newton-meter.
     OHM = auto()  # electrical resistance in ohm.
@@ -1497,28 +1497,28 @@ class UnitEnum(Enum):
     PASCAL_SECOND = auto()  # viscosity in pascal-second.
     PERCENT = auto()  # amount in or for every hundred.
     PH = auto()  # acidity or alkalinity of a solution in pH.
-    REVOLUTION/MINUTE = auto()  # rotational velocity in revolution per minute.
+    REVOLUTION_MINUTE = auto()  # REVOLUTION/MINUTE: rotational velocity in revolution per minute.
     SECOND = auto()  # time in second.
-    SIEMENS/METER = auto()  # electrical conductivity in siemens per meter.
+    SIEMENS_METER = auto()  # SIEMENS/METER: electrical conductivity in siemens per meter.
     VOLT = auto()  # electric potential, electric potential difference or electromotive force in v...
     VOLT_AMPERE = auto()  # apparent power in an electrical circuit, equal to the product of root-mean-sq...
     VOLT_AMPERE_REACTIVE = auto()  # reactive power in an AC electrical circuit (commonly referred to as VAR) in v...
     WATT = auto()  # power in watt.
     WATT_SECOND = auto()  # electrical energy in watt-second
-    GRAM/CUBIC_METER = auto()  # density in gram per cubic meter.
+    GRAM_CUBIC_METER = auto()  # GRAM/CUBIC_METER: density in gram per cubic meter.
     CUBIC_MILLIMETER = auto()  # geometric volume in millimeter.
-    CUBIC_MILLIMETER/SECOND = auto()  # change of geometric volume per second.
-    CUBIC_MILLIMETER/SECOND^2 = auto()  # change in geometric volume per second squared.
+    CUBIC_MILLIMETER_SECOND = auto()  # CUBIC_MILLIMETER/SECOND: change of geometric volume per second.
+    CUBIC_MILLIMETER_SECOND_2 = auto()  # CUBIC_MILLIMETER/SECOND^2: change in geometric volume per second squared.
     MILLIGRAM = auto()  # mass in milligram.
-    MILLIGRAM/CUBIC_MILLIMETER = auto()  # density in milligram per cubic millimeter.
+    MILLIGRAM_CUBIC_MILLIMETER = auto()  # MILLIGRAM/CUBIC_MILLIMETER: density in milligram per cubic millimeter.
     MILLILITER = auto()  # volume in milliliter.
-    COUNT/SECOND = auto()  # frequency in count per second.
-    PASCAL/SECOND = auto()  # pressurization rate in pascal per second.
-    UNIT_VECTOR_3D = auto()  # 3D Unit Vector.
-    REVOLUTION/SECOND^2 = auto()  # rotational acceleration in revolution per second squared.
-    REVOLUTION/SECOND = auto()  # rotational velocity in revolution per second.
+    COUNT_SECOND = auto()  # COUNT/SECOND: frequency in count per second.
+    PASCAL_SECOND_2 = auto()  # PASCAL/SECOND: pressurization rate in pascal per second.
+    UNIT_VECTOR_3D = auto()  # 3D Unit Vector. Space delimited list of three floating point numbers.
+    REVOLUTION_SECOND_2 = auto()  # REVOLUTION/SECOND^2: rotational acceleration in revolution per second squared.
+    REVOLUTION_SECOND = auto()  # REVOLUTION/SECOND: rotational velocity in revolution per second.
     GRAM = auto()  # mass in gram.
-    METER/SECOND^2 = auto()  # acceleration in meter per second squared.
+    METER_SECOND_2 = auto()  # METER/SECOND^2: acceleration in meter per second squared.
     COULOMB = auto()  # electric charge in coulomb.
     CUBIC_METER = auto()  # geometric volume in meter.
     SQUARE_MILLIMETER = auto()  # geometric area in millimeter.

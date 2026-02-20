@@ -13,6 +13,14 @@ from mtconnect.types.sample import SampleType
 from mtconnect.types.condition import ConditionType, ConditionLevel, ConditionQualifier
 from mtconnect.types.subtype import DataItemSubType
 
+# Interface Interaction Model (Part 5.0) - device-to-device coordination
+from mtconnect.types.interface_types import (
+    InterfaceType,
+    InterfaceEvent,
+    InterfaceState,
+    InterfaceRequestResponseState,
+)
+
 # Primitive datatypes with validation
 from mtconnect.types.primitives import (
     MTCBoolean,
@@ -48,6 +56,11 @@ __all__ = [
     "ConditionLevel",
     "ConditionQualifier",
     "DataItemSubType",
+    # Interface types (Part 5.0)
+    "InterfaceType",
+    "InterfaceEvent",
+    "InterfaceState",
+    "InterfaceRequestResponseState",
     # Primitives
     "MTCBoolean",
     "MTCString",
