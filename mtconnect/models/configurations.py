@@ -198,8 +198,8 @@ class ConfigurationRelationship:
     Reference: MTConnect Standard v2.6 - ConfigurationRelationship
     """
     id: ID
-    name: Optional[str] = None
     type: Literal['CHILD', 'PARENT']  # e.g., "MOUNTED_ON",
+    name: Optional[str] = None
     criticality: Optional[str] = None  # e.g., "CRITICAL", "NON_CRITICAL"
 
 
