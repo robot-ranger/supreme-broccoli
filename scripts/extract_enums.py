@@ -6,9 +6,33 @@ and generate a comprehensive Python enum module.
 
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+import argparse
+from pathlib import Path
+import sys
 
-# Parse the XML file
-xml_file = '/home/pi/machine-interface/.github/agents/data/model_2.6.xml'
+# Set up argument parser
+parser = argparse.ArgumentParser(description='Extract MTConnect enumerations from model XML')
+parser.add_argument('--model-path', type=str, 
+                    default='.github/agents/data/model_2.6.xml',
+                    help='Path to MTConnect model XML file')
+parser.add_argument('--output-dir', type=str,
+                    default='mtconnect/types',
+                    help='Output directory for generated Python modules')
+parser.add_argument('--enum-names', type=str, nargs='*',
+                    help='Optional: specific enum names to extract (extracts all if not specified)')
+parser.add_argument('--output-file', type=str,
+                    help='Optional: single output file name (default: enums.py)')
+
+args = parser.parse_args()
+
+# Resolve paths relative to repository root
+repo_root = Path(__file__).parent.parent
+xml_file = repo_root / args.model_path
+
+if not xml_file.exists():
+    print(f"Error: Model file not found at {xml_file}")
+    sys.exit(1)
+
 print(f"Parsing {xml_file}...")
 tree = ET.parse(xml_file)
 root = tree.getroot()
@@ -30,7 +54,7 @@ for elem in root.iter():
             
         # Extract ownedComment for the enumeration itself
         enum_doc = None
-        for comment in elem.findall('uml:ownedComment', namespaces):
+        for comment in elem.findall('ownedComment'):
             body = comment.get('body')
             if body:
                 enum_doc = body
@@ -38,14 +62,14 @@ for elem in root.iter():
         
         # Extract all literals
         literals = []
-        for literal in elem.findall('uml:ownedLiteral', namespaces):
+        for literal in elem.findall('ownedLiteral'):  
             literal_name = literal.get('name')
             if not literal_name:
                 continue
                 
             # Extract documentation for this literal
             literal_doc = None
-            for comment in literal.findall('uml:ownedComment', namespaces):
+            for comment in literal.findall('ownedComment'):
                 body = comment.get('body')
                 if body:
                     literal_doc = body
@@ -57,11 +81,19 @@ for elem in root.iter():
             })
         
         if literals:  # Only add enumerations that have literals
+            # Filter by specific enum names if provided
+            if args.enum_names and enum_name not in args.enum_names:
+                continue
+                
             enumerations.append({
                 'name': enum_name,
                 'doc': enum_doc,
                 'literals': literals
             })
+
+if args.enum_names and not enumerations:
+    print(f"Warning: No enumerations found matching: {', '.join(args.enum_names)}")
+    sys.exit(1)
 
 print(f"Found {len(enumerations)} enumerations with values")
 
@@ -69,16 +101,16 @@ print(f"Found {len(enumerations)} enumerations with values")
 output_lines = [
     '"""',
     'MTConnect Enumeration Types',
-    '=' * 80,
     '',
-    'This module contains all enumeration types extracted from the MTConnect',
-    'normative model version 2.6. These enums represent the standardized values',
-    'used throughout the MTConnect protocol.',
+    'Additional enumeration types extracted from the MTConnect normative model',
+    'version 2.6. These enums represent standardized values for units, states,',
+    'representations, and other categorical values used in MTConnect.',
     '',
+    'Reference: MTConnect Standard v2.6 Normative Model',
     'Auto-generated from: model_2.6.xml',
     '"""',
     '',
-    'from enum import Enum',
+    'from enum import Enum, auto',
     '',
     ''
 ]
@@ -140,32 +172,48 @@ for group_name in group_order:
         
         output_lines.append('')
         
-        # Enum values
-        for i, literal in enumerate(enum_data['literals'], 1):
+        # Enum values with inline comments (no blank lines between members)
+        for i, literal in enumerate(enum_data['literals']):
             literal_name = literal['name']
-            output_lines.append(f"    {literal_name} = '{literal_name}'")
             
-            # Add literal documentation as a comment
+            # Add literal documentation as inline comment
             if literal['doc']:
                 doc = literal['doc'].split('\n')[0]  # Just first line
                 doc = doc.replace('{{term(', '').replace('{{termplural(', '')
                 doc = doc.replace('{{property(', '').replace('{{block(', '')
                 doc = doc.replace('{{package(', '').replace('{{url(', '')
                 doc = doc.replace(')}}', '').replace('}}', '')
-                if len(doc) > 200:
-                    doc = doc[:197] + '...'
-                output_lines.append(f"    # {doc}")
+                doc = doc.replace('&#10;', ' ')
+                if len(doc) > 80:
+                    doc = doc[:77] + '...'
+                output_lines.append(f"    {literal_name} = auto()  # {doc}")
+            else:
+                output_lines.append(f"    {literal_name} = auto()")
         
         output_lines.append('')
         output_lines.append('')
 
+# Determine output path
+output_dir = repo_root / args.output_dir
+output_dir.mkdir(parents=True, exist_ok=True)
+
+if args.output_file:
+    output_file = output_dir / args.output_file
+else:
+    output_file = output_dir / 'enums.py'
+
 # Write to file
-output_file = '/home/pi/machine-interface/src/common/mtconnect_enums.py'
 with open(output_file, 'w') as f:
     f.write('\n'.join(output_lines))
 
 print(f"\nGenerated {output_file}")
-print(f"\nTotal enumerations extracted: {len(enumerations)}")
-print("\nFirst 10 enum names:")
-for i, enum_data in enumerate(enumerations[:10], 1):
-    print(f"  {i}. {enum_data['name']}")
+print(f"Total enumerations extracted: {len(enumerations)}")
+
+if len(enumerations) <= 20:
+    print("\nExtracted enum names:")
+    for i, enum_data in enumerate(enumerations, 1):
+        print(f"  {i}. {enum_data['name']}")
+else:
+    print(f"\nFirst 20 of {len(enumerations)} enum names:")
+    for i, enum_data in enumerate(enumerations[:20], 1):
+        print(f"  {i}. {enum_data['name']}")
