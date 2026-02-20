@@ -108,6 +108,11 @@ class Adapters(Component):
 
 
 @dataclass
+class Agent(Device):
+    """Device composed of an MTConnect Agent and all its connected data sources."""
+
+
+@dataclass
 class Amplifier(Component):
     """leaf Component composed of an electronic component or circuit that amplifies power, ele..."""
 
@@ -252,6 +257,11 @@ class CircuitBreaker(Component):
 @dataclass
 class Clamp(Component):
     """leaf Component that strengthens, support, or fastens objects in place."""
+
+
+@dataclass
+class Composition(Component):
+    """Component belonging to a Component and not composed of any Component."""
 
 
 @dataclass

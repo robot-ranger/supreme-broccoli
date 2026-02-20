@@ -4,10 +4,12 @@ Tests for MTConnect Component models.
 
 from mtconnect.models.components import (
     Actuator,
+    Agent,
     Auxiliary,
     Axes,
     Axis,
     Component,
+    Composition,
     Controller,
     Controllers,
     Description,
@@ -252,3 +254,16 @@ def test_process_occurrence():
     po = ProcessOccurrence(id=ID("po1"), name="Process-1")
     assert isinstance(po, Process)
     assert isinstance(po, Component)
+
+
+def test_agent_extends_device():
+    """Test Agent inherits from Device"""
+    agent = Agent(id=ID("agent1"), name="Agent-1")
+    assert isinstance(agent, Device)
+    assert isinstance(agent, Component)
+
+
+def test_composition_extends_component():
+    """Test Composition inherits from Component"""
+    comp = Composition(id=ID("comp1"), name="Composition-1")
+    assert isinstance(comp, Component)

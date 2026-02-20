@@ -25,8 +25,6 @@ COMPONENT_XMI_ID = "_19_0_3_45f01b9_1581734537697_742151_1119"
 # Types to exclude entirely
 DEPRECATED_EXCLUDE = {"Power", "Thermostat", "Vibration"}
 SKIP_NAMES = {
-    "Agent",
-    "Composition",
     "MTConnect Device with Operational States",
     "MTConnect Device with Power Source Config",
 }

@@ -34,6 +34,7 @@ from mtconnect.models.components import (
     Actuator,
     Adapter,
     Adapters,
+    Agent,
     AirHandler,
     Amplifier,
     AutomaticToolChanger,
@@ -154,6 +155,7 @@ from mtconnect.models.components import (
     WorkEnvelope,
     Workpiece,
 )
+from mtconnect.models.components import Composition as CompositionComponent
 from mtconnect.models.components import Part as PartComponent
 from mtconnect.models.components import Process as ProcessComponent
 
@@ -215,6 +217,7 @@ __all__ = [
     "Actuator",
     "Adapter",
     "Adapters",
+    "Agent",
     "AirHandler",
     "AlarmLimitsValue",
     "Amplifier",
@@ -245,6 +248,7 @@ __all__ = [
     "ComponentRef",
     # Compositions
     "Composition",
+    "CompositionComponent",
     "CompositionType",
     "Compressor",
     "ConditionDataItem",
