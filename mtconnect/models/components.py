@@ -8,8 +8,12 @@ Reference: MTConnect Standard v2.6 - Device Information Model
 """
 
 from dataclasses import dataclass, field
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from mtconnect.types.primitives import ID, UUID
+from mtconnect.models.configurations import Configuration
+
+if TYPE_CHECKING:
+    from mtconnect.models.data_items import DataItem
 
 
 @dataclass
@@ -29,6 +33,9 @@ class Component:
     native_name: Optional[str] = None
     sample_interval: Optional[float] = None
     sample_rate: Optional[float] = None
+    description: Optional['Description'] = None
+    configuration: Optional[Configuration] = None
+    data_items: List['DataItem'] = field(default_factory=list)
     components: List['Component'] = field(default_factory=list)
     
     def __post_init__(self):
@@ -68,13 +75,16 @@ class Device(Component):
     
     Reference: https://model.mtconnect.org/#Package___19_0_3_68e0225_1623082330438_892066_4246
     """
-    description: Optional[Description] = None
     iso_841_class: Optional[str] = None
     mtconnect_version: str = "2.6.0"
     
     def add_component(self, component: 'Component') -> None:
         """Add a child component to this device"""
         self.components.append(component)
+    
+    def add_data_item(self, data_item: 'DataItem') -> None:
+        """Add a data item to this device"""
+        self.data_items.append(data_item)
 
 
 @dataclass

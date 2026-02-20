@@ -1,11 +1,10 @@
 """
-MTConnect Enumeration Types
+MTConnect SAMPLE Category Types
 
-Additional enumeration types extracted from the MTConnect normative model
-version 2.6. These enums represent standardized values for units, states,
-representations, and other categorical values used in MTConnect.
+All SAMPLE type DataItems from MTConnect v2.6 normative model.
+Samples represent continuously variable or analog data values.
 
-Reference: MTConnect Standard v2.6 Normative Model
+Reference: MTConnect Standard v2.6 Normative Model - SampleEnum
 Auto-generated from: model_2.6.xml
 """
 
@@ -13,13 +12,8 @@ from enum import Enum, auto
 
 
 
-################################################################################
-# Observation Value Enumerations
-################################################################################
-
 class SampleType(Enum):
-    """SampleType values from MTConnect SampleEnum"""
-
+    """SAMPLE types from MTConnect SampleEnum"""
     ACCELERATION = auto()  # positive rate of change of velocity.
     ACCUMULATED_TIME = auto()  # accumulated time for an activity or event.
     AMPERAGE = auto()  # strength of electrical current. **DEPRECATED** in *Version 1.6*. Replaced by ...
@@ -114,4 +108,3 @@ class SampleType(Enum):
     FILL_HEIGHT = auto()  # amount of a substance in a container.
     PARTICLE_COUNT = auto()  # number of particles counted by their size or other characteristics.
     PARTICLE_SIZE = auto()  # size of particles counted by their size or other characteristics.
-

@@ -94,7 +94,7 @@ class SampleDataItem(DataItem):
     
     Reference: MTConnect Standard v2.6 - SAMPLE category
     """
-    category: DataItemCategory = field(default=DataItemCategory.SAMPLE, init=False)
+    category: DataItemCategory = DataItemCategory.SAMPLE
     
     def __post_init__(self):
         """Validate SAMPLE-specific requirements"""
@@ -121,7 +121,7 @@ class EventDataItem(DataItem):
     
     Reference: MTConnect Standard v2.6 - EVENT category
     """
-    category: DataItemCategory = field(default=DataItemCategory.EVENT, init=False)
+    category: DataItemCategory = DataItemCategory.EVENT
     
     def __post_init__(self):
         """Validate EVENT-specific requirements"""
@@ -148,7 +148,7 @@ class ConditionDataItem(DataItem):
     
     Reference: MTConnect Standard v2.6 - CONDITION category
     """
-    category: DataItemCategory = field(default=DataItemCategory.CONDITION, init=False)
+    category: DataItemCategory = DataItemCategory.CONDITION
     
     def __post_init__(self):
         """Validate CONDITION-specific requirements"""

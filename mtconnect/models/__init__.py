@@ -2,7 +2,9 @@
 MTConnect Models
 
 Structural elements representing MTConnect components, data items, assets,
-and their relationships.
+compositions, and references.
+
+Relationships (ConfigurationRelationship) exist only in configurations.
 
 Reference: MTConnect Standard v2.6 - Device Information Model
 """
@@ -27,6 +29,22 @@ from mtconnect.models.components import (
     Door,
     Chuck,
     Auxiliaries,
+)
+
+# Configuration models
+from mtconnect.models.configurations import (
+    Configuration,
+    Specification,
+    SensorConfiguration,
+    SolidModel,
+    Motion,
+    ConfigurationRelationship,
+    ImageFile,
+    PowerSource,
+    CoordinateSystem,
+    ConfigSpecificationLimits,
+    ConfigControlLimits,
+    ConfigAlarmLimits,
 )
 
 # DataItem models
@@ -70,20 +88,22 @@ from mtconnect.models.values import (
     UnavailableType,
     TimeSeries,
     DataSet,
+    SpecificationLimitsValue,
+    ControlLimitsValue,
+    AlarmLimitsValue,
 )
 
-# Relationship models
-from mtconnect.models.relationships import (
+# Composition models
+from mtconnect.models.compositions import (
+    Composition,
+    CompositionType,
+)
+
+# Reference models
+from mtconnect.models.references import (
     ComponentRef,
     DataItemRef,
     AssetRef,
-    RelationshipType,
-    Composition,
-    CompositionType,
-    CoordinateSystem,
-    SpecificationLimits,
-    ControlLimits,
-    AlarmLimits,
 )
 
 __all__ = [
@@ -106,6 +126,19 @@ __all__ = [
     "Door",
     "Chuck",
     "Auxiliaries",
+    # Configuration
+    "Configuration",
+    "Specification",
+    "SensorConfiguration",
+    "SolidModel",
+    "Motion",
+    "ConfigurationRelationship",
+    "ImageFile",
+    "PowerSource",
+    "CoordinateSystem",
+    "ConfigSpecificationLimits",
+    "ConfigControlLimits",
+    "ConfigAlarmLimits",
     # DataItems
     "DataItem",
     "DataItemCategory",
@@ -140,15 +173,14 @@ __all__ = [
     "UnavailableType",
     "TimeSeries",
     "DataSet",
-    # Relationships
+    "SpecificationLimitsValue",
+    "ControlLimitsValue",
+    "AlarmLimitsValue",
+    # References
     "ComponentRef",
     "DataItemRef",
     "AssetRef",
-    "RelationshipType",
+    # Compositions
     "Composition",
     "CompositionType",
-    "CoordinateSystem",
-    "SpecificationLimits",
-    "ControlLimits",
-    "AlarmLimits",
 ]

@@ -2,13 +2,15 @@
 MTConnect Interface Interaction Model Types
 
 Interface types for device-to-device coordination (MTConnect Part 5.0).
-Interfaces use a request/response pattern for coordinating actions between equipment.
+Interfaces use a request/response pattern for coordinating actions
+between equipment.
 
 Reference: MTConnect Standard v2.6 Normative Model - Interface Interaction Model
-Package: Interface Interaction Model (line ~42336)
+Auto-generated from: model_2.6.xml
 """
 
 from enum import Enum, auto
+
 
 
 class InterfaceType(Enum):
@@ -43,7 +45,7 @@ class InterfaceState(Enum):
 class InterfaceRequestResponseState(Enum):
     """
     State machine values for Interface request/response pattern.
-    Flow: NOT_READY → READY → ACTIVE → COMPLETE (or FAIL)
+    Flow: NOT_READY -> READY -> ACTIVE -> COMPLETE (or FAIL)
     """
     NOT_READY = auto()  # Not prepared to perform service
     READY = auto()  # Ready to request or perform service

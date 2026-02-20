@@ -1,11 +1,10 @@
 """
-MTConnect Enumeration Types
+MTConnect EVENT Category Types
 
-Additional enumeration types extracted from the MTConnect normative model
-version 2.6. These enums represent standardized values for units, states,
-representations, and other categorical values used in MTConnect.
+All EVENT type DataItems from MTConnect v2.6 normative model.
+Events represent discrete pieces of information from equipment.
 
-Reference: MTConnect Standard v2.6 Normative Model
+Reference: MTConnect Standard v2.6 Normative Model - EventEnum
 Auto-generated from: model_2.6.xml
 """
 
@@ -13,13 +12,8 @@ from enum import Enum, auto
 
 
 
-################################################################################
-# Observation Value Enumerations
-################################################################################
-
 class EventType(Enum):
-    """EventType values from MTConnect EventEnum"""
-
+    """EVENT types from MTConnect EventEnum"""
     ACTIVE_AXES = auto()  # set of axes currently associated with a Path or Controller.
     ACTUATOR_STATE = auto()  # operational state of an apparatus for moving or controlling a mechanism or sy...
     ALARM = auto()  # **DEPRECATED:** Replaced with `CONDITION` category data items in Version 1.1.0.
@@ -160,4 +154,3 @@ class EventType(Enum):
     PART_INDEX = auto()  # sequence of a part in a group of parts.
     ASSOCIATED_ASSET_ID = auto()  # Asset::assetId of the Assets associated with a Component.
     ASSET_ADDED = auto()  # Asset::assetId of the Asset that has been added.
-

@@ -1,11 +1,10 @@
 """
-MTConnect Enumeration Types
+MTConnect DataItem SubTypes
 
-Additional enumeration types extracted from the MTConnect normative model
-version 2.6. These enums represent standardized values for units, states,
-representations, and other categorical values used in MTConnect.
+All DataItem subType values from MTConnect v2.6 normative model.
+SubTypes qualify the specific aspect of a DataItem type being measured.
 
-Reference: MTConnect Standard v2.6 Normative Model
+Reference: MTConnect Standard v2.6 Normative Model - DataItemSubTypeEnum
 Auto-generated from: model_2.6.xml
 """
 
@@ -13,13 +12,8 @@ from enum import Enum, auto
 
 
 
-################################################################################
-# Type Enumerations
-################################################################################
-
 class DataItemSubType(Enum):
-    """DataItemSubType values from MTConnect DataItemSubTypeEnum"""
-
+    """DataItem subType values from MTConnect DataItemSubTypeEnum"""
     ABSOLUTE = auto()  # relating to or derived in the simplest manner from the fundamental units or m...
     ACTION = auto()  # indication of the operating state of a mechanism.
     ACTUAL = auto()  # reported value of an observation.
@@ -135,4 +129,3 @@ class DataItemSubType(Enum):
     GAS = auto()  # fluid that has no definite shape or volume.
     LIQUID = auto()  # fluid that has a definite volume but no definite shape.
     SOLID = auto()  # matter that has a definite shape and a definite volume.
-

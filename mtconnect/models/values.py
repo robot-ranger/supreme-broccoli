@@ -7,13 +7,14 @@ events, and conditions with timestamps, sequence numbers, and validation.
 Reference: MTConnect Standard v2.6 - Observation Information Model
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional, Union
 from datetime import datetime
 from enum import Enum
 
 from mtconnect.types.primitives import ID, MTCDateTime
 from mtconnect.types.condition import ConditionLevel, ConditionQualifier
+from mtconnect.types.subtype import DataItemSubType
 
 
 class UnavailableType(Enum):
@@ -32,9 +33,9 @@ class ObservationValue:
     data_item_id: ID
     timestamp: MTCDateTime
     sequence: int
-    name: Optional[str] = None
-    sub_type: Optional[str] = None
-    composition_id: Optional[str] = None
+    name: Optional[str] = field(default=None)
+    sub_type: Optional[DataItemSubType] = field(default=None)
+    composition_id: Optional[ID] = field(default=None)
     
     def __post_init__(self):
         """Validate observation after initialization"""
@@ -67,13 +68,13 @@ class SampleValue(ObservationValue):
         ...     units="CELSIUS"
         ... )
     """
-    value: Union[float, int, UnavailableType]
-    native_value: Optional[Union[float, int]] = None
-    units: Optional[str] = None
-    native_units: Optional[str] = None
-    sample_rate: Optional[float] = None
-    statistic: Optional[str] = None  # AVERAGE, MINIMUM, MAXIMUM, etc.
-    duration: Optional[float] = None  # Duration for statistical samples
+    value: Union[float, int, UnavailableType] = field(default=UnavailableType.UNAVAILABLE)
+    native_value: Optional[Union[float, int]] = field(default=None)
+    units: Optional[str] = field(default=None)
+    native_units: Optional[str] = field(default=None)
+    sample_rate: Optional[float] = field(default=None)
+    statistic: Optional[str] = field(default=None)  # AVERAGE, MINIMUM, MAXIMUM, etc.
+    duration: Optional[float] = field(default=None)  # Duration for statistical samples
     
     def is_unavailable(self) -> bool:
         """Check if this observation is unavailable"""
@@ -103,8 +104,8 @@ class EventValue(ObservationValue):
         ...     value="ACTIVE"
         ... )
     """
-    value: Union[str, int, bool, UnavailableType]
-    native_value: Optional[Union[str, int, bool]] = None
+    value: Union[str, int, bool, UnavailableType] = field(default=UnavailableType.UNAVAILABLE)
+    native_value: Optional[Union[str, int, bool]] = field(default=None)
     
     def is_unavailable(self) -> bool:
         """Check if this observation is unavailable"""
@@ -138,11 +139,11 @@ class ConditionObservation(ObservationValue):
         ...     message="Spindle temperature exceeds maximum limit"
         ... )
     """
-    level: ConditionLevel
-    native_code: Optional[str] = None
-    native_severity: Optional[str] = None
-    qualifier: Optional[ConditionQualifier] = None
-    message: Optional[str] = None
+    level: ConditionLevel = field(default=ConditionLevel.UNAVAILABLE)
+    native_code: Optional[str] = field(default=None)
+    native_severity: Optional[str] = field(default=None)
+    qualifier: Optional[ConditionQualifier] = field(default=None)
+    message: Optional[str] = field(default=None)
     
     def is_normal(self) -> bool:
         """Check if condition is normal (healthy)"""
@@ -235,3 +236,88 @@ class DataSet:
         """Get a string value from the dataset"""
         value = self.entries.get(key)
         return str(value) if value is not None else None
+
+
+@dataclass
+class SpecificationLimitsValue:
+    """
+    Specification limits as an EVENT observation value (runtime data).
+    
+    Runtime observation data for specification limits that define acceptable
+    ranges for measurements. This is the observed/reported limit data from
+    equipment, distinct from ConfigSpecificationLimits in Configuration.
+    
+    Reference: MTConnect Standard v2.6 - SpecificationLimits EVENT type (lines 27449-27470 in model_2.6.xml)
+    """
+    upper_limit: Optional[float] = None
+    nominal: Optional[float] = None
+    lower_limit: Optional[float] = None
+    
+    def is_within_spec(self, value: float) -> bool:
+        """Check if a value is within specification limits"""
+        if self.upper_limit is not None and value > self.upper_limit:
+            return False
+        if self.lower_limit is not None and value < self.lower_limit:
+            return False
+        return True
+
+
+@dataclass
+class ControlLimitsValue:
+    """
+    Statistical process control limits as an EVENT observation value (runtime data).
+    
+    Runtime observation data for statistical process control limits indicating
+    whether a process variable is stable and in control. This is the observed/
+    reported limit data from equipment, distinct from ConfigControlLimits.
+    
+    Reference: MTConnect Standard v2.6 - ControlLimits EVENT type (lines 27429-27448 in model_2.6.xml)
+    """
+    upper_limit: Optional[float] = None
+    upper_warning: Optional[float] = None
+    lower_warning: Optional[float] = None
+    nominal: Optional[float] = None
+    lower_limit: Optional[float] = None
+    
+    def is_in_control(self, value: float) -> bool:
+        """Check if a value indicates process is in control"""
+        if self.upper_limit is not None and value > self.upper_limit:
+            return False
+        if self.lower_limit is not None and value < self.lower_limit:
+            return False
+        return True
+
+
+@dataclass
+class AlarmLimitsValue:
+    """
+    Alarm threshold limits as an EVENT observation value (runtime data).
+    
+    Runtime observation data for alarm limits used to trigger warning or alarm
+    indicators. This is the observed/reported limit data from equipment,
+    distinct from ConfigAlarmLimits in Configuration.
+    
+    Reference: MTConnect Standard v2.6 - AlarmLimits EVENT type (lines 27409-27428 in model_2.6.xml)
+    """
+    upper_limit: Optional[float] = None
+    upper_warning: Optional[float] = None
+    lower_warning: Optional[float] = None
+    lower_limit: Optional[float] = None
+    
+    def check_alarm(self, value: float) -> Optional[str]:
+        """
+        Check if value triggers an alarm.
+        
+        Returns:
+            "UPPER_LIMIT", "UPPER_WARNING", "LOWER_WARNING", "LOWER_LIMIT", or None
+        """
+        if self.upper_limit is not None and value > self.upper_limit:
+            return "UPPER_LIMIT"
+        if self.upper_warning is not None and value > self.upper_warning:
+            return "UPPER_WARNING"
+        if self.lower_limit is not None and value < self.lower_limit:
+            return "LOWER_LIMIT"
+        if self.lower_warning is not None and value < self.lower_warning:
+            return "LOWER_WARNING"
+        return None
+

@@ -7,7 +7,7 @@ Reference: MTConnect Standard v2.6 - Protocol Error Handling
 """
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, auto
 from typing import Optional
 
 from mtconnect.protocol.header import Header
@@ -21,18 +21,18 @@ class ErrorCode(Enum):
     MTConnect protocol communication.
     """
     # Request errors (4xx equivalent)
-    INVALID_REQUEST = "INVALID_REQUEST"  # Malformed request parameters
-    INVALID_XPATH = "INVALID_XPATH"  # Invalid XPath in path parameter
-    OUT_OF_RANGE = "OUT_OF_RANGE"  # Sequence number not in buffer
-    TOO_MANY = "TOO_MANY"  # Requested count exceeds maximum
+    INVALID_REQUEST = auto()  # Malformed request parameters
+    INVALID_XPATH = auto()  # Invalid XPath in path parameter
+    OUT_OF_RANGE = auto()  # Sequence number not in buffer
+    TOO_MANY = auto()  # Requested count exceeds maximum
     
     # Server errors (5xx equivalent)
-    UNSUPPORTED = "UNSUPPORTED"  # Feature not supported by agent
-    INTERNAL_ERROR = "INTERNAL_ERROR"  # Internal agent error
-    ASSET_NOT_FOUND = "ASSET_NOT_FOUND"  # Requested asset doesn't exist
-    QUERY_ERROR = "QUERY_ERROR"  # Error executing query
-    UNAUTHORIZED = "UNAUTHORIZED"  # Authentication required
-    NO_DEVICE = "NO_DEVICE"  # No device configured
+    UNSUPPORTED = auto()  # Feature not supported by agent
+    INTERNAL_ERROR = auto()  # Internal agent error
+    ASSET_NOT_FOUND = auto()  # Requested asset doesn't exist
+    QUERY_ERROR = auto()  # Error executing query
+    UNAUTHORIZED = auto()  # Authentication required
+    NO_DEVICE = auto()  # No device configured
 
 
 @dataclass

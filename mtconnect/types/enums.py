@@ -11,6 +11,19 @@ Auto-generated from: model_2.6.xml
 
 from enum import Enum, auto
 
+# =============================================================================
+# Re-exports from canonical modules (backward compatibility)
+# =============================================================================
+# These types have dedicated modules. Re-exported here so existing imports
+# like 'from mtconnect.types.enums import EventType' continue to work.
+from mtconnect.types.event import EventType  # noqa: F401
+from mtconnect.types.sample import SampleType  # noqa: F401
+from mtconnect.types.condition import ConditionType  # noqa: F401
+from mtconnect.types.subtype import DataItemSubType  # noqa: F401
+from mtconnect.types.interface_types import (  # noqa: F401
+    InterfaceEvent as InterfaceEventEnum,
+    InterfaceState as InterfaceStateEnum,
+)
 
 
 ################################################################################
@@ -33,282 +46,6 @@ class RepresentationEnum(Enum):
     DATA_SET = auto()  # reported value(s) are represented as a set of key-value pair. Each reported v...
     DISCRETE = auto()  # **DEPRECATED** as DataItem::representation type in *MTConnect Version 1.5*. R...
     TABLE = auto()  # two dimensional set of key-value pair where the Entry represents a row, and t...
-
-
-
-################################################################################
-# Observation Value Enumerations
-################################################################################
-
-class ConditionType(Enum):
-    """ConditionType values from MTConnect ConditionEnum"""
-
-    COMMUNICATIONS = auto()  # indication that the piece of equipment has experienced a communications failure.
-    DATA_RANGE = auto()  # indication that the value of the data associated with a measured value or a c...
-    LOGIC_PROGRAM = auto()  # indication that an error occurred in the logic program or programmable logic ...
-    MOTION_PROGRAM = auto()  # indication that an error occurred in the motion program associated with a pie...
-    SYSTEM = auto()  # general purpose indication associated with an electronic component of a piece...
-    ACTUATOR = auto()  # indication of a fault associated with an actuator.
-
-
-class EventType(Enum):
-    """EventType values from MTConnect EventEnum"""
-
-    ACTIVE_AXES = auto()  # set of axes currently associated with a Path or Controller.
-    ACTUATOR_STATE = auto()  # operational state of an apparatus for moving or controlling a mechanism or sy...
-    ALARM = auto()  # **DEPRECATED:** Replaced with `CONDITION` category data items in Version 1.1.0.
-    ASSET_CHANGED = auto()  # Asset::assetId of the Asset that has been changed.
-    ASSET_REMOVED = auto()  # Asset::assetId of the Asset that has been removed.
-    AVAILABILITY = auto()  # agent's ability to communicate with the data source.
-    AXIS_COUPLING = auto()  # describes the way the axes will be associated to each other. This is used in ...
-    AXIS_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate of an individu...
-    AXIS_INTERLOCK = auto()  # state of the axis lockout function when power has been removed and the axis i...
-    AXIS_STATE = auto()  # state of a Linear or Rotary component representing an axis.
-    BLOCK = auto()  # line of code or command being executed by a Controller entity.
-    BLOCK_COUNT = auto()  # total count of the number of blocks of program code that have been executed s...
-    CHUCK_INTERLOCK = auto()  # state of an interlock function or control logic state intended to prevent the...
-    CHUCK_STATE = auto()  # operating state of a mechanism that holds a part or stock material during a m...
-    CODE = auto()  # programmatic code being executed. **DEPRECATED** in *Version 1.1*.
-    COMPOSITION_STATE = auto()  # operating state of a mechanism represented by a Composition entity.
-    CONTROLLER_MODE = auto()  # current mode of the Controller component.
-    CONTROLLER_MODE_OVERRIDE = auto()  # setting or operator selection that changes the behavior of a piece of equipment.
-    COUPLED_AXES = auto()  # set of associated axes.
-    DATE_CODE = auto()  # time and date code associated with a material or other physical item.
-    DEVICE_UUID = auto()  # identifier of another piece of equipment that is temporarily associated with ...
-    DIRECTION = auto()  # direction of motion.
-    DOOR_STATE = auto()  # operational state of a Door component or composition element.
-    EMERGENCY_STOP = auto()  # state of the emergency stop signal for a piece of equipment, controller path,...
-    END_OF_BAR = auto()  # indication of whether the end of a piece of bar stock being feed by a bar fee...
-    EQUIPMENT_MODE = auto()  # indication that a piece of equipment, or a sub-part of a piece of equipment, ...
-    EXECUTION = auto()  # operating state of a Component.
-    FUNCTIONAL_MODE = auto()  # current intended production status of the Component.
-    HARDNESS = auto()  # hardness of a material.
-    LINE = auto()  # current line of code being executed. **DEPRECATED** in *Version 1.4.0*.
-    LINE_LABEL = auto()  # identifier for a Block of code in a Program.
-    LINE_NUMBER = auto()  # position of a block of program code within a control program.
-    MATERIAL = auto()  # identifier of a material used or consumed in the manufacturing process.
-    MATERIAL_LAYER = auto()  # identifies the layers of material applied to a part or product as part of an ...
-    MESSAGE = auto()  # information to be transferred from a piece of equipment to a client software ...
-    OPERATOR_ID = auto()  # identifier of the person currently responsible for operating the piece of equ...
-    PALLET_ID = auto()  # identifier for a pallet.
-    PART_COUNT = auto()  # aggregate count of parts.
-    PART_DETECT = auto()  # indication designating whether a part or work piece has been detected or is p...
-    PART_ID = auto()  # identifier of a part in a manufacturing operation.
-    PART_NUMBER = auto()  # identifier of a part or product moving through the manufacturing process. **D...
-    PATH_FEEDRATE_OVERRIDE = auto()  # value of a signal or calculation issued to adjust the feedrate for the axes a...
-    PATH_MODE = auto()  # describes the operational relationship between a Path entity and another Path...
-    POWER_STATE = auto()  # indication of the status of the source of energy for an entity to allow it to...
-    POWER_STATUS = auto()  # status of the Component. **DEPRECATED** in *Version 1.1.0*.
-    PROCESS_TIME = auto()  # time and date associated with an activity or event.
-    PROGRAM = auto()  # name of the logic or motion program being executed by the Controller component.
-    PROGRAM_COMMENT = auto()  # comment or non-executable statement in the control program.
-    PROGRAM_EDIT = auto()  # indication of the status of the Controller components program editing mode. A...
-    PROGRAM_EDIT_NAME = auto()  # name of the program being edited. This is used in conjunction with ProgramEdi...
-    PROGRAM_HEADER = auto()  # non-executable header section of the control program.
-    PROGRAM_LOCATION = auto()  # URI for the source file associated with Program.
-    PROGRAM_LOCATION_TYPE = auto()  # defines whether the logic or motion program defined by Program is being execu...
-    PROGRAM_NEST_LEVEL = auto()  # indication of the nesting level within a control program that is associated w...
-    ROTARY_MODE = auto()  # current operating mode for a Rotary type axis.
-    ROTARY_VELOCITY_OVERRIDE = auto()  # percentage change to the velocity of the programmed velocity for a Rotary axis.
-    SERIAL_NUMBER = auto()  # serial number associated with a Component, Asset, or Device.
-    SPINDLE_INTERLOCK = auto()  # indication of the status of the spindle for a piece of equipment when power h...
-    TOOL_ASSET_ID = auto()  # identifier of an individual tool asset.
-    TOOL_GROUP = auto()  # identifier for the tool group associated with a specific tool. Commonly used ...
-    TOOL_ID = auto()  # identifier of the tool currently in use for a given `Path`. **DEPRECATED** in...
-    TOOL_NUMBER = auto()  # identifier assigned by the Controller component to a cutting tool when in use...
-    TOOL_OFFSET = auto()  # reference to the tool offset variables applied to the active cutting tool.
-    USER = auto()  # identifier of the person currently responsible for operating the piece of equ...
-    VARIABLE = auto()  # data whose meaning may change over time due to changes in the operation of a ...
-    WAIT_STATE = auto()  # indication of the reason that Execution is reporting a value of `WAIT`.
-    WIRE = auto()  # identifier for the type of wire used as the cutting mechanism in Electrical D...
-    WORKHOLDING_ID = auto()  # identifier for the current workholding or part clamp in use by a piece of equ...
-    WORK_OFFSET = auto()  # reference to offset variables for a work piece or part.
-    OPERATING_SYSTEM = auto()  # Operating System (OS) of a Component.
-    FIRMWARE = auto()  # embedded software of a Component .
-    APPLICATION = auto()  # application on a Component.
-    LIBRARY = auto()  # software library on a Component
-    HARDWARE = auto()  # hardware of a Component.
-    NETWORK = auto()  # network details of a Component.
-    ROTATION = auto()  # three space angular displacement of an object or coordinate system relative t...
-    TRANSLATION = auto()  # three space linear displacement of an object or coordinate system relative to...
-    DEVICE_ADDED = auto()  # UUID of new device added to an MTConnect Agent.
-    DEVICE_REMOVED = auto()  # UUID of a device removed from an MTConnect Agent.
-    DEVICE_CHANGED = auto()  # UUID of the device whose metadata has changed.
-    CONNECTION_STATUS = auto()  # status of the connection between an adapter and an agent.
-    ADAPTER_SOFTWARE_VERSION = auto()  # originator’s software version of the adapter.
-    ADAPTER_URI = auto()  # URI of the adapter.
-    MTCONNECT_VERSION = auto()  # reference version of the MTConnect Standard supported by the adapter.
-    SENSOR_ATTACHMENT = auto()  # attachment between a sensor and an entity.
-    PART_STATUS = auto()  # state or condition of a part.
-    PROCESS_OCCURRENCE_ID = auto()  # identifier of a process being executed by the device.
-    PROCESS_AGGREGATE_ID = auto()  # identifier given to link the individual occurrence to a group of related occu...
-    PROCESS_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of processes or...
-    PART_GROUP_ID = auto()  # identifier given to a collection of individual parts.
-    PART_KIND_ID = auto()  # identifier given to link the individual occurrence to a class of parts, typic...
-    PART_UNIQUE_ID = auto()  # identifier given to a distinguishable, individual part.
-    CONTROL_LIMIT = auto()  # set of limits used to indicate whether a process variable is stable and in co...
-    SPECIFICATION_LIMIT = auto()  # set of limits defining a range of values designating acceptable performance f...
-    ALARM_LIMIT = auto()  # set of limits used to trigger warning or alarm indicators. **DEPRECATED** in ...
-    LOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
-    UNLOAD_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
-    TRANSFER_COUNT = auto()  # accumulation of the number of times an operation has attempted to, or is plan...
-    ACTIVATION_COUNT = auto()  # accumulation of the number of times a function has attempted to, or is planne...
-    DEACTIVATION_COUNT = auto()  # accumulation of the number of times a function has attempted to, or is planne...
-    CYCLE_COUNT = auto()  # accumulation of the number of times a cyclic function has attempted to, or is...
-    VALVE_STATE = auto()  # state of a valve is one of open, closed, or transitioning between the states.
-    LOCK_STATE = auto()  # state or operating mode of a Lock.
-    PROCESS_STATE = auto()  # particular condition of the process occurrence at a specific time.
-    PART_PROCESSING_STATE = auto()  # particular condition of the part occurrence at a specific time.
-    OPERATING_MODE = auto()  # state of Component or Composition that describes the automatic or manual oper...
-    ASSET_COUNT = auto()  # data set of the number of Asset of a given type for a Device.
-    MAINTENANCE_LIST = auto()  # actions or activities to be performed in support of a piece of equipment.
-    FIXTURE_ID = auto()  # identifier for the current workholding or part clamp in use by a piece of equ...
-    PART_COUNT_TYPE = auto()  # interpretation of `PART_COUNT`.
-    CLOCK_TIME = auto()  # time provided by a timing device at a specific point in time.
-    HOST_NAME = auto()  # name of the host computer supplying data.
-    NETWORK_PORT = auto()  # number of the TCP/IP or UDP/IP port for the connection endpoint.
-    LEAK_DETECT = auto()  # indication designating whether a leak has been detected.
-    BATTERY_STATE = auto()  # present status of the battery.
-    FEATURE_PERSISTENT_ID = auto()  # UUID of a feature. {{cite(ISO 10303 AP 242/239.
-    SENSOR_STATE = auto()  # detection result of a sensor.
-    COMPONENT_DATA = auto()  # Event that represents a Component where the EntryDefinition identifies the Co...
-    WORK_OFFSETS = auto()  # properties of each addressable work offset.
-    TOOL_OFFSETS = auto()  # properties of each addressable tool offset.
-    FEATURE_MEASUREMENT = auto()  # assessing elements of a feature.
-    CHARACTERISTIC_PERSISTENT_ID = auto()  # UUID of the characteristic.
-    MEASUREMENT_TYPE = auto()  # class of measurement being performed. {{cite(QIF 3:2018 Section 6.3
-    MEASUREMENT_VALUE = auto()  # measurement based on the measurement type.
-    MEASUREMENT_UNITS = auto()  # engineering units of the measurement.
-    CHARACTERISTIC_STATUS = auto()  # pass/fail result of the measurement.
-    UNCERTAINTY_TYPE = auto()  # method used to compute standard uncertainty.
-    UNCERTAINTY = auto()  # uncertainty specified by UncertaintyType.
-    SPECIFICATION_LIMITS = auto()  # set of limits defining a range of values designating acceptable performance f...
-    CONTROL_LIMITS = auto()  # set of limits used to indicate whether a process variable is stable and in co...
-    ALARM_LIMITS = auto()  # set of limits used to trigger warning or alarm indicators.
-    TOOL_CUTTING_ITEM = auto()  # references the CuttingToolLifeCycle CuttingItem index related to the CuttingI...
-    LOCATION_ADDRESS = auto()  # structured information that allows the unambiguous determination of an object...
-    ACTIVE_POWER_SOURCE = auto()  # active energy source for the Component.
-    LOCATION_NARRATIVE = auto()  # textual description of the location of an object or activity.
-    THICKNESS = auto()  # dimension between two surfaces of an object, usually the dimension of smalles...
-    LOCATION_SPATIAL_GEOGRAPHIC = auto()  # absolute geographic location defined by two coordinates, longitude and latitu...
-    PART_INDEX = auto()  # sequence of a part in a group of parts.
-    ASSOCIATED_ASSET_ID = auto()  # Asset::assetId of the Assets associated with a Component.
-    ASSET_ADDED = auto()  # Asset::assetId of the Asset that has been added.
-
-
-class InterfaceEventEnum(Enum):
-    """InterfaceEventEnum values from MTConnect model"""
-
-    INTERFACE_STATE = auto()  # operational state of an Interface.
-    MATERIAL_FEED = auto()  # operating state of the service to advance material or feed product to a piece...
-    MATERIAL_CHANGE = auto()  # operating state of the service to change the type of material or product bein...
-    MATERIAL_RETRACT = auto()  # operating state of the service to remove or retract material or product.
-    PART_CHANGE = auto()  # operating state of the service to change the part or product associated with ...
-    MATERIAL_LOAD = auto()  # operating state of the service to load a piece of material or product.
-    MATERIAL_UNLOAD = auto()  # operating state of the service to unload a piece of material or product.
-    OPEN_CHUCK = auto()  # operating state of the service to open a chuck.
-    OPEN_DOOR = auto()  # operating state of the service to open a door.
-    CLOSE_CHUCK = auto()  # operating state of the service to close a chuck.
-    CLOSE_DOOR = auto()  # operating state of the service to close a door.
-
-
-class SampleType(Enum):
-    """SampleType values from MTConnect SampleEnum"""
-
-    ACCELERATION = auto()  # positive rate of change of velocity.
-    ACCUMULATED_TIME = auto()  # accumulated time for an activity or event.
-    AMPERAGE = auto()  # strength of electrical current. **DEPRECATED** in *Version 1.6*. Replaced by ...
-    ANGLE = auto()  # angular position.
-    ANGULAR_ACCELERATION = auto()  # positive rate of change of angular velocity.
-    ANGULAR_VELOCITY = auto()  # rate of change of angular position.
-    AXIS_FEEDRATE = auto()  # feedrate of a linear axis.
-    CAPACITY_FLUID = auto()  # maximum amount of fluid that can be held by a container.
-    CAPACITY_SPATIAL = auto()  # maximum amount of material that can be held by a container.
-    CONCENTRATION = auto()  # percentage of one component within a mixture of components.
-    CONDUCTIVITY = auto()  # ability of a material to conduct electricity.
-    CUTTING_SPEED = auto()  # speed difference (relative velocity) between the cutting mechanism and the su...
-    DENSITY = auto()  # volumetric mass of a material per unit volume of that material.
-    DEPOSITION_ACCELERATION_VOLUMETRIC = auto()  # rate of change in spatial volume of material deposited in an additive manufac...
-    DEPOSITION_DENSITY = auto()  # density of the material deposited in an additive manufacturing process per un...
-    DEPOSITION_MASS = auto()  # mass of the material deposited in an additive manufacturing process.
-    DEPOSITION_RATE_VOLUMETRIC = auto()  # rate at which a spatial volume of material is deposited in an additive manufa...
-    DEPOSITION_VOLUME = auto()  # spatial volume of material to be deposited in an additive manufacturing process.
-    DISPLACEMENT = auto()  # change in position of an object.
-    ELECTRICAL_ENERGY = auto()  # Wattage used or generated by a component over an interval of time.
-    EQUIPMENT_TIMER = auto()  # amount of time a piece of equipment or a sub-part of a piece of equipment has...
-    FILL_LEVEL = auto()  # amount of a substance remaining compared to the planned maximum amount of tha...
-    FLOW = auto()  # rate of flow of a fluid.
-    FREQUENCY = auto()  # number of occurrences of a repeating event per unit time.
-    GLOBAL_POSITION = auto()  # position in three-dimensional space. **DEPRECATED** in Version 1.1.
-    LENGTH = auto()  # length of an object.
-    LEVEL = auto()  # level of a resource. **DEPRECATED** in *Version 1.2*. See `FILL_LEVEL`.
-    LINEAR_FORCE = auto()  # force applied to a mass in one direction only.
-    LOAD = auto()  # actual versus the standard rating of a piece of equipment.
-    MASS = auto()  # mass of an object(s) or an amount of material.
-    PATH_FEEDRATE = auto()  # feedrate for the axes, or a single axis, associated with a Path component.
-    PATH_FEEDRATE_PER_REVOLUTION = auto()  # feedrate for the axes, or a single axis.
-    PATH_POSITION = auto()  # position of a control point associated with a Controller or a Path.
-    PH = auto()  # acidity or alkalinity of a solution.
-    POSITION = auto()  # point along an axis in a cartesian coordinate system.
-    POWER_FACTOR = auto()  # ratio of real power flowing to a load to the apparent power in that AC circuit.
-    PRESSURE = auto()  # force per unit area measured relative to atmospheric pressure. Commonly refer...
-    PROCESS_TIMER = auto()  # amount of time a piece of equipment has performed different types of activiti...
-    RESISTANCE = auto()  # degree to which a substance opposes the passage of an electric current.
-    ROTARY_VELOCITY = auto()  # rotational speed of a rotary axis.
-    SOUND_LEVEL = auto()  # sound level or sound pressure level relative to atmospheric pressure.
-    SPINDLE_SPEED = auto()  # rotational speed of the rotary axis. **DEPRECATED** in *Version 1.2*. Replace...
-    STRAIN = auto()  # amount of deformation per unit length of an object when a load is applied.
-    TEMPERATURE = auto()  # degree of hotness or coldness measured on a definite scale.
-    TENSION = auto()  # force that stretches or elongates an object.
-    TILT = auto()  # angular displacement.
-    TORQUE = auto()  # turning force exerted on an object or by an object.
-    VELOCITY = auto()  # rate of change of position of a Component.
-    VISCOSITY = auto()  # fluid's resistance to flow.
-    VOLTAGE = auto()  # electrical potential between two points. **DEPRECATED** in *Version 1.6*. Rep...
-    VOLT_AMPERE = auto()  # apparent power in an electrical circuit, equal to the product of root-mean-sq...
-    VOLT_AMPERE_REACTIVE = auto()  # reactive power in an AC electrical circuit (commonly referred to as VAR).
-    VOLUME_FLUID = auto()  # fluid volume of an object or container.
-    VOLUME_SPATIAL = auto()  # geometric volume of an object or container.
-    WATTAGE = auto()  # power flowing through or dissipated by an electrical circuit or piece of equi...
-    AMPERAGE_AC = auto()  # electrical current that reverses direction at regular short intervals.
-    AMPERAGE_DC = auto()  # electric current flowing in one direction only.
-    VOLTAGE_AC = auto()  # electrical potential between two points in an electrical circuit in which the...
-    VOLTAGE_DC = auto()  # electrical potential between two points in an electrical circuit in which the...
-    X_DIMENSION = auto()  # dimension of an entity relative to the X direction of the referenced coordina...
-    Y_DIMENSION = auto()  # dimension of an entity relative to the Y direction of the referenced coordina...
-    Z_DIMENSION = auto()  # dimension of an entity relative to the Z direction of the referenced coordina...
-    DIAMETER = auto()  # dimension of a diameter.
-    ORIENTATION = auto()  # angular position of a plane or vector relative to a cartesian coordinate system
-    HUMIDITY_RELATIVE = auto()  # amount of water vapor present expressed as a percent to reach saturation at t...
-    HUMIDITY_ABSOLUTE = auto()  # amount of water vapor expressed in grams per cubic meter.
-    HUMIDITY_SPECIFIC = auto()  # ratio of the water vapor present over the total weight of the water vapor and...
-    OBSERVATION_UPDATE_RATE = auto()  # average rate of change of values for data items in the MTConnect streams. The...
-    ASSET_UPDATE_RATE = auto()  # average rate of change of values for assets in the MTConnect streams. The ave...
-    PRESSURIZATION_RATE = auto()  # change of pressure per unit time.
-    DECELERATION = auto()  # negative rate of change of velocity.
-    ANGULAR_DECELERATION = auto()  # negative rate of change of angular velocity.
-    PRESSURE_ABSOLUTE = auto()  # force per unit area measured relative to a vacuum.
-    OPENNESS = auto()  # percentage open where 100% is fully open and 0% is fully closed.
-    DEW_POINT = auto()  # temperature at which moisture begins to condense, corresponding to saturation...
-    GRAVITATIONAL_FORCE = auto()  # force relative to earth's gravity.
-    GRAVITATIONAL_ACCELERATION = auto()  # acceleration relative to Earth's gravity of 9.80665 `METER/SECOND^2`.
-    BATTERY_CAPACITY = auto()  # maximum rated charge a battery is capable of maintaining based on the battery...
-    DISCHARGE_RATE = auto()  # value of current being drawn from the Component.
-    CHARGE_RATE = auto()  # value of the current being supplied to the Component for the purpose of charg...
-    BATTERY_CHARGE = auto()  # value of the battery's present capacity expressed as a percentage of the batt...
-    SETTLING_ERROR = auto()  # difference between actual and commanded position at the end of a motion.
-    FOLLOWING_ERROR = auto()  # difference between actual and commanded position at any specific point in tim...
-    SETTLING_ERROR_LINEAR = auto()  # difference between the commanded encoder/resolver position, and the actual en...
-    SETTLING_ERROR_ANGULAR = auto()  # angular difference between the commanded encoder/resolver position, and the a...
-    FOLLOWING_ERROR_LINEAR = auto()  # difference between the commanded encoder/resolver position and the actual enc...
-    FOLLOWING_ERROR_ANGULAR = auto()  # angular difference between the commanded encoder/resolver position and the ac...
-    DISPLACEMENT_LINEAR = auto()  # absolute value of the change in position along a vector.
-    DISPLACEMENT_ANGULAR = auto()  # absolute value of the change in angular position around a vector
-    POSITION_CARTESIAN = auto()  # point in a cartesian coordinate system.
-    RESISTIVITY = auto()  # inability of a material to conduct electricity.
-    FILL_HEIGHT = auto()  # amount of a substance in a container.
-    PARTICLE_COUNT = auto()  # number of particles counted by their size or other characteristics.
-    PARTICLE_SIZE = auto()  # size of particles counted by their size or other characteristics.
 
 
 
@@ -395,14 +132,6 @@ class CompositionStateVerticalEnum(Enum):
     TRANSITIONING = auto()  # position of the Composition element is not oriented in an upward direction to...
 
 
-class ConditionStateEnum(Enum):
-    """ConditionStateEnum values from MTConnect model"""
-
-    Normal = auto()  # condition state that indicates operation within specified limits.
-    Warning = auto()  # condition state that requires concern and supervision and may become hazardou...
-    Fault = auto()  # condition state that requires intervention to continue operation to function ...
-
-
 class DoorStateEnum(Enum):
     """DoorStateEnum values from MTConnect model"""
 
@@ -417,13 +146,6 @@ class FileStateEnum(Enum):
     EXPERIMENTAL = auto()  # used for processes other than production or otherwise defined.
     PRODUCTION = auto()  # used for production processes.
     REVISION = auto()  # content is modified from `PRODUCTION` or `EXPERIMENTAL`.
-
-
-class InterfaceStateEnum(Enum):
-    """InterfaceStateEnum values from MTConnect model"""
-
-    ENABLED = auto()  # Interface is currently operational and performing as expected.
-    DISABLED = auto()  # Interface is currently not operational.
 
 
 class LockStateEnum(Enum):
@@ -755,126 +477,6 @@ class DataItemRelationshipTypeEnum(Enum):
     COORDINATE_SYSTEM = auto()  # referenced DataItem provides the `id` of the effective Coordinate System.
     LIMIT = auto()  # referenced DataItem provides process limits.
     OBSERVATION = auto()  # referenced DataItem provides the observed values.
-
-
-class DataItemSubType(Enum):
-    """DataItemSubType values from MTConnect DataItemSubTypeEnum"""
-
-    ABSOLUTE = auto()  # relating to or derived in the simplest manner from the fundamental units or m...
-    ACTION = auto()  # indication of the operating state of a mechanism.
-    ACTUAL = auto()  # reported value of an observation.
-    ALL = auto()  # all actions, items, or activities being counted independent of the outcome.
-    ALTERNATING = auto()  # measurement of alternating voltage or current. If not specified further in st...
-    A_SCALE = auto()  # A-Scale weighting factor on the frequency scale.
-    AUXILIARY = auto()  # when multiple locations on a piece of bar stock being feed by a bar feeder ar...
-    BAD = auto()  # actions, items, or activities being counted that do not conform to specificat...
-    BRINELL = auto()  # scale to measure the resistance to deformation of a surface.
-    B_SCALE = auto()  # B-Scale weighting factor on the frequency scale.
-    COMMANDED = auto()  # directive value including adjustments such as an offset or overrides.
-    CONSUMED = auto()  # amount of material consumed from an object or container during a manufacturin...
-    CONTROL = auto()  # state of the enabling signal or control logic that enables or disables the fu...
-    C_SCALE = auto()  # C-Scale weighting factor on the frequency scale.
-    DELAY = auto()  # elapsed time of a temporary halt of action.
-    DIRECT = auto()  # DC current or voltage. **DEPRECATED** in *Version 1.6*.
-    DRY_RUN = auto()  # setting or operator selection used to execute a test mode to confirm the exec...
-    D_SCALE = auto()  # D-Scale weighting factor on the frequency scale.
-    EXPIRATION = auto()  # relating to the expiration or end of useful life for a material or other phys...
-    FIRST_USE = auto()  # relating to the first use of a material or other physical item.
-    GOOD = auto()  # actions, items, or activities being counted that conform to specification or ...
-    INCREMENTAL = auto()  # relating to or derived from the last observation.
-    JOG = auto()  # relating to momentary activation of a function or a movement. **DEPRECATION W...
-    LATERAL = auto()  # indication of the position of a mechanism that may move in a lateral direction.
-    LEEB = auto()  # scale to measure the elasticity of a surface.
-    LENGTH = auto()  # reference to a length type tool offset variable.
-    LINE = auto()  # state of the power source.
-    LINEAR = auto()  # direction of motion of a linear motion.
-    LOADED = auto()  # indication that the subparts of a piece of equipment are under load.
-    MACHINE_AXIS_LOCK = auto()  # setting or operator selection that changes the behavior of the controller on ...
-    MAIN = auto()  # relating to the primary logic or motion program currently being executed.
-    MAINTENANCE = auto()  # relating to maintenance on the piece of equipment.
-    MANUAL_UNCLAMP = auto()  # indication of the state of an operator controlled interlock that can inhibit ...
-    MANUFACTURE = auto()  # related to the production of a material or other physical item.
-    MAXIMUM = auto()  # maximum value.
-    MINIMUM = auto()  # minimum value.
-    MOHS = auto()  # scale to measure the resistance to scratching of a surface.
-    MOTION = auto()  # indication of the open or closed state of a mechanism.
-    NO_SCALE = auto()  # no weighting factor on the frequency scale.
-    OPERATING = auto()  # piece of equipment that is powered or performing any activity.
-    OPERATOR = auto()  # relating to the person currently responsible for operating the piece of equip...
-    OPTIONAL_STOP = auto()  # setting or operator selection that changes the behavior of the controller on ...
-    OVERRIDE = auto()  # overridden value.
-    POWERED = auto()  # piece of equipment is powered and functioning or Component that are required ...
-    PRIMARY = auto()  # main or principle.
-    PROBE = auto()  # position provided by a measurement probe. **DEPRECATION WARNING**: May be dep...
-    PROCESS = auto()  # relating to production of a part or product on a piece of equipment.
-    PROGRAMMED = auto()  # directive value without offsets and adjustments.
-    RADIAL = auto()  # reference to a radial type tool offset variable.
-    RAPID = auto()  # performing an operation faster or in less time than nominal rate.
-    REMAINING = auto()  # remaining measure or count of an action, object or activity.
-    ROCKWELL = auto()  # scale to measure the resistance to deformation of a surface.
-    ROTARY = auto()  # direction of a rotary motion using the right hand rule convention.
-    SCHEDULE = auto()  # identity of a control program that is used to specify the order of execution ...
-    SET_UP = auto()  # relating to the preparation of a piece of equipment for production or restori...
-    SHORE = auto()  # scale to measure the resistance to deformation of a surface.
-    SINGLE_BLOCK = auto()  # setting or operator selection that changes the behavior of the controller on ...
-    STANDARD = auto()  # standard measure of an object or an action.
-    START = auto()  # boundary when an activity or an event commences.
-    SWITCHED = auto()  # indication of the activation state of a mechanism represented by a Composition.
-    TARGET = auto()  # goal of the operation or process.
-    TARGET_COMPLETION = auto()  # relating to the end or completion of an activity or event.
-    TOOL_CHANGE_STOP = auto()  # setting or operator selection that changes the behavior of the controller on ...
-    USEABLE = auto()  # remaining usable measure of an object or action.
-    VERTICAL = auto()  # indication of the position of a mechanism that may move in a vertical direction.
-    VICKERS = auto()  # scale to measure the resistance to deformation of a surface.
-    WORKING = auto()  # piece of equipment performing any activity, the equipment is active and perfo...
-    IPV4_ADDRESS = auto()  # IPV4 network address of the Component.
-    IPV6_ADDRESS = auto()  # IPV6 network address of the Component.
-    GATEWAY = auto()  # Gateway for the Component network.
-    SUBNET_MASK = auto()  # SubNet mask for the Component network.
-    VLAN_ID = auto()  # layer2 Virtual Local Network (VLAN) ID for the Component network.
-    MAC_ADDRESS = auto()  # Media Access Control Address. The unique physical address of the network hard...
-    WIRELESS = auto()  # identifies whether the connection type is wireless.
-    LICENSE = auto()  # license code to validate or activate the hardware or software.
-    VERSION = auto()  # version of the hardware or software.
-    RELEASE_DATE = auto()  # date the hardware or software was released for general use.
-    INSTALL_DATE = auto()  # date the hardware or software was installed.
-    MANUFACTURER = auto()  # corporate identity for the maker of the hardware or software.
-    UUID = auto()  # universally unique identifier as specified in ISO 11578 or RFC 4122.
-    SERIAL_NUMBER = auto()  # serial number that uniquely identifies a specific part.
-    RAW_MATERIAL = auto()  # material that is used to produce parts.
-    LOT = auto()  # group of parts tracked as a lot.
-    BATCH = auto()  # group of parts produced in a batch.
-    HEAT_TREAT = auto()  # material heat number.
-    PART_NUMBER = auto()  # particular part design or model.
-    PART_FAMILY = auto()  # group of parts having similarities in geometry, manufacturing process, and/or...
-    PART_NAME = auto()  # word or set of words by which a part is known, addressed, or referred to.
-    PROCESS_STEP = auto()  # step in the process plan that this occurrence corresponds to.
-    PROCESS_PLAN = auto()  # process plan that a process occurrence belongs to.
-    ORDER_NUMBER = auto()  # authorization of a process occurrence.
-    PROCESS_NAME = auto()  # word or set of words by which a process being executed (process occurrence) b...
-    ISO_STEP_EXECUTABLE = auto()  # reference to a ISO 10303 Executable.
-    COMPLETE = auto()  # associated with the completion of an activity or event.
-    ACTIVE = auto()  # relating to logic or motion program currently executing.
-    FAILED = auto()  # actions or activities that were attempted , but failed to complete or resulte...
-    ABORTED = auto()  # actions or activities that were attempted, but terminated before they could b...
-    ENDED = auto()  # boundary when an activity or an event terminates.
-    WASTE = auto()  # amount discarded.
-    PART = auto()  # amount included in the part.
-    REQUEST = auto()  # request by an Interface for a task.
-    RESPONSE = auto()  # response by an Interface to a request for a task.
-    ACTIVITY = auto()  # phase or segment of a recipe or program.
-    SEGMENT = auto()  # phase of a recipe process.
-    RECIPE = auto()  # process as part of product production; can be a subprocess of a larger process.
-    OPERATION = auto()  # step of a discrete manufacturing process.
-    BINARY = auto()  # observed as a binary data type.
-    BOOLEAN = auto()  # observed as a boolean data type.
-    ENUMERATED = auto()  # observed as a set containing a restricted number of discrete values where eac...
-    DETECT = auto()  # indicated by the presence or existence of something.
-    MODEL = auto()  # model info of the hardware or software.
-    MEASURED = auto()  # {{def(DataItemSubType::ACTUAL that has uncertainty.
-    GAS = auto()  # fluid that has no definite shape or volume.
-    LIQUID = auto()  # fluid that has a definite volume but no definite shape.
-    SOLID = auto()  # matter that has a definite shape and a definite volume.
 
 
 class FormatTypeEnum(Enum):
@@ -1373,13 +975,6 @@ class ProgramEditEnum(Enum):
     ACTIVE = auto()  # Controller is in the program edit mode.
     READY = auto()  # Controller is capable of entering the program edit mode and no function is in...
     NOT_READY = auto()  # Controller is being inhibited by a function from entering the program edit mode.
-
-
-class QualifierEnum(Enum):
-    """QualifierEnum values from MTConnect model"""
-
-    HIGH = auto()  # measured value is greater than the expected value for a process variable.
-    LOW = auto()  # measured value is less than the expected value for a process variable.
 
 
 class QualityEnum(Enum):
