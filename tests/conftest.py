@@ -2,6 +2,8 @@
 Pytest configuration and fixtures for MTConnect tests.
 """
 
+import uuid
+
 import pytest
 from datetime import datetime
 
@@ -29,7 +31,7 @@ def sample_header():
 @pytest.fixture
 def sample_device_uuid():
     """Create a sample device UUID for testing"""
-    return UUID("M8010W4194N")
+    return UUID("550e8400-e29b-41d4-a716-446655440000")
 
 
 @pytest.fixture

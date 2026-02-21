@@ -12,6 +12,7 @@ This script orchestrates the generation of all model files:
 Usage:
   python scripts/run_all_generators.py
   python scripts/run_all_generators.py --model-path path/to/model.xml
+  python scripts/run_all_generators.py --test
 """
 
 import argparse
@@ -122,6 +123,33 @@ except Exception as e:
     return True
 
 
+def run_tests(project_root: Path) -> bool:
+    """
+    Run the test suite using pytest.
+    
+    Args:
+        project_root: Project root directory
+        
+    Returns:
+        True if all tests pass, False otherwise
+    """
+    print("\n" + "=" * 70)
+    print("Running Test Suite")
+    print("=" * 70)
+    
+    result = subprocess.run(
+        [sys.executable, '-m', 'pytest', 'tests/', '-v', '-o', 'addopts='],
+        cwd=str(project_root)
+    )
+    
+    if result.returncode != 0:
+        print("\n❌ Tests failed")
+        return False
+    
+    print("\n✓ All tests passed")
+    return True
+
+
 def main():
     """Run all generators in correct dependency order."""
     parser = argparse.ArgumentParser(
@@ -132,6 +160,11 @@ def main():
         type=Path,
         default=None,
         help='Path to model XML file (default: .github/agents/data/model_2.6.xml)'
+    )
+    parser.add_argument(
+        '--test',
+        action='store_true',
+        help='Run test suite after successful generation'
     )
     args = parser.parse_args()
     
@@ -204,6 +237,11 @@ def main():
     print(f"\n  {'TOTAL':20s} {total_lines:5d} lines, {total_classes:3d} classes")
     print("\n✓ All generators completed successfully")
     print("✓ All imports validated")
+    
+    # Run tests if requested
+    if args.test:
+        if not run_tests(project_root):
+            sys.exit(1)
     
 
 if __name__ == '__main__':

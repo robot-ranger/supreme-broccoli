@@ -44,12 +44,12 @@ def test_device_creation():
     device = Device(
         id=ID("mill"),
         name="Mill-01",
-        uuid=UUID("M8010W4194N")
+        uuid=UUID("550e8400-e29b-41d4-a716-446655440000")
     )
 
     assert device.id == ID("mill")
     assert device.name == "Mill-01"
-    assert device.uuid == UUID("M8010W4194N")
+    assert device.uuid == UUID("550e8400-e29b-41d4-a716-446655440000")
 
 
 def test_device_with_description():
@@ -250,7 +250,7 @@ def test_link_extends_structure():
 
 def test_feature_occurrence():
     """Test FeatureOccurrence instantiation"""
-    fo = FeatureOccurrence(id=ID("fo1"), name="Feature-1")
+    fo = FeatureOccurrence(id=ID("fo1"), name="Feature-1", part_id=ID("part1"))
     assert isinstance(fo, PartOccurrence)
     assert isinstance(fo, Part)
     assert isinstance(fo, Component)
@@ -258,7 +258,7 @@ def test_feature_occurrence():
 
 def test_process_occurrence():
     """Test ProcessOccurrence instantiation"""
-    po = ProcessOccurrence(id=ID("po1"), name="Process-1")
+    po = ProcessOccurrence(id=ID("po1"), name="Process-1", process_occurrence_id=ID("proc1"))
     assert isinstance(po, Process)
     assert isinstance(po, Component)
 

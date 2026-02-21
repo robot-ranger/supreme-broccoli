@@ -95,7 +95,7 @@ class DeviceStream:
     Example:
         >>> device_stream = DeviceStream(
         ...     name="Mill-01",
-        ...     uuid="M8010W4194N",
+        ...     uuid="550e8400-e29b-41d4-a716-446655440000",
         ...     component_streams=[
         ...         ComponentStream(component="Controller", ...),
         ...         ComponentStream(component="Linear", ...),

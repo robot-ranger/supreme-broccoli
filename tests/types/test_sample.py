@@ -22,5 +22,5 @@ def test_sample_type_value():
 
 def test_sample_type_count():
     """Test expected number of SAMPLE types"""
-    # Should have 100 SAMPLE types from model
-    assert len(list(SampleType)) == 100
+    # Should have 94 SAMPLE types from model_2.6.xml
+    assert len(list(SampleType)) == 94
