@@ -1,0 +1,58 @@
+Organize type definitions into mtconnect/types/ subpackage:
+
+mtconnect/types/init.py - re-exports all type enums
+mtconnect/types/primitives.py - move existing mtconnect_primitives.py
+mtconnect/types/sample.py - move existing sample_types.py
+mtconnect/types/event.py - move existing event_types.py
+mtconnect/types/condition.py - move existing condition_types.py
+mtconnect/types/subtype.py - move existing subtype.py
+mtconnect/types/enums.py - new file for additional enums (units, filters, representations, criticality, etc.)
+Create models subpackage at mtconnect/models/ for MTConnect structural elements:
+
+mtconnect/models/init.py - exports Component, DataItem, Asset base classes
+mtconnect/models/components.py - Device hierarchy (Device, Controller, Axes, Linear, Rotary, Spindle, Path, Systems, Auxiliaries)
+mtconnect/models/data_items.py - DataItem base class with category-specific subclasses (Sample, Event, Condition)
+mtconnect/models/assets.py - Asset types (CuttingTool, Part, File, Material, QIFDocumentWrapper) with lifecycle classes
+mtconnect/models/values.py - Observation value classes with validation, timestamps, unavailable states
+mtconnect/models/relationships.py - ComponentRef, DataItemRef, AssetRef, Composition patterns
+Create protocol subpackage at mtconnect/protocol/ for MTConnect REST API structures:
+
+mtconnect/protocol/init.py - exports response document classes
+mtconnect/protocol/header.py - Header class with creationTime, sender, instanceId, version, sequence tracking
+mtconnect/protocol/responses.py - MTConnectDevices, MTConnectStreams, MTConnectAssets, MTConnectError document structures
+mtconnect/protocol/streams.py - DeviceStream, ComponentStream, Events/Samples/Conditions containers
+mtconnect/protocol/errors.py - Error codes and exception classes
+Add optional client/adapter subpackages (future enhancement):
+
+mtconnect/client/ - REST API client, streaming support, sequence management
+mtconnect/adapter/ - SHDR protocol parser/formatter, TCP adapter base class
+Enhance scripts directory at scripts:
+
+generate_enums.py - generates all type enums with uppercase identifiers per PEP 8
+scripts/generate_components.py - new transpiler for UML Classes → Python dataclasses
+scripts/validate_model.py - validate generated code against model_2.6.xml
+Add package configuration:
+
+pyproject.toml - modern Python packaging with metadata, dependencies, build system
+setup.py - optional backward compatibility shim
+MANIFEST.in - include model XML and agent markdown files
+.gitignore - ignore pycache, dist/, build/, .egg-info/
+Create test structure at tests/:
+
+tests/conftest.py - pytest fixtures
+tests/types/ - test_primitives.py, test_sample.py, test_event.py, test_condition.py
+tests/models/ - test_components.py, test_assets.py, test_data_items.py
+tests/protocol/ - test_responses.py, test_header.py
+tests/integration/ - end-to-end tests with real MTConnect agent responses
+Add documentation structure at docs/:
+
+docs/conf.py - Sphinx configuration
+docs/index.rst - documentation entry point
+docs/api/ - auto-generated API docs
+docs/examples/ - usage examples
+Update README.md with installation, quick start, full package overview
+Add development tooling:
+
+.github/workflows/ci.yml - pytest, mypy, ruff linting
+mypy.ini or pyproject.toml - type checking configuration
+.pre-commit-config.yaml - automated checks before commit

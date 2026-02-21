@@ -1,0 +1,17 @@
+# Include the model XML and agent markdown files
+include .github/agents/data/model_2.6.xml
+include .github/agents/mtc-expert.agent.md
+include .github/agents/mtc-transpiler.agent.md
+
+# Include documentation
+include README.md
+include LICENSE
+
+# Include type information
+include mtconnect/py.typed
+
+# Exclude test files and development tools
+exclude .github/workflows/*
+exclude tests/*
+exclude scripts/*
+exclude docs/*
