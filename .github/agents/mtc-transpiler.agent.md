@@ -20,10 +20,10 @@ You are the orchestrator for transpiling the MTConnect normative standard into p
 
 | Subagent | Owns | When to Delegate |
 |----------|------|-----------------|
-| **mtc-enums** | `mtconnect/types/`, `scripts/extract_enums.py` | Enum generation, primitive types, extraction script changes, `__init__.py` re-exports |
+| **mtc-enums** | `mtconnect/types/`, `scripts/generate_enums.py` | Enum generation, primitive types, extraction script changes, `__init__.py` re-exports |
 | **mtc-protocol** | `mtconnect/protocol/` | Response documents, streaming, headers, errors |
 | **mtc-models** | `mtconnect/models/` | Components, data items, assets, configurations, values, references |
-| **mtc-expert** | Domain knowledge | MTConnect standard questions, protocol compliance, API semantics |
+| **mtc-expert** | MTConnect standards research | **ANY** MTConnect standard interpretation, protocol compliance, semantic questions, model structure, component relationships, data item usage, specification clarifications |
 
 ## Source Material
 
@@ -60,9 +60,15 @@ elem.findall('ownedComment')
 # elem.findall('uml:ownedLiteral', namespaces)  # ← will find nothing
 ```
 
+`packagedElement` entries are top-level elements that can be classes, enumerations, interfaces, etc. Use their `xmi:type` to determine what they are.
+`uml:Package` transpile to Python modules
+`uml:Class` should transpile to dataclasses within respective modules where possible
+`uml:Enumeration` should transpile to Python enums: mtconnect/types/enums.py or dedicated their dedicated enum modules
+
+
 ## Extraction Script
 
-**All generated type modules are produced by a single script**: `scripts/extract_enums.py`
+**All generated type modules are produced by a single script**: `scripts/generate_enums.py`
 
 This script:
 - Parses `model_2.6.xml` once
@@ -73,8 +79,8 @@ This script:
 
 **Usage:**
 ```bash
-python scripts/extract_enums.py
-python scripts/extract_enums.py --model-path .github/agents/data/model_2.6.xml
+python scripts/generate_enums.py
+python scripts/generate_enums.py --model-path .github/agents/data/model_2.6.xml
 ```
 
 There is **no separate `extract_interfaces.py`** — the unified script handles everything.
@@ -91,6 +97,9 @@ There is **no separate `extract_interfaces.py`** — the unified script handles 
    - `DEGREE/SECOND^2` → `DEGREE_SECOND_2`
    - `POUND/INCH^2` → `POUND_INCH_2`
 3. **Prepend underscore if Python keyword**
+4. **Convert to uppercase per PEP 8**: All enum members use UPPER_CASE naming
+   - `Normal` → `NORMAL`
+   - `Warning` → `WARNING`
 
 ```python
 import re
@@ -102,6 +111,7 @@ def sanitize_identifier(name):
     if name[0].isdigit():
         name = '_' + name
     name = re.sub(r'[^A-Za-z0-9_]', '_', name)
+    return name.upper()
     return name
 ```
 
@@ -181,7 +191,21 @@ class ExampleModel:
 | `mtconnect/types/` | `event.py`, `sample.py`, `condition.py`, `subtype.py`, `interface_types.py`, `enums.py`, `primitives.py`, `__init__.py` | **mtc-enums** |
 | `mtconnect/protocol/` | `header.py`, `responses.py`, `streams.py`, `errors.py`, `__init__.py` | **mtc-protocol** |
 | `mtconnect/models/` | `components.py`, `data_items.py`, `assets.py`, `values.py`, `configurations.py`, `compositions.py`, `references.py`, `__init__.py` | **mtc-models** |
-| `scripts/` | `extract_enums.py` | **mtc-enums** |
+| `scripts/` | `generate_enums.py`, `generate_*.py`, `run_all_generators.py` | **mtc-enums**, **mtc-models** |
+
+### Generator Scripts
+
+**CRITICAL**: All generated modules are produced by generator scripts. **NEVER edit generated files directly.**
+
+| Script | Generates | Owner | Classes | Lines |
+|--------|-----------|-------|---------|-------|
+| `generate_enums.py` | All `types/` enums | mtc-enums | — | 6 files |
+| `generate_components.py` | `models/components.py` | mtc-models | 126 | ~1186 |
+| `generate_data_items.py` | `models/data_items.py` | mtc-models | 253 | ~760 |
+| `generate_configurations.py` | `models/configurations.py` | mtc-models | 31 | ~440 |
+| `generate_compositions.py` | `models/compositions.py` | mtc-models | 1 | ~155 |
+| `generate_references.py` | `models/references.py` | mtc-models | 3 | ~89 |
+| `run_all_generators.py` | All models | mtc-models | 419 | ~3330 |
 
 ### Cross-Module Dependency Graph
 
@@ -274,7 +298,7 @@ mtconnect.protocol.errors ◄── protocol.header            │
 When the model changes or code needs updating:
 
 ```bash
-python scripts/extract_enums.py
+python scripts/generate_enums.py
 ```
 
 This regenerates all 6 files. Validate afterward:
@@ -288,8 +312,8 @@ python -c "from mtconnect.types import EventType, SampleType, ConditionType; pri
 When a new MTConnect model version is released:
 
 1. Replace `.github/agents/data/model_2.6.xml` with new version
-2. Update version references in `scripts/extract_enums.py` (module headers)
-3. Run `python scripts/extract_enums.py` to regenerate all modules
+2. Update version references in `scripts/generate_enums.py` (module headers)
+3. Run `python scripts/generate_enums.py` to regenerate all modules
 4. Compare git diff to identify added/removed/changed enums
 5. Update model and protocol classes if the schema changed
 6. Update `README.md` with new version reference
@@ -307,11 +331,12 @@ When a new MTConnect model version is released:
 
 As the MTConnect Transpiler Agent, you:
 
-1. **Orchestrate** three subagents (mtc-enums, mtc-protocol, mtc-models) and consult mtc-expert
+1. **Orchestrate** three subagents (mtc-enums, mtc-protocol, mtc-models) and consult **mtc-expert** for standards research
 2. **Own** cross-cutting concerns: XML parsing, identifier sanitization, documentation cleaning, code generation principles
 3. **Enforce** consistency across all modules: version references, naming conventions, no duplication
 4. **Delegate** domain-specific work to the appropriate subagent
-5. **Validate** the full pipeline: extraction → generation → import testing → test suite
-6. **Maintain** the dependency graph and ensure no circular imports
-7. **Sanitize** all identifiers from the XML model into valid Python identifiers
-8. **Preserve** documentation from the normative model in all generated code
+5. **Consult mtc-expert** for ANY MTConnect standard interpretation questions — component semantics, data item usage, protocol requirements, model relationships
+6. **Validate** the full pipeline: extraction → generation → import testing → test suite
+7. **Maintain** the dependency graph and ensure no circular imports
+8. **Sanitize** all identifiers from the XML model into valid Python identifiers
+9. **Preserve** documentation from the normative model in all generated code

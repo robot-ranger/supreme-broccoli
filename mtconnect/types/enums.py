@@ -337,12 +337,12 @@ class ApplicationTypeEnum(Enum):
 class AssetTypeEnum(Enum):
     """AssetTypeEnum values from MTConnect model"""
 
-    CuttingTool = auto()  # CuttingTool Asset type.
-    File = auto()  # File Asset type.
-    QIFDocumentWrapper = auto()  # QIFDocumentWrapper Asset type.
-    RawMaterial = auto()  # RawMaterial Asset type.
-    CuttingToolArchetype = auto()
-    FileArchetype = auto()
+    CUTTINGTOOL = auto()  # CuttingTool: CuttingTool Asset type.
+    FILE = auto()  # File: File Asset type.
+    QIFDOCUMENTWRAPPER = auto()  # QIFDocumentWrapper: QIFDocumentWrapper Asset type.
+    RAWMATERIAL = auto()  # RawMaterial: RawMaterial Asset type.
+    CUTTINGTOOLARCHETYPE = auto()  # CuttingToolArchetype
+    FILEARCHETYPE = auto()  # FileArchetype
 
 
 class CapabilityTypeEnum(Enum):
@@ -727,12 +727,12 @@ class CodeEnum(Enum):
     PSIR = auto()  # angle between the tool cutting edge plane and a plane perpendicular to the to...
     N_A = auto()  # N/A: angle of the tool with respect to the workpiece for a given process. The valu...
     BS = auto()  # measure of the length of a wiper edge of a cutting item.
-    SDLx = auto()  # length of a portion of a stepped tool that is related to a corresponding cutt...
-    STAx = auto()  # angle between a major edge on a step of a stepped tool and the same cutting e...
-    DCx = auto()  # diameter of a circle on which the defined point Pk located on this cutting to...
+    SDLX = auto()  # SDLx: length of a portion of a stepped tool that is related to a corresponding cutt...
+    STAX = auto()  # STAx: angle between a major edge on a step of a stepped tool and the same cutting e...
+    DCX = auto()  # DCx: diameter of a circle on which the defined point Pk located on this cutting to...
     HF = auto()  # distance from the basal plane of the tool item to the cutting point.
     RE = auto()  # nominal radius of a rounded corner measured in the X Y-plane.
-    LFx = auto()  # distance from the gauge plane or from the end of the shank of the cutting too...
+    LFX = auto()  # LFx: distance from the gauge plane or from the end of the shank of the cutting too...
     BCH = auto()  # flat length of a chamfer.
     CHW = auto()  # width of the chamfer.
     W1 = auto()  # insert width when an inscribed circle diameter is not practical.
@@ -988,13 +988,13 @@ class QualityEnum(Enum):
 class QueryParameterEnum(Enum):
     """QueryParameterEnum values from MTConnect model"""
 
-    device = auto()  # See `device` parameter of Agent::Operation types.
-    deviceType = auto()  # See `deviceType` parameter of Agent::Operation types.
-    path = auto()  # See `path` parameter of Agent::Operation types.
-    _from = auto()  # from: See `from` parameter of Agent::Operation types.
-    count = auto()  # See `count` parameter of Agent::Operation types.
-    interval = auto()  # See `interval` parameter of Agent::Operation types.
-    heartbeat = auto()  # See `heartbeat` parameter of Agent::Operation types.
+    DEVICE = auto()  # device: See `device` parameter of Agent::Operation types.
+    DEVICETYPE = auto()  # deviceType: See `deviceType` parameter of Agent::Operation types.
+    PATH = auto()  # path: See `path` parameter of Agent::Operation types.
+    _FROM = auto()  # from: See `from` parameter of Agent::Operation types.
+    COUNT = auto()  # count: See `count` parameter of Agent::Operation types.
+    INTERVAL = auto()  # interval: See `interval` parameter of Agent::Operation types.
+    HEARTBEAT = auto()  # heartbeat: See `heartbeat` parameter of Agent::Operation types.
 
 
 class ResetTriggerEnum(Enum):
