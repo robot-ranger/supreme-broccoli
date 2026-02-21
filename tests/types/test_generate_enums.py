@@ -152,9 +152,9 @@ class TestCleanDoc:
         """Replaces &#10; and &#13; entities."""
         assert self._clean("line1&#10;line2") == "line1 line2"
 
-    def test_none_returns_none(self):
-        """None input returns None."""
-        assert self._clean(None) == "None"
+    def test_empty_returns_empty(self):
+        """Empty string input returns empty."""
+        assert self._clean("") == ""
 
     def test_newlines_replaced(self):
         """Newlines are replaced with spaces."""
