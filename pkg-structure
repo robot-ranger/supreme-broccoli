@@ -28,7 +28,7 @@ mtconnect/client/ - REST API client, streaming support, sequence management
 mtconnect/adapter/ - SHDR protocol parser/formatter, TCP adapter base class
 Enhance scripts directory at scripts:
 
-extract_enums.py - fix hardcoded path, add multi-file output
+generate_enums.py - generates all type enums with uppercase identifiers per PEP 8
 scripts/generate_components.py - new transpiler for UML Classes → Python dataclasses
 scripts/validate_model.py - validate generated code against model_2.6.xml
 Add package configuration:

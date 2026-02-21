@@ -22,11 +22,11 @@ You own every file in `mtconnect/types/`:
 | `primitives.py` | (hand-written) | `ID`, `UUID`, `Int32`, `Int64`, `MTCBoolean`, etc. |
 | `__init__.py` | — | Public API re-exports from canonical modules |
 
-You also own the unified extraction script `scripts/extract_enums.py`.
+You also own the unified extraction script `scripts/generate_enums.py`.
 
 ## Extraction Script Architecture
 
-**All generated type modules are produced by a single script**: `scripts/extract_enums.py`
+**All generated type modules are produced by a single script**: `scripts/generate_enums.py`
 
 This script:
 - Parses `model_2.6.xml` once
@@ -37,8 +37,8 @@ This script:
 
 **Usage:**
 ```bash
-python scripts/extract_enums.py
-python scripts/extract_enums.py --model-path .github/agents/data/model_2.6.xml
+python scripts/generate_enums.py
+python scripts/generate_enums.py --model-path .github/agents/data/model_2.6.xml
 ```
 
 There is **no separate `extract_interfaces.py`** — the unified script handles everything.
@@ -90,6 +90,8 @@ from mtconnect.types.interface_types import (  # noqa: F401
 **Critical rule**: Each enum class is defined in exactly ONE canonical module. No duplicates. Never import from `enums.py` in new code — use canonical modules.
 
 ## Enum Code Style
+
+**Naming Convention**: All enum member names MUST be in UPPER_CASE following PEP 8 conventions. The `sanitize_identifier()` function automatically uppercases all names during code generation.
 
 **Always use `auto()` for enum values** unless there's a specific requirement for string values (like serialization to MTConnect protocol format).
 
@@ -326,7 +328,7 @@ Generated code should be validated after every regeneration:
 
 ```bash
 # Regenerate
-python scripts/extract_enums.py
+python scripts/generate_enums.py
 
 # Quick smoke test
 python -c "from mtconnect.types import EventType, SampleType, ConditionType; print('OK')"
@@ -381,14 +383,14 @@ assert isinstance(EventType.EXECUTION.value, int)
 ### Task 1: Regenerating All Type Modules
 
 ```bash
-python scripts/extract_enums.py
+python scripts/generate_enums.py
 ```
 
 ### Task 2: Adding a New Dedicated Module
 
 To move an enum from `enums.py` to its own file:
 
-1. Add a new generator function in `scripts/extract_enums.py`
+1. Add a new generator function in `scripts/generate_enums.py`
 2. Add the XML enum name to `DEDICATED_ENUMS`
 3. Add a re-export line in `generate_enums_py()`
 4. Call the generator in the main section
@@ -398,8 +400,8 @@ To move an enum from `enums.py` to its own file:
 ### Task 3: Updating for New MTConnect Version
 
 1. Replace `.github/agents/data/model_2.6.xml` with new version
-2. Update version references in `scripts/extract_enums.py` (module headers)
-3. Run `python scripts/extract_enums.py` to regenerate all modules
+2. Update version references in `scripts/generate_enums.py` (module headers)
+3. Run `python scripts/generate_enums.py` to regenerate all modules
 4. Compare git diff to identify added/removed/changed enums
 5. Update `README.md` with new version reference
 6. Run full test suite

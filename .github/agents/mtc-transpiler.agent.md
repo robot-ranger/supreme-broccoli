@@ -20,7 +20,7 @@ You are the orchestrator for transpiling the MTConnect normative standard into p
 
 | Subagent | Owns | When to Delegate |
 |----------|------|-----------------|
-| **mtc-enums** | `mtconnect/types/`, `scripts/extract_enums.py` | Enum generation, primitive types, extraction script changes, `__init__.py` re-exports |
+| **mtc-enums** | `mtconnect/types/`, `scripts/generate_enums.py` | Enum generation, primitive types, extraction script changes, `__init__.py` re-exports |
 | **mtc-protocol** | `mtconnect/protocol/` | Response documents, streaming, headers, errors |
 | **mtc-models** | `mtconnect/models/` | Components, data items, assets, configurations, values, references |
 | **mtc-expert** | MTConnect standards research | **ANY** MTConnect standard interpretation, protocol compliance, semantic questions, model structure, component relationships, data item usage, specification clarifications |
@@ -68,7 +68,7 @@ elem.findall('ownedComment')
 
 ## Extraction Script
 
-**All generated type modules are produced by a single script**: `scripts/extract_enums.py`
+**All generated type modules are produced by a single script**: `scripts/generate_enums.py`
 
 This script:
 - Parses `model_2.6.xml` once
@@ -79,8 +79,8 @@ This script:
 
 **Usage:**
 ```bash
-python scripts/extract_enums.py
-python scripts/extract_enums.py --model-path .github/agents/data/model_2.6.xml
+python scripts/generate_enums.py
+python scripts/generate_enums.py --model-path .github/agents/data/model_2.6.xml
 ```
 
 There is **no separate `extract_interfaces.py`** — the unified script handles everything.
@@ -97,6 +97,9 @@ There is **no separate `extract_interfaces.py`** — the unified script handles 
    - `DEGREE/SECOND^2` → `DEGREE_SECOND_2`
    - `POUND/INCH^2` → `POUND_INCH_2`
 3. **Prepend underscore if Python keyword**
+4. **Convert to uppercase per PEP 8**: All enum members use UPPER_CASE naming
+   - `Normal` → `NORMAL`
+   - `Warning` → `WARNING`
 
 ```python
 import re
@@ -108,6 +111,7 @@ def sanitize_identifier(name):
     if name[0].isdigit():
         name = '_' + name
     name = re.sub(r'[^A-Za-z0-9_]', '_', name)
+    return name.upper()
     return name
 ```
 
@@ -187,7 +191,7 @@ class ExampleModel:
 | `mtconnect/types/` | `event.py`, `sample.py`, `condition.py`, `subtype.py`, `interface_types.py`, `enums.py`, `primitives.py`, `__init__.py` | **mtc-enums** |
 | `mtconnect/protocol/` | `header.py`, `responses.py`, `streams.py`, `errors.py`, `__init__.py` | **mtc-protocol** |
 | `mtconnect/models/` | `components.py`, `data_items.py`, `assets.py`, `values.py`, `configurations.py`, `compositions.py`, `references.py`, `__init__.py` | **mtc-models** |
-| `scripts/` | `extract_enums.py`, `generate_*.py`, `run_all_generators.py` | **mtc-enums**, **mtc-models** |
+| `scripts/` | `generate_enums.py`, `generate_*.py`, `run_all_generators.py` | **mtc-enums**, **mtc-models** |
 
 ### Generator Scripts
 
@@ -195,7 +199,7 @@ class ExampleModel:
 
 | Script | Generates | Owner | Classes | Lines |
 |--------|-----------|-------|---------|-------|
-| `extract_enums.py` | All `types/` enums | mtc-enums | — | 6 files |
+| `generate_enums.py` | All `types/` enums | mtc-enums | — | 6 files |
 | `generate_components.py` | `models/components.py` | mtc-models | 126 | ~1186 |
 | `generate_data_items.py` | `models/data_items.py` | mtc-models | 253 | ~760 |
 | `generate_configurations.py` | `models/configurations.py` | mtc-models | 31 | ~440 |
@@ -294,7 +298,7 @@ mtconnect.protocol.errors ◄── protocol.header            │
 When the model changes or code needs updating:
 
 ```bash
-python scripts/extract_enums.py
+python scripts/generate_enums.py
 ```
 
 This regenerates all 6 files. Validate afterward:
@@ -308,8 +312,8 @@ python -c "from mtconnect.types import EventType, SampleType, ConditionType; pri
 When a new MTConnect model version is released:
 
 1. Replace `.github/agents/data/model_2.6.xml` with new version
-2. Update version references in `scripts/extract_enums.py` (module headers)
-3. Run `python scripts/extract_enums.py` to regenerate all modules
+2. Update version references in `scripts/generate_enums.py` (module headers)
+3. Run `python scripts/generate_enums.py` to regenerate all modules
 4. Compare git diff to identify added/removed/changed enums
 5. Update model and protocol classes if the schema changed
 6. Update `README.md` with new version reference

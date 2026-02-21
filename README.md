@@ -237,19 +237,16 @@ ruff check mtconnect/
 ruff check --fix mtconnect/
 ```
 
-## Extracting Enums from Model
+## Generating Type Enums from Model
 
-The package includes a script to extract enumerations from the MTConnect normative model:
+The package includes a script to generate type enumerations from the MTConnect normative model:
 
 ```bash
-# Extract all enums
-python scripts/extract_enums.py
+# Generate all type enums (6 modules)
+python scripts/generate_enums.py
 
-# Extract specific enums
-python scripts/extract_enums.py --enum-names UnitEnum StatisticEnum
-
-# Specify output location
-python scripts/extract_enums.py --output-dir custom/path --output-file my_enums.py
+# Specify custom model path
+python scripts/generate_enums.py --model-path path/to/model.xml
 ```
 
 ## Use Cases

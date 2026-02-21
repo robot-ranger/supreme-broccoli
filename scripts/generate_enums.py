@@ -12,8 +12,8 @@ Generated files:
   - mtconnect/types/enums.py          All remaining enums (states, modes, units, etc.)
 
 Usage:
-  python scripts/extract_enums.py
-  python scripts/extract_enums.py --model-path .github/agents/data/model_2.6.xml
+  python scripts/generate_enums.py
+  python scripts/generate_enums.py --model-path .github/agents/data/model_2.6.xml
 """
 
 import xml.etree.ElementTree as ET
@@ -36,6 +36,7 @@ def sanitize_identifier(name):
     1. Prepend underscore if starts with digit
     2. Replace all special characters with underscore
     3. Prepend underscore if Python keyword
+    4. Convert to uppercase per PEP 8 enum naming convention
     """
     if not name:
         return name
@@ -53,7 +54,7 @@ def sanitize_identifier(name):
     name = re.sub(r'[^A-Za-z0-9_]', '_', name)
     if name.lower() in PYTHON_KEYWORDS:
         name = '_' + name
-    return name
+    return name.upper()
 
 
 def clean_doc(doc):
