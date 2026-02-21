@@ -9,6 +9,7 @@ from mtconnect.models.components import (
     Axes,
     Axis,
     Component,
+    ComponentBase,
     Composition,
     Controller,
     Controllers,
@@ -175,21 +176,27 @@ def test_motor_leaf():
     """Test Motor leaf component instantiation"""
     motor = Motor(id=ID("m1"), name="Motor-1")
     assert motor.id == ID("m1")
-    assert isinstance(motor, Component)
+    assert isinstance(motor, ComponentBase)
+    # Leaf components should NOT have 'components' field
+    assert not hasattr(motor, 'components')
 
 
 def test_encoder_leaf():
     """Test Encoder leaf component instantiation"""
     encoder = Encoder(id=ID("enc1"), name="Encoder-1")
     assert encoder.id == ID("enc1")
-    assert isinstance(encoder, Component)
+    assert isinstance(encoder, ComponentBase)
+    # Leaf components should NOT have 'components' field
+    assert not hasattr(encoder, 'components')
 
 
 def test_valve_leaf():
     """Test Valve leaf component instantiation"""
     valve = Valve(id=ID("v1"), name="Valve-1")
     assert valve.id == ID("v1")
-    assert isinstance(valve, Component)
+    assert isinstance(valve, ComponentBase)
+    # Leaf components should NOT have 'components' field
+    assert not hasattr(valve, 'components')
 
 
 # --- Inheritance checks ---

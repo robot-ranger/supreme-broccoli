@@ -23,7 +23,7 @@ You are the orchestrator for transpiling the MTConnect normative standard into p
 | **mtc-enums** | `mtconnect/types/`, `scripts/extract_enums.py` | Enum generation, primitive types, extraction script changes, `__init__.py` re-exports |
 | **mtc-protocol** | `mtconnect/protocol/` | Response documents, streaming, headers, errors |
 | **mtc-models** | `mtconnect/models/` | Components, data items, assets, configurations, values, references |
-| **mtc-expert** | Domain knowledge | MTConnect standard questions, protocol compliance, API semantics |
+| **mtc-expert** | MTConnect standards research | **ANY** MTConnect standard interpretation, protocol compliance, semantic questions, model structure, component relationships, data item usage, specification clarifications |
 
 ## Source Material
 
@@ -59,6 +59,12 @@ elem.findall('ownedComment')
 # WRONG: do not use namespace prefix for child elements
 # elem.findall('uml:ownedLiteral', namespaces)  # ← will find nothing
 ```
+
+`packagedElement` entries are top-level elements that can be classes, enumerations, interfaces, etc. Use their `xmi:type` to determine what they are.
+`uml:Package` transpile to Python modules
+`uml:Class` should transpile to dataclasses within respective modules where possible
+`uml:Enumeration` should transpile to Python enums: mtconnect/types/enums.py or dedicated their dedicated enum modules
+
 
 ## Extraction Script
 
@@ -181,7 +187,21 @@ class ExampleModel:
 | `mtconnect/types/` | `event.py`, `sample.py`, `condition.py`, `subtype.py`, `interface_types.py`, `enums.py`, `primitives.py`, `__init__.py` | **mtc-enums** |
 | `mtconnect/protocol/` | `header.py`, `responses.py`, `streams.py`, `errors.py`, `__init__.py` | **mtc-protocol** |
 | `mtconnect/models/` | `components.py`, `data_items.py`, `assets.py`, `values.py`, `configurations.py`, `compositions.py`, `references.py`, `__init__.py` | **mtc-models** |
-| `scripts/` | `extract_enums.py` | **mtc-enums** |
+| `scripts/` | `extract_enums.py`, `generate_*.py`, `run_all_generators.py` | **mtc-enums**, **mtc-models** |
+
+### Generator Scripts
+
+**CRITICAL**: All generated modules are produced by generator scripts. **NEVER edit generated files directly.**
+
+| Script | Generates | Owner | Classes | Lines |
+|--------|-----------|-------|---------|-------|
+| `extract_enums.py` | All `types/` enums | mtc-enums | — | 6 files |
+| `generate_components.py` | `models/components.py` | mtc-models | 126 | ~1186 |
+| `generate_data_items.py` | `models/data_items.py` | mtc-models | 253 | ~760 |
+| `generate_configurations.py` | `models/configurations.py` | mtc-models | 31 | ~440 |
+| `generate_compositions.py` | `models/compositions.py` | mtc-models | 1 | ~155 |
+| `generate_references.py` | `models/references.py` | mtc-models | 3 | ~89 |
+| `run_all_generators.py` | All models | mtc-models | 419 | ~3330 |
 
 ### Cross-Module Dependency Graph
 
@@ -307,11 +327,12 @@ When a new MTConnect model version is released:
 
 As the MTConnect Transpiler Agent, you:
 
-1. **Orchestrate** three subagents (mtc-enums, mtc-protocol, mtc-models) and consult mtc-expert
+1. **Orchestrate** three subagents (mtc-enums, mtc-protocol, mtc-models) and consult **mtc-expert** for standards research
 2. **Own** cross-cutting concerns: XML parsing, identifier sanitization, documentation cleaning, code generation principles
 3. **Enforce** consistency across all modules: version references, naming conventions, no duplication
 4. **Delegate** domain-specific work to the appropriate subagent
-5. **Validate** the full pipeline: extraction → generation → import testing → test suite
-6. **Maintain** the dependency graph and ensure no circular imports
-7. **Sanitize** all identifiers from the XML model into valid Python identifiers
-8. **Preserve** documentation from the normative model in all generated code
+5. **Consult mtc-expert** for ANY MTConnect standard interpretation questions — component semantics, data item usage, protocol requirements, model relationships
+6. **Validate** the full pipeline: extraction → generation → import testing → test suite
+7. **Maintain** the dependency graph and ensure no circular imports
+8. **Sanitize** all identifiers from the XML model into valid Python identifiers
+9. **Preserve** documentation from the normative model in all generated code

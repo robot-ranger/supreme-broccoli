@@ -1,80 +1,60 @@
 """
-MTConnect Reference Models
+MTConnect References Model.
 
-Reference models for establishing connections between components, data items,
-and assets in the MTConnect information model.
-
-References (ComponentRef, DataItemRef, AssetRef) allow one entity to reference
-another by ID. This is distinct from Relationships (ConfigurationRelationship)
-which describe associations between equipment and only exist in Configuration.
-
-Reference: MTConnect Standard v2.6 - References Package
+Auto-generated from model_2.6.xml - DO NOT EDIT.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
-from mtconnect.types.primitives import ID, UUID
-from mtconnect.types.enums import DataItemRelationshipTypeEnum
+from mtconnect.types.primitives import ID
 
+if TYPE_CHECKING:
+    from mtconnect.models.components import Component
+    from mtconnect.models.data_items import DataItem
+
+
+__all__ = [
+    'ComponentRef',
+    'DataItemRef',
+    'Reference',
+]
 
 @dataclass
-class ComponentRef:
-    """
-    Reference to a Component by ID or ID path.
-    
-    Provides a way to reference another Component in the device hierarchy,
-    used for associations, compositions, and relationships.
-    """
+class Reference:
+    """pointer to information that is associated with another entity defined elsewhere in the MTConnectDevices entity for a piece of equipment."""
+
+    # pointer to the DataItem::id that contains the information to be associated with this entity.
+    data_item_id: ID
+    # pointer to the `id` of an entity that contains the information to be associated with this entity.
     id_ref: ID
+    # pointer to the DataItem::id that contains the information to be associated with this entity.
+    ref_data_item_id: ID
+    # name of an element or a piece of equipment.
     name: Optional[str] = None
-    
-    def __post_init__(self):
-        """Validate reference"""
-        if isinstance(self.id_ref, str):
-            self.id_ref = ID(self.id_ref)
-
 
 @dataclass
-class DataItemRef:
-    """
-    Reference to a DataItem by ID.
-    
-    Establishes relationships between DataItems, such as pairing a measured value
-    with its specification limits, control limits, or alarm thresholds.
-    
-    Reference: MTConnect Standard v2.6 - DataItemRef (lines 51538-51564 in model_2.6.xml)
-    """
-    id_ref: ID
-    name: Optional[str] = None
-    relationship_type: Optional[DataItemRelationshipTypeEnum] = None
-    
-    def __post_init__(self):
-        """Validate reference"""
-        if isinstance(self.id_ref, str):
-            self.id_ref = ID(self.id_ref)
+class DataItemRef(Reference):
+    """Reference that is a pointer to a DataItem associated with another entity defined for a piece of equipment."""
 
+    # pointer to the DataItem::id that contains the information to be associated with this entity.
+    id_ref: DataItem
+
+    def __post_init__(self):
+        """Validate required fields."""
+        if self.id_ref is None:
+            raise ValueError(f'DataItemRef.id_ref is required')
 
 @dataclass
-class AssetRef:
-    """
-    Reference to an Asset by asset ID.
-    
-    Associates a Component or DataItem with an Asset, such as linking a Spindle
-    component to the currently loaded CuttingTool asset.
-    
-    Note: While not explicitly defined as a Reference subclass in the normative
-    model, AssetRef provides practical utility for referencing assets by ID
-    similar to ComponentRef and DataItemRef patterns.
-    """
-    asset_id: ID
-    asset_type: Optional[str] = None
-    device_uuid: Optional[UUID] = None
-    
+class ComponentRef(Reference):
+    """Reference that is a pointer to all of the information associated with another entity defined for a piece of equipment."""
+
+    # pointer to the Component::id that contains the information to be associated with this entity.
+    id_ref: Component
+
     def __post_init__(self):
-        """Validate reference"""
-        if isinstance(self.asset_id, str):
-            self.asset_id = ID(self.asset_id)
-        
-        if self.device_uuid and isinstance(self.device_uuid, str):
-            self.device_uuid = UUID(self.device_uuid)
+        """Validate required fields."""
+        if self.id_ref is None:
+            raise ValueError(f'ComponentRef.id_ref is required')

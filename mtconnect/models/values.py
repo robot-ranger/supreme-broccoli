@@ -23,7 +23,7 @@ class UnavailableType(Enum):
 
 
 @dataclass
-class ObservationValue:
+class Observation:
     """
     Base class for all observation values.
     
@@ -50,7 +50,7 @@ class ObservationValue:
 
 
 @dataclass
-class SampleValue(ObservationValue):
+class Sample(Observation):
     """
     SAMPLE observation value representing a numeric measurement.
     
@@ -59,7 +59,7 @@ class SampleValue(ObservationValue):
     source is disconnected or not providing data.
     
     Example:
-        >>> temp = SampleValue(
+        >>> temp = Sample(
         ...     data_item_id="spindle_temp",
         ...     timestamp=MTCDateTime("2026-02-19T10:30:00Z"),
         ...     sequence=12345,
@@ -88,7 +88,7 @@ class SampleValue(ObservationValue):
 
 
 @dataclass
-class EventValue(ObservationValue):
+class Event(Observation):
     """
     EVENT observation value representing discrete state or status.
     
@@ -97,7 +97,7 @@ class EventValue(ObservationValue):
     if the data source is disconnected.
     
     Example:
-        >>> exec_state = EventValue(
+        >>> exec_state = Event(
         ...     data_item_id="controller_exec",
         ...     timestamp=MTCDateTime("2026-02-19T10:30:00Z"),
         ...     sequence=12346,
@@ -119,7 +119,7 @@ class EventValue(ObservationValue):
 
 
 @dataclass
-class ConditionObservation(ObservationValue):
+class Condition(Observation):
     """
     CONDITION observation representing health status.
     
@@ -128,7 +128,8 @@ class ConditionObservation(ObservationValue):
     simultaneously for a single DataItem.
     
     Example:
-        >>> temp_fault = ConditionObservation(
+        >>> temp_fault = Condition(
+
         ...     data_item_id="spindle_temp_cond",
         ...     timestamp=MTCDateTime("2026-02-19T10:30:00Z"),
         ...     sequence=12347,

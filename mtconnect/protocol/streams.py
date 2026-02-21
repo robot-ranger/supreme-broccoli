@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
 from mtconnect.types.primitives import ID, UUID
-from mtconnect.models.values import SampleValue, EventValue, ConditionObservation
+from mtconnect.models.values import Sample, Event, Condition
 
 
 @dataclass
@@ -41,9 +41,9 @@ class ComponentStream:
     sample_rate: Optional[float] = None
     
     # Observations organized by category
-    samples: List[SampleValue] = field(default_factory=list)
-    events: List[EventValue] = field(default_factory=list)
-    condition: List[ConditionObservation] = field(default_factory=list)
+    samples: List[Sample] = field(default_factory=list)
+    events: List[Event] = field(default_factory=list)
+    condition: List[Condition] = field(default_factory=list)
     
     def __post_init__(self):
         """Validate component stream"""
@@ -53,7 +53,7 @@ class ComponentStream:
         if self.uuid and isinstance(self.uuid, str):
             self.uuid = UUID(self.uuid)
     
-    def all_observations(self) -> List[Union[SampleValue, EventValue, ConditionObservation]]:
+    def all_observations(self) -> List[Union[Sample, Event, Condition]]:
         """Get all observations from this component stream"""
         return self.samples + self.events + self.condition
     
@@ -69,14 +69,14 @@ class ComponentStream:
         """Check if any condition observations are warnings"""
         return any(cond.is_warning() for cond in self.condition)
     
-    def get_sample_by_id(self, data_item_id: str) -> Optional[SampleValue]:
+    def get_sample_by_id(self, data_item_id: str) -> Optional[Sample]:
         """Find a sample observation by DataItem ID"""
         for sample in self.samples:
             if str(sample.data_item_id) == data_item_id:
                 return sample
         return None
     
-    def get_event_by_id(self, data_item_id: str) -> Optional[EventValue]:
+    def get_event_by_id(self, data_item_id: str) -> Optional[Event]:
         """Find an event observation by DataItem ID"""
         for event in self.events:
             if str(event.data_item_id) == data_item_id:
@@ -123,7 +123,7 @@ class DeviceStream:
                 return stream
         return None
     
-    def all_observations(self) -> List[Union[SampleValue, EventValue, ConditionObservation]]:
+    def all_observations(self) -> List[Union[Sample, Event, Condition]]:
         """Get all observations from all components"""
         observations = []
         for stream in self.component_streams:

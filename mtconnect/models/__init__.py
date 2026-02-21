@@ -162,14 +162,13 @@ from mtconnect.models.components import Process as ProcessComponent
 # Composition models
 from mtconnect.models.compositions import (
     Composition,
-    CompositionType,
 )
 
 # Configuration models
 from mtconnect.models.configurations import (
-    ConfigAlarmLimits,
-    ConfigControlLimits,
-    ConfigSpecificationLimits,
+    AlarmLimits,
+    ControlLimits,
+    SpecificationLimits,
     Configuration,
     ConfigurationRelationship,
     CoordinateSystem,
@@ -189,12 +188,11 @@ from mtconnect.models.data_items import (
     DataItemCategory,
     EventDataItem,
     SampleDataItem,
-    create_data_item,
 )
 
 # Reference models
 from mtconnect.models.references import (
-    AssetRef,
+    Reference,
     ComponentRef,
     DataItemRef,
 )
@@ -202,12 +200,12 @@ from mtconnect.models.references import (
 # Observation value models
 from mtconnect.models.values import (
     AlarmLimitsValue,
-    ConditionObservation,
+    Condition,
     ControlLimitsValue,
     DataSet,
-    EventValue,
-    ObservationValue,
-    SampleValue,
+    Event,
+    Observation,
+    Sample,
     SpecificationLimitsValue,
     TimeSeries,
     UnavailableType,
@@ -223,7 +221,6 @@ __all__ = [
     "Amplifier",
     # Assets
     "Asset",
-    "AssetRef",
     "AssetType",
     "AutomaticToolChanger",
     "Auxiliaries",
@@ -248,14 +245,12 @@ __all__ = [
     "ComponentRef",
     # Compositions
     "Composition",
-    "CompositionComponent",
-    "CompositionType",
     "Compressor",
+    "Condition",
     "ConditionDataItem",
-    "ConditionObservation",
-    "ConfigAlarmLimits",
-    "ConfigControlLimits",
-    "ConfigSpecificationLimits",
+    "AlarmLimits",
+    "ControlLimits",
+    "SpecificationLimits",
     # Configuration
     "Configuration",
     "ConfigurationRelationship",
@@ -289,8 +284,8 @@ __all__ = [
     "Encoder",
     "EndEffector",
     "Environmental",
+    "Event",
     "EventDataItem",
-    "EventValue",
     "ExpiredPot",
     "ExposureUnit",
     "ExtrusionUnit",
@@ -324,7 +319,7 @@ __all__ = [
     "Motion",
     "Motor",
     # Values
-    "ObservationValue",
+    "Observation",
     "Oil",
     "Part",
     "PartComponent",
@@ -348,6 +343,7 @@ __all__ = [
     "QIFDocumentWrapper",
     "RawMaterial",
     "Reel",
+    "Reference",
     "RemovalPot",
     "Requester",
     "Resource",
@@ -356,7 +352,7 @@ __all__ = [
     "ReturnPot",
     "Rotary",
     "SampleDataItem",
-    "SampleValue",
+    "Sample",
     "SensingElement",
     "Sensor",
     "SensorConfiguration",
@@ -397,5 +393,4 @@ __all__ = [
     "Wire",
     "WorkEnvelope",
     "Workpiece",
-    "create_data_item",
 ]
